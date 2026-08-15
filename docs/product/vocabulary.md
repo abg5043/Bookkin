@@ -1,0 +1,27 @@
+# Product vocabulary
+
+- **Household** - The private family-data boundary. V0.1 begins with one household.
+- **Child profile** - A minimal profile using an optional nickname, coarse age or reading-stage band, and optional content preferences.
+- **Current interest** - A caregiver-entered topic or theme the child is into now; it may receive stronger recommendation weight.
+- **Historical interest** - An ended interest phase retained with lower or recency-decayed influence rather than erased.
+- **Taste evidence** - A deterministic view that keeps current interests, historical interests, child observations, caregiver observations, family references, reading outcomes, and missing evidence distinguishable.
+- **Book work** - The conceptual book that recommendations target.
+- **Book edition** - A specific ISBN-bearing physical or publication edition.
+- **Family shelf** - Books explicitly saved by the household, each with one current status: owned, borrowed, or wishlist.
+- **Reading event** - An append-only reading-session outcome or explicit reading decision: finished, reread, stopped, or internal rejected. Consumer copy for rejected is `Decided not to read`.
+- **Reaction** - A separate optional child or caregiver response attached to a valid reading event.
+- **Recommendation action** - An append-only explicit save, recommendation rejection shown as `Not for us`, catalog open, replacement request, or attribution link. A linked finish or reread references a valid reading event rather than replacing it.
+- **Shelf transition** - An explicit change such as borrowed or returned; it is not a reading event.
+- **Selection provenance** - An explicit record that a child or caregiver selected a work, attached to the relevant action or encounter rather than reading history.
+- **Preference observation** - Durable, source-attributed evidence recorded only after explicit input, with subject separate from reporter.
+- **Request reference** - A verified work used for one recommendation request without becoming shelf, history, reaction, or durable preference evidence.
+- **Recommendation candidate** - A verified normalized work eligible for deterministic scoring, with provider provenance and field coverage.
+- **Normal library bag** - A persisted curated result of 3-5 verified eligible works, targeting five.
+- **Limited verified pool** - An honest result of 1-2 verified eligible works that remains actionable and separately measured.
+- **No eligible candidates** - A zero-work result with recovery options and no fabricated padding.
+- **Catalog handoff** - Opening an official library catalog search without claiming availability or holds.
+- **Core activation** - Generating a normal library bag from minimum truthful context and opening at least one official catalog result.
+- **Limited activation** - Receiving a limited verified pool and opening at least one official catalog result; reported separately.
+- **Protected preview** - A hosted HTTPS application and managed database protected at the platform boundary for household alpha.
+- **Controlled free beta** - An invited multi-household test after application identity and isolation pass Checkpoint 12A.
+- **Public acquisition surface** - An optional post-beta public site separated from private family routes and data.
