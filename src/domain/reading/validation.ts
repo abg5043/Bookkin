@@ -1,10 +1,16 @@
 import { z } from "zod";
 
-export const readingEventTypeSchema = z.enum([
+export const readingMomentEventTypes = [
   "finished",
   "reread",
   "stopped",
   "rejected",
+] as const;
+
+export const readingMomentEventTypeSchema = z.enum(readingMomentEventTypes);
+
+export const readingEventTypeSchema = z.enum([
+  ...readingMomentEventTypes,
   "borrowed",
   "returned",
   "child_selected",

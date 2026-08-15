@@ -3,6 +3,7 @@ import { type z } from "zod";
 import {
   familyBookShelfStatusSchema,
 } from "@/domain/family-books/validation";
+import { readingMomentEventTypes } from "@/domain/reading/validation";
 import {
   encodeSerialized,
   metadataProvenanceSchema,
@@ -18,6 +19,7 @@ export type FamilyShelfItem = {
   authors: string[];
   coverUrl?: string;
   shelfStatus?: ShelfStatus;
+  lastReadAt?: string;
 };
 
 export type SaveFamilyBookResult = {
@@ -47,7 +49,16 @@ export async function listFamilyShelf(householdId: string): Promise<FamilyShelfI
     where: { householdId },
     orderBy: { lastSeenAt: "desc" },
     include: {
-      work: true,
+      work: {
+        include: {
+          readingEvents: {
+            where: { householdId, eventType: { in: [...readingMomentEventTypes] } },
+            orderBy: { occurredAt: "desc" },
+            take: 1,
+            select: { occurredAt: true },
+          },
+        },
+      },
       editions: {
         orderBy: { lastSeenAt: "desc" },
         take: 1,
@@ -62,6 +73,7 @@ export async function listFamilyShelf(householdId: string): Promise<FamilyShelfI
     authors: JSON.parse(familyBook.work.authors) as string[],
     coverUrl: familyBook.editions[0]?.edition.coverLargeUrl ?? familyBook.editions[0]?.edition.coverSmallUrl ?? undefined,
     shelfStatus: asShelfStatus(familyBook.shelfStatus),
+    lastReadAt: familyBook.work.readingEvents[0]?.occurredAt.toISOString(),
   }));
 }
 

@@ -1,10 +1,10 @@
 # Bookkin Software Development Document and Agentic Build Plan
 
-Status: canonical planning document; Checkpoint 4R in progress
+Status: canonical planning document; Checkpoint 5A technically verified and awaiting human review
 
-Last revised: 2026-08-14
+Last revised: 2026-08-15
 
-The human product owner approved this SDD on 2026-08-14 and authorized Checkpoint 4R only. This approval does not authorize Checkpoint 5A, Checkpoint 5B, application implementation, database changes, deployment, staging, commit, or push.
+The human product owner approved this SDD on 2026-08-14, approved Checkpoint 4R delivery, and authorized Checkpoint 5A implementation on 2026-08-15 after the interactive design review. This approval does not authorize Checkpoint 5B, database changes, deployment, staging, commit, or push beyond the separately authorized Checkpoint 5A design-decision commit.
 
 ## 1. Purpose
 
@@ -465,7 +465,7 @@ CI: <result or not applicable>
 
 Checkpoints 0-5 were completed and approved in prior owner reviews. Checkpoint 5 consolidated the approved shelf, discovery, history, and quick-log surfaces with the current editorial design system; it did not implement the later Bright Snap shell. The implemented baseline remains subject to regression review and may be refined only within a later approved checkpoint. Much of that approved baseline is not yet tracked in Git, so the already authorized Checkpoint 4R must reconcile and deliver it before Checkpoint 5A begins.
 
-Checkpoint 5A has design exploration but is not approved for implementation by this documentation revision.
+Checkpoint 5A implementation was authorized after its interactive design gate. Its bounded shell and fast-capture work is technically verified and awaits the mandatory human checkpoint review; no Checkpoint 5B work is authorized.
 
 ## 14. Remaining checkpoint sequence
 

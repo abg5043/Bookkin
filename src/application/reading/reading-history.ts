@@ -2,13 +2,15 @@ import { z } from "zod";
 import {
   childReactionValueSchema,
   parentReactionValueSchema,
+  readingMomentEventTypes,
+  readingMomentEventTypeSchema,
   readingEventInputSchema,
   stopReasonSchema,
 } from "@/domain/reading/validation";
 import { prisma } from "@/infrastructure/db/prisma";
 import { deriveRereadCount, sortReadingEvents } from "@/application/reading/summary";
 
-const quickLogEventTypeSchema = z.enum(["finished", "reread", "stopped", "rejected"]);
+const quickLogEventTypeSchema = readingMomentEventTypeSchema;
 
 export const quickReadingLogSchema = z.object({
   eventType: quickLogEventTypeSchema,
@@ -78,7 +80,7 @@ export async function getFamilyBookHistory(
       work: {
         include: {
           readingEvents: {
-            where: { householdId },
+            where: { householdId, eventType: { in: [...readingMomentEventTypes] } },
             include: { reactions: true },
           },
         },
@@ -108,6 +110,51 @@ export async function getFamilyBookHistory(
     rereadCount: deriveRereadCount(events),
     events,
   };
+}
+
+export async function listHouseholdReadingHistory(householdId: string): Promise<FamilyBookHistory[]> {
+  const familyBooks = await prisma.familyBook.findMany({
+    where: { householdId },
+    include: {
+      editions: {
+        orderBy: { lastSeenAt: "desc" },
+        take: 1,
+        include: { edition: true },
+      },
+      work: {
+        include: {
+          readingEvents: {
+            where: { householdId, eventType: { in: [...readingMomentEventTypes] } },
+            include: { reactions: true },
+          },
+        },
+      },
+    },
+  });
+
+  return familyBooks.flatMap((familyBook) => {
+    const events = sortReadingEvents(familyBook.work.readingEvents).map((event) => ({
+      id: event.id,
+      eventType: quickLogEventTypeSchema.parse(event.eventType),
+      occurredAt: event.occurredAt.toISOString(),
+      stopReason: event.stopReason === null ? undefined : stopReasonSchema.parse(event.stopReason),
+      childReaction: event.reactions.find((reaction) => reaction.subjectType === "child")?.value as z.infer<typeof childReactionValueSchema> | undefined,
+      parentReaction: event.reactions.find((reaction) => reaction.subjectType === "parent")?.value as z.infer<typeof parentReactionValueSchema> | undefined,
+    }));
+    if (events.length === 0) return [];
+    return [{
+      id: familyBook.id,
+      title: familyBook.work.title,
+      authors: JSON.parse(familyBook.work.authors) as string[],
+      coverUrl: familyBook.editions[0]?.edition.coverLargeUrl ?? familyBook.editions[0]?.edition.coverSmallUrl ?? undefined,
+      shelfStatus: familyBook.shelfStatus ?? undefined,
+      rereadCount: deriveRereadCount(events),
+      events,
+    }];
+  }).sort((left, right) => {
+    const latestDifference = Date.parse(right.events[0].occurredAt) - Date.parse(left.events[0].occurredAt);
+    return latestDifference !== 0 ? latestDifference : left.id.localeCompare(right.id);
+  });
 }
 
 export async function appendQuickReadingLog(
