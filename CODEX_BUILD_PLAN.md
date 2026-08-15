@@ -1,1484 +1,962 @@
-# Bookkin — Codex Build Plan
-
-> **Working name:** Bookkin  
-> **Document purpose:** Turn the product concept into a controlled, reviewable implementation plan for Codex or another coding agent.  
-> **Primary rule:** Complete **one checkpoint at a time**, present the results for human review, and **do not continue until explicitly approved**.
-
----
-
-## 1. Instructions to Codex
-
-You are acting as a staff software engineer, product-minded architect, and careful implementation agent.
-
-### Operating rules
-
-1. Read this entire document before changing any file.
-2. Begin with **Checkpoint 0 only**.
-3. Never implement more than one checkpoint without explicit human approval.
-4. At the end of every checkpoint:
-   - Stop making changes.
-   - Summarize what you did.
-   - List every important file added or modified.
-   - Report commands run and whether they passed.
-   - Explain material architecture or UX decisions.
-   - Identify unresolved questions, risks, and compromises.
-   - Give the human a short manual review checklist.
-   - Ask for approval to continue.
-5. Do not interpret approval of one checkpoint as approval of later checkpoints.
-6. Prefer a small, complete vertical slice over a broad prototype.
-7. Do not add functionality merely because it seems useful.
-8. Do not replace deterministic application logic with an LLM call.
-9. Never invent:
-   - ISBNs
-   - Authors
-   - Book metadata
-   - Library availability
-   - User reading history
-   - Library capabilities
-10. Do not scrape authenticated library pages or store library credentials.
-11. Keep child data minimal and private.
-12. Build accessible loading, empty, success, and error states for every user-facing workflow.
-13. Write automated tests for important domain behavior.
-14. Preserve a clean boundary between:
-   - Core product logic
-   - Book metadata providers
-   - Library-system integrations
-   - AI providers
-15. When the repository state differs from this plan, explain the conflict before changing direction.
+# Bookkin Software Development Document and Agentic Build Plan
 
----
+Status: canonical planning document; Checkpoint 4R in progress
 
-## 2. Product summary
+Last revised: 2026-08-14
 
-Bookkin is a family reading companion that learns what a child and caregiver enjoy reading together, then recommends books to find at their local library.
+The human product owner approved this SDD on 2026-08-14 and authorized Checkpoint 4R only. This approval does not authorize Checkpoint 5A, Checkpoint 5B, application implementation, database changes, deployment, staging, commit, or push.
 
-It is **not primarily a reading tracker** and should not feel like Goodreads for children.
+## 1. Purpose
 
-### Core promise
+This document is the canonical software development document (SDD) and execution plan for Bookkin. It is written for human owners, lead coding agents, specialist agents, and independent reviewers.
 
-> Track what worked in seconds. Build a better library bag next time.
+The plan has two separate state machines:
 
-### Core loop
+- Technical state: proposed, in progress, implemented, verified, or blocked.
+- Authorization state: awaiting human review, changes requested, or explicitly approved.
 
-1. Scan or search for a book.
-2. Classify how the family encountered it.
-3. Record what happened during reading.
-4. Record separate child and parent reactions.
-5. Learn from behavioral signals.
-6. Generate a small, curated library bag.
-7. Open recommendations in the user’s library catalog.
-8. Connect later scans and reading events back to recommendations.
+Technical completion never implies authorization. A reviewer PASS, passing tests, CI success, agent consensus, or lead-agent confidence cannot approve a checkpoint.
 
-### Initial target user
+## 2. Product definition
 
-A parent or caregiver who:
+Bookkin is a private family preference engine that helps caregivers choose better books for public-library trips.
 
-- Reads picture books or early-reader books with a child.
-- Uses a public library regularly.
-- Borrows multiple books per trip.
-- Wants better recommendations.
-- Does not want to write detailed reviews.
-- Cares about both the child’s reaction and the adult read-aloud experience.
+It is not primarily:
 
-### Initial age focus
+- A reading tracker.
+- A personal catalog.
+- A social reading product.
+- A library-account client.
+- An engagement, reward, or streak system.
+- An AI-generated book universe.
 
-Approximately ages 2–8, beginning with parent-led picture-book reading.
+The V0.1 promise is:
 
----
+> Give Bookkin a small amount of truthful family context, receive a verified library bag in under approximately ten minutes, check candidates in the official library catalog, and record what happened so later bags improve.
 
-## 3. Product principles
+The initial target is a caregiver reading picture books or early readers with one child approximately ages 2-8 and visiting a public library at least monthly.
 
-### 3.1 Behavior over ratings
+### 2.1 Primary loop
 
-The strongest signals are events:
+1. Collect the minimum truthful family context.
+2. Source and normalize verified candidate works.
+3. Rank and compose candidates deterministically.
+4. Present a small evidence-based recommendation bag.
+5. Hand the caregiver to the official library catalog.
+6. Learn from explicit saves, recommendation-level `Not for us` actions, scans, borrowing confirmations, reading events including `Decided not to read`, separate reactions, and rereads.
 
-- Suggested
-- Saved
-- Borrowed
-- Started
-- Finished
-- Stopped
-- Rejected
-- Read again
-- Returned
-- Child selected
-- Parent selected
+First value must not require shelf construction, five logged books, a library branch, camera permission, a reaction, or a prior reading event.
 
-A simple explicit reaction is still useful:
+### 2.2 Cold-start contract
 
-**Child**
-- Love
-- Like
-- Not for me
+The minimum context for a first recommendation request is:
 
-**Parent**
-- Love
-- Like
-- Dislike
+> A coarse age or reading-stage band and either one declared current interest or one verified reference work.
 
-Do not force users to write reviews.
+A nickname is optional. Exact birthdate, child photo, school, address, voice, and location history are not requested.
 
-### 3.2 Parent and child preferences remain separate
+The verified reference may be either an explicitly retained durable `PreferenceObservation` (for example, "A book that worked for us") or a request-scoped `RecommendationRequestReference` (for example, "More like this"). The user chooses the meaning; neither path creates implicit shelf, history, event, reaction, status, or borrowing facts.
 
-A child may love a book that the parent dislikes reading. The system must preserve both reactions rather than averaging them into one rating.
+### 2.3 Product invariants
 
-### 3.3 Logging must be nearly effortless
-
-The common reading-log interaction should take roughly ten seconds or less.
-
-### 3.4 Scanning is the universal integration layer
-
-Many library systems do not expose checkout history or third-party account access.
-
-ISBN/barcode scanning must therefore work independently of library APIs and support:
-
-- Library books
-- Books owned at home
-- Gifts
-- Books seen in stores
-- Books borrowed from friends
-- Books read at school
-- Previously suggested books
+- Metadata, candidates, ranking inputs, history, and library capabilities are verified or explicitly user-declared.
+- Missing metadata remains missing; the system never fills gaps by invention.
+- Child evidence, caregiver evidence, and family-level references remain distinguishable.
+- A family-level reference is never translated into "both liked it."
+- The subject of an observation and the person who reported it are separate fields.
+- Reactions are optional and separate from reading events.
+- Reading events and reactions are never preselected.
+- Reread counts derive only from currently valid reading events.
+- AI cannot create candidates, metadata, rankings, facts, availability, history, or preference evidence.
+- The official library catalog is the only V0.1 source for availability.
+- Bookkin does not request or store library credentials, card numbers, or PINs.
+- Private household data is not publicly exposed or intentionally cached for offline reload.
+- Human approval is required at every checkpoint.
 
-Scanning should gradually construct the family’s personal library and reading history.
+## 3. Experience direction: bounded Bright Snap
 
-### 3.5 Library integrations are capability-based enhancements
+Bright Snap is the visual language for Bookkin. It combines child-friendly energy with parent-facing polish and restraint.
 
-The application must remain useful when a library supports only catalog links.
+Required characteristics:
 
-Never assume a library supports:
+- Yellow, ink, white, and restrained supporting accents.
+- Focus, lens, crop, flash, or capture motifs used as identity cues.
+- Energetic capture, confirmation, and recommendation-reveal moments.
+- Calmer shelf, history, profile, quick-log, modal, and bedtime surfaces.
+- Sentence-case consumer copy except for short intentional display labels.
+- Clear hierarchy, generous whitespace, refined typography, and polished transitions.
+- Large imagery where it supports recognition, with density controls for large collections.
+- Fast search and filtering wherever collection size can grow.
+- One persistent, elegant thumb-reachable action control for Add book and Log a read on mobile.
+- Add and Log workflows open in focused modal or sheet experiences and do not require page scrolling to start.
+- No unexplained numerical markers inside the product UI.
 
-- Real-time availability
-- Holds
-- Checkout import
-- Borrowing-history import
-- Authenticated third-party access
+Accessibility and sensory constraints:
 
-### 3.6 Recommendations should be curated and explainable
+- WCAG 2.2 AA contrast target.
+- Visible keyboard focus and logical focus return.
+- Semantic names, descriptions, and live status announcements.
+- 44 x 44 CSS pixels minimum touch target; 48 x 48 preferred for primary and reaction controls.
+- No color-only meaning.
+- Reduced-motion support.
+- No automatic pulsing, orbiting, confetti, audio, vibration, or flashing.
+- Lower visual energy and luminance on repetitive and bedtime-oriented surfaces.
+- No horizontal scroll at a 320 CSS-pixel viewport and no clipped content or focus at 400 percent zoom.
 
-Show a small collection of strong choices, not an endless feed.
+### 3.1 Required design review for user-facing checkpoints
+
+Before implementation, the lead presents an interactive, marked-up HTML prototype using realistic non-sensitive fixtures. It includes representative phone, tablet, and desktop compositions, state controls, and selectable comments in a separate review panel.
 
-Each recommendation should explain why it fits using actual family signals.
+The prototype is a decision artifact, not implementation permission. After implementation, the working screen is reviewed at phone and desktop widths, and the interactive review is updated to reflect the implementation. Keyboard flow, focus, contrast, error recovery, loading, empty, limited, and offline states are checked before the checkpoint report.
 
-### 3.7 AI is assistance, not authority
+## 4. V0.1 scope
 
-Use AI for:
+V0.1 ends only after Checkpoint 11 is explicitly approved.
 
-- Interpreting a natural-language request
-- Summarizing a family taste profile
-- Inferring controlled descriptive attributes
-- Explaining verified recommendations
+Required:
 
-Do not use AI as the source of truth for:
+- One protected household and one child profile.
+- Protected responsive mobile web over HTTPS.
+- PostgreSQL-backed hosted persistence after Checkpoint 5B approval.
+- Optional nickname and coarse age or reading-stage band.
+- Editable current interests with retained historical phases.
+- Durable, source-attributed preference observations created only after explicit input.
+- Request-scoped recommendation references without shelf or history side effects.
+- Verified ISBN, title, author, camera, and batch discovery.
+- Shelf records created only after explicit user action.
+- Truthful owned, borrowed, or wishlist status where applicable.
+- Append-only reading events and amendment or retraction corrections.
+- Optional separate child and caregiver reactions.
+- Derived reread counts from valid events.
+- Verified candidate sourcing and provenance.
+- Deterministic scoring, composition, and explanations.
+- Normal bags of 3-5 works, limited results of 1-2 works, and zero-result recovery.
+- Official Johnson County Library catalog search.
+- Bounded Bright Snap visual language.
+- Honest loading, empty, limited-evidence, limited-pool, no-result, provider-error, duplicate, permission, external-handoff, and offline states.
+- Alpha-safe backup, restore, rollback, monitoring, deletion, export, and measurement.
+- Explicit human approval after every checkpoint.
 
-- ISBNs
-- Author names
-- Publication facts
-- Library availability
-- Reading history
-- Whether a library supports a feature
+Deferred:
 
----
+- Required LLM or AI behavior.
+- PWA installability, service worker, and offline product promise.
+- Private-response caching, queued writes, or synchronization.
+- Preferred library branch.
+- Real-time availability, holds, library login, current loans, or borrowing-history import.
+- Multiple children, identified caregivers, or household invitations before controlled beta.
+- Public child profiles or child accounts.
+- Social graphs, feeds, sharing, popularity, streaks, or disappearing records.
+- Public registration. Neither Checkpoint 12A nor 12B authorizes it; it requires a separately specified future checkpoint.
+- Public acquisition work before explicit owner authorization to begin Checkpoint 12B, and publication before final Checkpoint 12B approval.
+- Billing, paywalls, advertisements, sponsorships, affiliates, or sponsored ranking.
+- Child-data monetization.
+- Native applications, microservices, and large-scale recommendation infrastructure.
 
-## 4. Initial product scope
+## 5. Domain contracts to freeze at Checkpoint 5B
 
-## V0.1 must support
+These semantics are agreed. Exact tables, constraints, indexes, lifecycle, and migration are not approved until the Checkpoint 5B schema gate.
 
-- One household
-- One child profile
-- Manual ISBN entry
-- Title and author search
-- Camera barcode scanning
-- Batch scanning
-- Book metadata normalization
-- A family shelf
-- Owned, borrowed, discovered, suggested, and wishlist classifications
-- Finished, reread, stopped, and rejected reading events
-- Separate child and parent reactions
-- Reread counts
-- A chronological book history
-- Five-book recommendation batches
-- Recommendation explanations
-- Recommendation feedback
-- A generic library integration boundary
-- Johnson County Library catalog links
-- Preferred library and branch settings
-- Recommendation-to-scan attribution
-- Responsive mobile and desktop layouts
-- Installable PWA behavior
-- Straightforward Windows development and deployment instructions
+### 5.1 PreferenceObservation
 
-## Explicitly outside V0.1
+When a user explicitly selects "A book that has worked for us," Bookkin may create a durable, source-attributed `PreferenceObservation` recorded at declaration time.
 
-- Logging into a library account
-- Storing library card numbers or PINs
-- Scraping authenticated library pages
-- Claiming real-time availability without an approved data source
-- Placing holds inside Bookkin
-- Automatic borrowing-history import
-- Multiple caregivers
-- Multiple children
-- Public child profiles
-- Social feeds
-- Leaderboards
-- Reading streak pressure
-- Reading assessments
-- A general-purpose chatbot
-- Purchases or affiliate links
-- Native mobile applications
-- Microservices
-- Complex production-scale recommendation infrastructure
+It must:
 
----
+- Link to a verified `BookWork`.
+- Record declaration time and provenance.
+- Keep reading time unknown unless a separate truthful reading event exists.
+- Store observation subject separately from reporter.
+- Allow `child`, `caregiver`, or `family_reference` as explicit subjects.
+- Default a child-subject observation to caregiver-reported unless an approved interaction supports direct child selection.
+- Treat `family_reference` as a distinct, weaker signal.
 
-## 5. Recommended technical direction
+It must not implicitly create:
 
-Treat this as a starting proposal to validate during Checkpoint 0.
+- A `ReadingEvent`.
+- A `Reaction`.
+- A `FamilyBook`.
+- A shelf status.
+- A finish or reread.
+- A borrowing fact.
 
-### Application
+An incorrect observation is corrected through source-preserving retract or replace semantics. A retracted observation is excluded immediately from taste evidence, scoring, explanations, and attribution. Privacy deletion remains a separate operation.
 
-- Next.js App Router
-- TypeScript
-- Responsive web application
-- Progressive Web App
-- Server-side route handlers or server actions where appropriate
-
-### UI
-
-- Tailwind CSS
-- A small internal component system
-- Accessible semantic HTML
-- Mobile-first layouts
+### 5.2 RecommendationRequestReference
 
-A component library may be introduced only if it materially improves consistency without creating a generic dashboard appearance.
+When a verified work is used only for "More like this," it is stored as a `RecommendationRequestReference` on the request or result.
 
-### Persistence
+It does not become durable taste evidence and does not create shelf, history, reaction, or preference records. Retaining it later as a preference is a separate confirmed action.
 
-- Prisma ORM
-- SQLite for local development
-- PostgreSQL for hosted production
+### 5.3 Reading corrections
 
-### Validation and testing
+Reading events remain append-only. "Correct entry" creates an amendment chain:
 
-- Zod
-- Unit tests for domain logic
-- Integration tests for route and persistence behavior
-- Playwright for critical end-to-end workflows
-- ESLint
-- TypeScript type checking
-- Production build validation
+- `retract`: the original remains auditable but is excluded from current timelines, reread counts, taste inputs, and recommendation attribution.
+- `replace`: retracts the original and links a new valid event.
+- Corrected reactions attach to the replacement event.
+- Derived views use the latest valid chain.
+- Ordinary correction does not silently mutate or delete the original record.
+- Household deletion remains a separate privacy operation that removes household-owned records.
 
-### External integrations
+Consumer wording distinguishes:
 
-- `BookMetadataProvider` interface
-- Open Library provider
-- One fallback metadata provider if needed
-- `LibraryAdapter` interface
-- Johnson County Library adapter with supported public actions only
-- `AIProvider` interface
+- "Stopped reading": reading began but did not finish.
+- "Decided not to read": the household made an explicit reading decision, recorded as the internal `rejected` `ReadingEvent`.
+- "Not for us": the family does not currently want the book recommended, recorded as a recommendation-level `RecommendationAction`.
 
-### Deployment
+Optional reasons are controlled and skippable.
 
-- Easy local use on Windows
-- `.env.example`
-- PowerShell setup and validation scripts
-- Hosted HTTPS preview for phone-camera testing
-- Standard Node.js deployment
-- Optional Docker support only after the basic setup works
+### 5.4 Authoritative event taxonomy
 
-### Architectural principle
+- `ReadingEvent` records a reading-session outcome or explicit reading decision: `finished`, `reread`, `stopped`, or internal `rejected` shown to consumers as "Decided not to read."
+- `RecommendationAction` records an explicit recommendation interaction: save, `Not for us`, catalog open, replacement request, or an attribution link.
+- Borrowed and returned are explicit shelf-relationship transitions; they are not reading events.
+- Child-selected and caregiver-selected are explicit selection provenance on the relevant action or encounter; they are not reading events.
+- A recommendation may be attributed to a later finish or reread by linking to a valid `ReadingEvent`. The attribution does not replace or duplicate that event.
+- Only valid `ReadingEvent` chains contribute to reading history and reread counts.
 
-Start as a modular monolith. Do not create separate services until there is demonstrated need.
+Reactions and interest phases also use source-preserving correction. A corrected reaction or interest is superseded or retracted, excluded immediately from current taste and scoring, and retained only as auditable history until household privacy deletion.
 
----
+## 6. Recommendation contract
 
-## 6. UX direction
+### 6.1 Result types
 
-The interface should feel like a premium reading application, not generic SaaS.
+- `normal`: 3-5 verified eligible works; target 5.
+- `limited_verified_pool`: 1-2 verified eligible works.
+- `no_eligible_candidates`: 0 works.
 
-### Visual character
+The system never pads a result with an unverified, duplicate, excluded, or weakly eligible work. Limited evidence and limited candidate coverage are separate states.
 
-- Warm paper or cream surfaces
-- Ink-like dark typography
-- One restrained accent color
-- Editorial hierarchy
-- Large, high-quality book covers
-- Generous whitespace
-- Minimal icon use
-- Soft depth used sparingly
-- Sophisticated parent-facing screens
-- Playful child reactions only where appropriate
+Each returned work retains:
 
-### Avoid
+- Provider provenance.
+- Eligibility evidence.
+- Available and missing metadata.
+- Deterministic score and source signals.
+- Scoring and composition versions.
+- Composition role.
+- Deterministic explanation.
+- Deduplication and exclusion behavior.
 
-- Dense dashboards
-- Excessive rounded cards
-- Purple-gradient AI styling
-- Gamified streaks
-- Childish decoration across the entire application
-- Long forms
-- Walls of tags
-- Chat as the main navigation model
-- Fake library availability
+### 6.2 Deterministic baseline
 
-### Primary navigation
+V0.1 ranking, composition, and explanations are deterministic and inspectable. Fixed inputs and versions produce repeatable ranks and explanations. Missing attributes behave neutrally. Provider failure cannot introduce fabricated fallback books.
 
-- Home
-- Shelf
-- Scan
-- Library Bag
-- Profile/Settings
+A local LLM is deferred. It may later be evaluated only behind `AIProvider` after a separate human privacy, cost, latency, and operational gate. It may reword approved explanation clauses using verified structured facts. It cannot change candidate inclusion, score, rank, composition, or facts. Deterministic wording remains available and LLM failure cannot block a bag.
 
-### Core screens
+## 7. Library contract
 
-1. Home
-2. Scan
-3. Scan result
-4. Batch scan
-5. Quick reading log
-6. Book detail/history
-7. Family shelf
-8. Library bag setup
-9. Library bag results
-10. Taste profile
-11. Library settings
-12. Empty/error/loading states
+V0.1 library behavior is deliberately narrow:
 
----
+- A generic capability-declaring `LibraryAdapter`.
+- Johnson County Library official catalog-search URL construction.
+- Tested ISBN and title fallback behavior.
+- Honest external-handoff wording.
+- Preferred library system stored only when first needed.
 
-## 7. Domain model
+Approved wording includes:
 
-Codex should propose and review the precise schema before implementation.
+- "Check in library catalog."
+- "Open Johnson County Library catalog."
+- "Availability is checked in the library catalog."
+- "Mark as borrowed" only after explicit user action.
 
-### Household
+Forbidden claims include:
 
-Represents a family account.
+- "Available now."
+- "Place hold" inside Bookkin.
+- "Your checkouts."
+- Borrowed status inferred from a catalog open or scan.
 
-### ChildProfile
+Preferred branch, branch filtering, availability, holds, loans, history import, library authentication, and credentials remain deferred.
 
-Suggested fields:
+## 8. Privacy, security, and operations
 
-- ID
-- Household ID
-- Display name or nickname
-- Birth month/year or age band
-- Current interests
-- Optional content preferences
-- Created and updated timestamps
+- Household scope is enforced in application use cases and request boundaries.
+- Private responses use appropriate `Cache-Control: no-store` behavior.
+- No service worker caches private routes or API responses.
+- Offline warning appears before a private-data input workflow begins.
+- Offline mutations are disabled in V0.1.
+- Camera frames and images are not persisted or uploaded for ISBN scanning.
+- Metadata-provider queries may include only minimized ISBN, title, or author search terms required by the approved discovery workflow. They do not include household identifiers, child names, interests, reactions, history, notes, credentials, or unrelated free text.
+- Analytics rejects child names, interest text, titles, ISBNs, notes, credentials, raw provider payloads, and other content-bearing private data.
+- Secrets do not enter source, logs, artifacts, screenshots, or reports.
+- Household deletion, export, backup, restore, and recovery are documented and tested.
+- Cross-household isolation is mandatory before external beta.
 
-Avoid requiring a legal name or exact birthdate.
+PostgreSQL is the proposed canonical database. It is not approved by this document. Checkpoint 5B must present the Windows-local alternatives, hosted and CI implications, migration and rollback evidence, and disposition of current SQLite development data before any migration.
 
-### BookWork
+## 9. Measurement and growth
 
-The conceptual book:
+Synthetic-parent review produced hypotheses and test budgets, not research evidence. Only observed household behavior counts as alpha evidence.
 
-- Title
-- Subtitle
-- Authors
-- Description
-- Subjects
-- Series
-- Language
-- Normalized metadata
-- Metadata provenance
+Provisional effort budgets:
 
-### BookEdition
+- First normal bag from an empty household: under approximately ten minutes.
+- One ordinary quick log: approximately fifteen seconds or less.
+- Four successive bedtime logs with recent books and "Log another": approximately one minute.
+- Explicit reread from a recent book: one action followed by confirmation and Undo.
 
-A specific edition:
+Required result metrics:
 
-- Work ID
-- ISBN-10
-- ISBN-13
-- Publisher
-- Publication date
-- Format
-- Page count
-- Cover URLs
-- Metadata provenance
+- Normal Bag Rate: normal results divided by all completed recommendation requests.
+- Limited Pool Rate: 1-2-work results divided by all completed recommendation requests.
+- No Candidate Rate: zero-work results divided by all completed recommendation requests.
 
-A scan identifies an edition. Recommendations generally target a work.
+Normal Bag Rate, Limited Pool Rate, and No Candidate Rate use the same denominator: all completed recommendation requests. Limited-pool results are excluded only from a separately named Useful Bag Rate among mature normal bags. Their frequency remains visible, and individual outcomes from limited-pool recommendations remain in per-recommendation quality metrics. Candidate count alone never defines usefulness.
 
-### FamilyBook
+Core activation is a household generating a normal bag and opening at least one official catalog result. Limited activation is reported separately.
 
-Connects a household to a work or edition:
+The provisional north-star hypothesis is the share of verified recommendations that are pursued, explicitly obtained, read, and positively received. Checkpoint 10A must approve the exact outcome conditions, maturity window, reaction subject, and denominator before implementation. Caregiver reaction quality remains separate.
 
-- Owned
-- Borrowed
-- Wishlist
-- Discovered
-- Suggested
-- Seen at library
-- Read elsewhere
-- First seen timestamp
-- Last seen timestamp
-- Added via scan, search, import, or recommendation
+Growth remains free through controlled beta. Bookkin has no ads, affiliates, sponsored placement, commercial ranking influence, or child-data monetization. Monetization begins only as research at Checkpoint 13 after traction, privacy, reliability, support, and cost evidence.
 
-Avoid forcing these into one mutually exclusive status when multiple facts can be true.
+## 10. Architecture
 
-### ReadingEvent
+Bookkin remains a modular monolith unless demonstrated evidence and a separate human decision justify another architecture.
 
-Append-only event record:
+Required boundaries:
 
-- Child ID
-- Book/work ID
-- Edition ID when known
-- Event type
-- Timestamp
-- Optional context
-- Optional stop reason
-- Optional notes
+- Core product and domain logic.
+- Application use cases.
+- Book metadata providers.
+- Library-system adapters.
+- AI providers.
+- Web and presentation components.
 
-Core event types:
+Provider responses are normalized and validated before entering domain persistence or user-facing components. UI components do not call external providers directly. Domain logic does not depend on framework request objects or provider payload shapes.
 
-- Finished
-- Read again
-- Stopped
-- Rejected
-- Borrowed
-- Returned
-- Child selected
-- Parent selected
+## 11. Agentic execution protocol
 
-### Reaction
+### 11.1 Lead authority
 
-Attached to a reading event or reading session:
+The lead agent owns:
 
-- Subject: child or parent
-- Value
-- Optional controlled tags
+- Checkpoint authorization state.
+- Scope and dependency interpretation.
+- Human approval evidence.
+- Context packets and specialist assignments.
+- The single-writer ledger.
+- Shared-contract integration.
+- Complete validation.
+- Documentation synchronization.
+- The evidence-backed checkpoint report.
+- Enforcement of the mandatory stop.
 
-### RecommendationBatch
+The lead never treats agent consensus or reviewer PASS as human approval.
 
-Stores the context in which recommendations were generated:
+### 11.2 Single-writer ledger
 
-- Child
-- Requested mood/context
-- Filters
-- Generation timestamp
-- Model/scoring version
+One named writer at a time owns each of:
 
-### Recommendation
+- `AGENTS.md` and `CODEX_BUILD_PLAN.md`.
+- Prisma schema and migration history.
+- Shared domain and provider contracts.
+- Package manifest and lockfile.
+- Global design tokens, root layout, and navigation shell.
+- Analytics event dictionary.
+- Environment, deployment, and CI configuration.
 
-Stores:
+Parallel work is allowed only across disjoint paths after shared contracts are frozen.
 
-- Batch
-- Recommended work
-- Deterministic score
-- Source signals
-- Explanation
-- Rank
-- Saved timestamp
-- Rejected timestamp
-- Catalog-opened timestamp
-- Later scanned timestamp
-- Later borrowed timestamp
-- Later finished timestamp
-- Later reread count
+### 11.3 Specialist context packet
 
-### LibrarySystem
+Every writing specialist reads the complete governing instructions and receives:
 
-Stores:
+- Current checkpoint and approval evidence.
+- Included and forbidden scope.
+- Allowed and forbidden paths.
+- Frozen contracts and relevant ADRs.
+- Approved design artifact.
+- Verified fixtures and provenance.
+- Required acceptance evidence.
+- Permitted commands.
+- Explicit prohibition on future-checkpoint, destructive, credentialed, billable, public, or external actions.
 
-- Name
-- Adapter identifier
-- Catalog base information
-- Selected branches
-- Supported capabilities
+### 11.4 Handoff and independent verification
 
----
+Every specialist supplies:
 
-## 8. Required adapter boundaries
+- Acceptance-criteria mapping.
+- Files changed and diff scope.
+- Commands and results.
+- Fixture and data provenance.
+- Accessibility, privacy, security, or provider evidence appropriate to the role.
+- Contract and migration implications.
+- Known limitations and unresolved decisions.
+- Confirmation that later features and prohibited actions were not performed.
 
-### Book metadata
+An independent reviewer who did not implement the material scope verifies it read-only. The lead resolves findings, integrates the work, and runs the complete relevant validation suite.
 
-```ts
-interface BookMetadataProvider {
-  lookupByIsbn(isbn: string): Promise<BookLookupResult | null>;
-  search(query: string): Promise<BookSearchResult[]>;
-}
-```
+After two bounded failures with the same cause, the work is handed back as blocked. Agents may not widen scope, add dependencies, disable tests, invent facts, or perform a broad rewrite as recovery.
 
-Provider responses must be normalized before reaching UI components.
+### 11.5 Mandatory human gate
 
-Store field-level or record-level provenance where practical.
+Every checkpoint ends in this order:
 
-### Libraries
+1. Specialist work and self-check.
+2. Independent verification by an agent who did not implement the material work.
+3. Lead integration, full relevant validation, and checkpoint report.
+4. Human product-owner inspection and guidance.
+5. Any requested in-scope refinement and affected reverification.
+6. Explicit human approval.
+7. Scoped checkpoint commit and push to the approved GitHub remote and branch.
+8. Only then may the next checkpoint begin.
 
-```ts
-type LibraryCapabilities = {
-  catalogSearch: boolean;
-  titleLinks: boolean;
-  availability: boolean;
-  holds: boolean;
-  currentLoans: boolean;
-  borrowingHistory: boolean;
-};
+Specialist completion, independent-review PASS, tests, CI, agent consensus, and lead technical completion do not approve a checkpoint. The lead must present evidence, stop all current and next-checkpoint work, receive the human product owner's review and guidance, rework and reverify requested current-checkpoint changes, and obtain explicit human approval before beginning, delegating, scaffolding, or researching implementation for the next checkpoint.
 
-interface LibraryAdapter {
-  id: string;
-  displayName: string;
-  capabilities: LibraryCapabilities;
+Git commit and push do not substitute for approval. Before approval, the report shows repository status, intended commit scope, and unrelated dirty files. After approval, the delivery record includes commit hash, branch, remote, push result, and CI result. Unrelated changes and secrets are never included. If remote CI or deployment is itself acceptance evidence, a checkpoint phase-one gate must authorize the exact branch, commit scope, remote, cost, and action before any push; this limited execution authorization does not approve the checkpoint or authorize later work.
 
-  buildCatalogSearchUrl(book: BookWork): string;
+## 12. Required checkpoint report format
 
-  buildTitleUrl?(book: BookWork): Promise<string | null>;
-
-  getAvailability?(
-    book: BookWork,
-    branches?: string[]
-  ): Promise<LibraryAvailability[]>;
-
-  importCurrentLoans?(): Promise<ImportedLoan[]>;
-
-  importBorrowingHistory?(): Promise<ImportedHistoryItem[]>;
-}
-```
-
-Optional capabilities must remain genuinely optional.
-
-### AI
-
-```ts
-interface AIProvider {
-  summarizeTasteProfile(
-    input: TasteProfileInput
-  ): Promise<TasteProfileSummary>;
-
-  explainRecommendation(
-    input: RecommendationExplanationInput
-  ): Promise<RecommendationExplanation>;
-}
-```
-
-Every AI response must be validated against a schema.
-
----
-
-## 9. Johnson County Library constraints
-
-The initial Johnson County Library integration should be conservative.
-
-### V0.1 may support
-
-- Selecting Johnson County Library as the library system
-- Saving preferred branches
-- Constructing official catalog-search links
-- Opening ISBN/title searches in the official catalog
-- Manually recording that a book was borrowed
-- Connecting a later scan to an earlier recommendation
-
-### V0.1 must not claim
-
-- That Bookkin knows the user’s current checkouts
-- That Bookkin knows historical checkouts
-- That a copy is available
-- That a hold was placed
-- That Bookkin is authenticated with the library
-
-### Product wording
-
-Use wording such as:
-
-- “Find at Johnson County Library”
-- “Open catalog”
-- “Mark as borrowed”
-- “Check availability in library catalog”
-
-Do not use:
-
-- “Available now” unless verified
-- “Place hold” unless the official link reliably supports that action
-- “Your checkouts” unless imported through an approved capability
-
----
-
-## 10. Recommendation system V0.1
-
-The first version must be deterministic and inspectable.
-
-### Candidate set
-
-Use verified books from:
-
-- The local book catalog
-- Books entered by users
-- Carefully seeded verified records
-- Metadata-provider search results
-
-Never let an LLM invent the candidate catalog.
-
-### Example scoring signals
+Every checkpoint report uses this structure:
 
 ```text
-+8  Similar to a child-loved book
-+8  Similar to a repeatedly read book
-+5  Similar to a parent-loved book
-+4  Same successful author or series
-+4  Matches requested context
-+3  Appropriate age and estimated length
-+2  Adjacent exploration
--8  Similar to rejected books
--6  Parent strongly disliked similar books
--5  Already read, unless rereads are requested
--4  Too similar to other books in the same bag
+# Checkpoint <number> report - <name>
+
+Status: AWAITING HUMAN REVIEW | CHANGES REQUESTED | APPROVED | BLOCKED
+Technical state: PROPOSED | IN PROGRESS | IMPLEMENTED | VERIFIED
+Authorization state: AWAITING HUMAN REVIEW | CHANGES REQUESTED | APPROVED
+
+## Outcome
+## Scope completed
+## Specialist work and handoffs
+## Files changed
+## Acceptance-criteria evidence
+## Validation commands and results
+## Interactive design review (when user-facing)
+## Independent-review findings and disposition
+## Product truth, privacy, security, and accessibility checks
+## Risks, limitations, and deferred work
+## Owner decisions required
+## Repository and proposed commit scope
+## Mandatory human approval state
+
+No next-checkpoint work has begun or been delegated.
+Explicit human approval is required before the checkpoint commit/push and before any next-checkpoint work.
 ```
 
-Codex should implement a versioned scoring module with unit tests.
-
-### Library bag composition
-
-Initially return five books:
-
-- Two high-confidence matches
-- One author or series extension
-- One adjacent discovery
-- One exploratory choice
-
-### AI explanation
-
-The LLM receives only verified structured facts and explains the selected result in approximately 20–40 words.
-
-The explanation must not add unsupported claims.
-
----
-
-## 11. Success metrics
-
-### North-star metric
-
-Percentage of recommended books that are:
-
-1. Acted upon,
-2. Finished, and
-3. Positively received.
-
-A stronger long-term metric is the percentage of recommendations later reread.
-
-### Initial activation
-
-A household:
-
-- Adds at least five books
-- Records child and parent reactions
-- Generates a library bag
-- Opens at least one library catalog link
-
-### Initial quality indicators
-
-- Time to log a completed read
-- Successful scan rate
-- Duplicate-book rate
-- Recommendation save rate
-- Catalog-open rate
-- Recommendation-to-scan conversion
-- Finish rate
-- Reread rate
-- Rejection rate
-
-Do not optimize for time spent in the app.
-
----
-
-# 12. Controlled implementation checkpoints
-
----
-
-## Checkpoint 0 — Repository audit and proposed implementation
-
-### Objective
-
-Understand the current repository and produce a concrete implementation proposal without modifying product code.
-
-### Codex tasks
-
-1. Inspect the repository.
-2. Report:
-   - Current framework and versions
-   - Existing files and structure
-   - Current scripts
-   - Existing tests
-   - Existing CI
-   - Existing documentation
-   - Whether the repository is empty, scaffolded, or partially implemented
-3. Compare the current repository with this plan.
-4. Propose:
-   - Final initial stack
-   - Directory structure
-   - Package additions
-   - Test strategy
-   - Checkpoint-by-checkpoint implementation order
-   - Risks or conflicts
-5. Identify decisions that need human approval.
-6. Do not alter application files.
-7. A documentation-only proposal file may be created only if asked.
-
-### Required output
-
-- Repository audit
-- Architecture proposal
-- Proposed file structure
-- Proposed dependencies
-- Proposed commands
-- Risks
-- Questions requiring decisions
-
-### Human approval checklist
-
-- Is the application still a modular monolith?
-- Is the Windows setup simple?
-- Is the stack understandable?
-- Are unnecessary services avoided?
-- Does the proposal preserve library adapters?
-- Does the proposal preserve metadata-provider adapters?
-- Is the test plan credible?
-- Does any proposed package add unnecessary complexity?
-
-### Mandatory stop
-
-**Stop after presenting the audit and proposal. Do not scaffold or install anything until approved.**
-
----
-
-## Checkpoint 1 — Foundation and repository guardrails
-
-### Objective
-
-Create a clean, runnable application foundation and persistent agent instructions.
-
-### Codex tasks
-
-Depending on the approved Checkpoint 0 plan:
-
-1. Scaffold or normalize the Next.js TypeScript application.
-2. Add:
-   - `AGENTS.md`
-   - Product documentation directory
-   - Architecture documentation directory
-   - Story/issue template directory
-   - `.env.example`
-3. Add or confirm:
-   - Linting
-   - Type checking
-   - Unit-test runner
-   - Playwright
-   - Production build script
-4. Create a minimal health/home page.
-5. Add CI that runs:
-   - Install
-   - Lint
-   - Type check
-   - Unit tests
-   - Production build
-6. Add Windows setup instructions.
-7. Do not add Prisma, book lookup, scanning, or recommendations unless explicitly approved as part of the foundation.
-
-### Acceptance criteria
-
-- A new developer can clone the repository on Windows and run it.
-- The app starts locally.
-- The production build succeeds.
-- Tests run.
-- CI configuration is present.
-- `AGENTS.md` tells future agents to follow checkpoint and scope rules.
-- No secrets are committed.
-
-### Human review checklist
-
-- Run the documented setup steps.
-- Open the app.
-- Confirm the repository structure is understandable.
-- Review `AGENTS.md`.
-- Review all added dependencies.
-- Confirm CI passes.
-
-### Mandatory stop
-
-**Stop after the foundation works. Do not begin the database model until approved.**
-
----
-
-## Checkpoint 2 — Domain model and persistence
-
-### Objective
-
-Define and implement the minimum durable data model.
-
-### Codex tasks
-
-1. Produce a short architecture decision record for:
-   - Work versus edition
-   - Append-only reading events
-   - Family-book classifications
-   - Recommendation attribution
-2. Propose the Prisma schema before applying migrations.
-3. After schema approval within this checkpoint:
-   - Configure SQLite for local development
-   - Add Prisma
-   - Create initial migration
-   - Add seed data
-4. Add domain types and validation schemas.
-5. Add tests for:
-   - ISBN normalization
-   - Event validation
-   - Reaction validation
-   - Duplicate-edition prevention
-   - Family-book classification behavior
-
-### Acceptance criteria
-
-- Schema represents works and editions separately.
-- Reading history is append-only.
-- Parent and child reactions remain separate.
-- Recommendations can later be connected to scans and reads.
-- Local migration succeeds.
-- Seed command succeeds.
-- Domain tests pass.
-
-### Human review checklist
-
-- Inspect the entity relationship explanation.
-- Confirm the model does not reduce history to one mutable status.
-- Confirm exact child birthdates are not required.
-- Confirm multiple classifications can coexist where appropriate.
-- Inspect sample seeded records.
-
-### Mandatory stop
-
-**Stop after schema, migration, seed data, and tests are complete. Do not build UI workflows until approved.**
-
----
-
-## Checkpoint 3 — Manual ISBN lookup and family shelf vertical slice
-
-### Objective
-
-Create the first complete product path from verified book lookup to saved family book.
-
-### Codex tasks
-
-1. Implement ISBN-10 and ISBN-13 validation.
-2. Implement `BookMetadataProvider`.
-3. Implement the first external metadata provider.
-4. Normalize and cache metadata.
-5. Build:
-   - Manual ISBN entry screen
-   - Lookup result state
-   - Not-found/error state
-   - Classification choice
-   - Save-to-family-shelf action
-6. Build a minimal family shelf.
-7. Handle duplicate scans/lookups safely.
-8. Add integration and end-to-end tests.
-
-### Acceptance criteria
-
-- A valid ISBN returns a verified book when the provider has it.
-- Invalid check digits are rejected before external lookup.
-- Missing metadata is not invented.
-- A book can be marked owned, borrowed, discovered, or wishlist.
-- Duplicate editions are not created.
-- Saved books survive restart.
-- Shelf displays cover, title, author, and classifications.
-- Error and empty states are clear.
-- Tests cover valid, invalid, missing, and duplicate ISBNs.
-
-### Human review checklist
-
-- Add a real book by ISBN.
-- Add it again and verify no duplicate appears.
-- Try an invalid ISBN.
-- Try an unknown ISBN.
-- Restart the application and verify persistence.
-- Inspect mobile and desktop layouts.
-
-### Mandatory stop
-
-**Stop after manual ISBN → saved shelf works. Do not implement camera scanning yet.**
-
----
-
-## Checkpoint 4 — Reading events and reactions
-
-### Objective
-
-Capture useful family reading behavior in seconds.
-
-### Codex tasks
-
-1. Add the quick-log workflow:
-   - Finished
-   - Read again
-   - Stopped
-   - Rejected
-2. Add child reaction:
-   - Love
-   - Like
-   - Not for me
-3. Add parent reaction:
-   - Love
-   - Like
-   - Dislike
-4. Add optional controlled reasons for stopped/rejected.
-5. Add a book-history timeline.
-6. Calculate reread counts from events.
-7. Add tests for event ordering and derived summaries.
-
-### Acceptance criteria
-
-- Common logging takes few interactions.
-- Reading events are append-only.
-- Reread count is derived correctly.
-- Parent and child reactions are visibly separate.
-- A rejected book can later be finished without erasing the earlier event.
-- History survives restart.
-- Loading, error, and success feedback exist.
-
-### Human review checklist
-
-- Log a finished book.
-- Log a reread.
-- Log a stopped book.
-- Log a rejection, then later a finish.
-- Confirm the timeline is truthful.
-- Judge whether the interaction feels fast enough.
-
-### Mandatory stop
-
-**Stop after reading behavior is complete. Do not implement recommendations until approved.**
-
----
-
-## Checkpoint 5 — Modern design system and core-screen refinement
-
-### Objective
-
-Establish the product’s distinctive visual and interaction language before expanding features.
-
-### Codex tasks
-
-1. Create a lightweight design token system:
-   - Color
-   - Typography
-   - Spacing
-   - Radius
-   - Shadow
-   - Motion
-2. Refine:
-   - Home
-   - Shelf
-   - Book detail
-   - Quick log
-   - Add book
-3. Create reusable components without over-generalizing.
-4. Add accessibility checks.
-5. Add screenshots or visual artifacts if the environment supports them.
-6. Preserve functionality from earlier checkpoints.
-
-### Acceptance criteria
-
-- The product feels editorial and reading-focused.
-- Book covers are visually prominent.
-- There is one obvious primary action per screen.
-- The app does not look like a generic admin dashboard.
-- Text contrast and keyboard navigation are acceptable.
-- Mobile layout is first-class.
-- Existing end-to-end workflows still pass.
-
-### Human review checklist
-
-- Review every primary screen at phone width.
-- Review desktop width.
-- Check hierarchy without reading every label.
-- Confirm the UI feels appropriate for a parent.
-- Confirm reaction controls can be used by a child.
-- Identify anything that feels generic or overly decorative.
-
-### Mandatory stop
-
-**Stop after presenting the refined screens. Do not add library integrations until the visual direction is approved.**
-
----
-
-## Checkpoint 6 — Generic library adapter and Johnson County Library handoff
-
-### Objective
-
-Make recommendations and books actionable without pretending to have unsupported library access.
-
-### Codex tasks
-
-1. Implement `LibraryAdapter`.
-2. Implement capability flags.
-3. Implement Johnson County Library V0.1:
-   - System selection
-   - Preferred branches
-   - Official catalog search link
-   - Manual borrowed action
-4. Ensure UI wording reflects actual capabilities.
-5. Add tests for URL construction and unsupported capabilities.
-6. Document how another library adapter would be added.
-
-### Acceptance criteria
-
-- The core application does not contain Johnson County-specific logic.
-- Johnson County links open official catalog searches.
-- The application never claims unverified availability.
-- Unsupported actions are hidden or clearly handed off.
-- Preferred branches can be stored without implying filtered availability.
-- Adapter tests pass.
-
-### Human review checklist
-
-- Open several books in the JCL catalog.
-- Confirm title/ISBN searches are useful.
-- Review every library-related label for accuracy.
-- Confirm no library credentials are requested.
-- Review the “add another library” documentation.
-
-### Mandatory stop
-
-**Stop after the generic adapter and JCL handoff work. Do not implement recommendation scoring until approved.**
-
----
-
-## Checkpoint 7 — Recommendation engine V0.1
-
-### Objective
-
-Rank verified books using transparent family signals.
-
-### Codex tasks
-
-1. Define a versioned candidate-scoring module.
-2. Implement initial scoring signals.
-3. Ensure rejected and already-read books are handled correctly.
-4. Add diversity logic for one recommendation batch.
-5. Persist:
-   - Score
-   - Rank
-   - Source signals
-   - Scoring version
-6. Add an explainability/debug view available only in development.
-7. Add extensive unit tests.
-8. Do not require an LLM yet unless separately approved.
-
-### Acceptance criteria
-
-- Given fixed input data, ranking is deterministic.
-- Every score can be explained by stored source signals.
-- Rejected books are strongly suppressed.
-- Reread books strongly influence similar candidates.
-- Parent dislikes and child likes can both affect ranking.
-- One bag is not filled with nearly identical books.
-- Tests demonstrate expected ordering.
-
-### Human review checklist
-
-- Seed several loved, liked, disliked, and reread books.
-- Inspect ranked candidates.
-- Review why each score was produced.
-- Adjust weights only with recorded rationale.
-- Confirm candidates are real verified books.
-
-### Mandatory stop
-
-**Stop after deterministic recommendations are reviewable. Do not add AI explanations until ranking quality is approved.**
-
----
-
-## Checkpoint 8 — Library bag and AI explanations
-
-### Objective
-
-Turn ranked candidates into a calm, curated, actionable library-trip experience.
-
-### Codex tasks
-
-1. Build library-bag setup:
-   - General trip
-   - Bedtime
-   - Quick read
-   - Funny
-   - Try something different
-   - More like a favorite
-2. Persist a five-book recommendation batch.
-3. Compose the bag using confidence and exploration roles.
-4. Add:
-   - Save
-   - Not for us
-   - Open library catalog
-   - Replace one book
-5. Implement `AIProvider`.
-6. Generate short explanations from verified structured signals.
-7. Validate AI output.
-8. Provide a deterministic fallback when AI is unavailable.
-9. Track recommendation actions.
-
-### Acceptance criteria
-
-- Refreshing does not silently generate a new bag.
-- Each book has a concise, evidence-based reason.
-- AI output contains no unsupported facts.
-- The bag contains a deliberate mix rather than five near-duplicates.
-- Catalog opens are recorded.
-- Saves and rejections are recorded.
-- The workflow works without the AI provider configured.
-
-### Human review checklist
-
-- Generate bags for multiple contexts.
-- Read explanations critically.
-- Disable the AI key and confirm graceful fallback.
-- Replace one recommendation.
-- Save and reject books.
-- Open catalog links.
-- Decide whether at least two of five books feel worth pursuing.
-
-### Mandatory stop
-
-**Stop after library bags work. Do not add camera scanning until approved.**
-
----
-
-## Checkpoint 9 — Camera and batch ISBN scanning
-
-### Objective
-
-Make physical books the universal mechanism for building history and the home library.
-
-### Codex tasks
-
-1. Build camera permission flow.
-2. Implement barcode detection with feature detection and fallback.
-3. Reuse the existing ISBN lookup path.
-4. Prevent duplicate rapid detections.
-5. Add clear success feedback.
-6. Add manual entry fallback.
-7. Implement batch mode:
-   - Select batch classification
-   - Scan repeatedly
-   - Review results
-   - Resolve duplicates/errors
-8. Detect when a scanned book was previously recommended.
-9. Ask whether the suggestion led to borrowing or ownership.
-10. Add appropriate tests and device-testing documentation.
-
-### Acceptance criteria
-
-- A supported phone can scan an ISBN barcode over HTTPS.
-- Manual entry always remains available.
-- The same barcode is not repeatedly added.
-- Batch scanning supports a library haul efficiently.
-- Existing books are recognized.
-- Previously recommended books connect to recommendation attribution.
-- Owned and borrowed books can be distinguished.
-
-### Human review checklist
-
-- Scan five books.
-- Batch scan ten books.
-- Scan the same book repeatedly.
-- Scan an owned book.
-- Scan a borrowed book.
-- Scan a previously recommended book.
-- Judge whether scanning is faster than manual search.
-
-### Mandatory stop
-
-**Stop after real-device scanning is demonstrated. Do not proceed to deployment hardening until approved.**
-
----
-
-## Checkpoint 10 — PWA, Windows setup, and deployment
-
-### Objective
-
-Make the product easy to run locally and easy to test on a phone.
-
-### Codex tasks
-
-1. Add PWA manifest and installability.
-2. Add production environment documentation.
-3. Add:
-   - Windows PowerShell setup script
-   - Environment validation script
-   - Database migration instructions
-   - Seed instructions
-4. Configure a hosted preview/production approach with HTTPS.
-5. Prepare PostgreSQL migration configuration.
-6. Add backup and restore documentation.
-7. Validate production build and end-to-end tests.
-8. Add optional Docker only if approved and genuinely useful.
-
-### Acceptance criteria
-
-- A Windows developer can set up the project from documented steps.
-- Required environment variables are documented.
-- The app can be installed as a PWA where supported.
-- Phone-camera testing works over HTTPS.
-- Production build passes.
-- Database migrations are documented.
-- No secrets are committed.
-
-### Human review checklist
-
-- Clone into a fresh Windows folder.
-- Follow the setup instructions literally.
-- Run all checks.
-- Open hosted preview on a phone.
-- Install the PWA.
-- Test the full vertical flow.
-
-### Mandatory stop
-
-**Stop after deployment documentation and validation. Do not recruit external testers until approved.**
-
----
-
-## Checkpoint 11 — Household alpha and correction pass
-
-### Objective
-
-Use real household behavior to correct the product before external testing.
-
-### Required household test
-
-1. Add at least 20 books.
-2. Add at least five through manual ISBN.
-3. Add at least five through scanning.
-4. Mark a mixture of owned and borrowed books.
-5. Record at least ten reading events.
-6. Record several rereads.
-7. Record at least two stopped or rejected books.
-8. Generate multiple library bags.
-9. Open recommendations in the JCL catalog.
-10. Scan a previously recommended book.
-11. Confirm recommendation attribution.
-12. Generate another bag and confirm that results adapt.
-
-### Codex tasks after human testing
-
-Only after receiving human notes:
-
-1. Categorize findings:
-   - Blocking defects
-   - Friction
-   - Confusing language
-   - Visual problems
-   - Recommendation problems
-   - Deferred ideas
-2. Propose the smallest correction set.
-3. Do not implement new feature categories.
-4. Implement approved corrections.
-5. Add regression tests.
-
-### Exit criteria
-
-- Logging feels fast.
-- Scanning is reliable enough to prefer over typing.
-- Duplicate handling works.
-- Recommendation explanations use real signals.
-- JCL wording is honest.
-- At least two of five recommendations usually feel useful.
-- The product is ready for five local families.
-
-### Mandatory stop
-
-**Stop and request approval before planning an external beta.**
-
----
-
-# 13. Standard checkpoint report format
-
-At the end of every checkpoint, use this exact structure:
-
-```md
-## Checkpoint [number] report
-
-### Status
-Complete / Partially complete / Blocked
-
-### What changed
-- ...
-
-### Files added
-- ...
-
-### Files modified
-- ...
-
-### Commands run
-- `...` — passed/failed
-
-### Tests
-- ...
-
-### Decisions made
-- ...
-
-### Deviations from the plan
-- None / ...
-
-### Known limitations
-- ...
-
-### Risks
-- ...
-
-### Human review steps
-1. ...
-2. ...
-
-### Decisions needed from you
-1. ...
-
-### Approval gate
-I have stopped. Approve this checkpoint or request changes.
-```
-
----
-
-# 14. Definition of done for every implementation checkpoint
-
-A checkpoint is not complete merely because the happy path appears on screen.
-
-It is complete only when:
-
-- Acceptance criteria are satisfied.
-- Lint passes.
-- Type checking passes.
-- Relevant unit tests pass.
-- Relevant integration tests pass.
-- Relevant end-to-end tests pass.
-- Production build passes.
-- Errors are understandable.
-- Empty and loading states exist.
-- Documentation is updated.
-- No secrets are committed.
-- No unsupported library capability is implied.
-- No unverified AI-generated facts are persisted as authoritative metadata.
-- The checkpoint report is provided.
-- Work has stopped for human approval.
-
----
-
-# 15. Initial repository documentation to create
-
-During the approved checkpoints, maintain:
+After approval and delivery, append:
 
 ```text
-AGENTS.md
-README.md
-docs/
-├── product/
-│   ├── overview.md
-│   ├── v0.1-scope.md
-│   ├── success-metrics.md
-│   └── vocabulary.md
-├── architecture/
-│   ├── system-overview.md
-│   ├── data-model.md
-│   ├── metadata-providers.md
-│   ├── library-adapters.md
-│   ├── ai-boundaries.md
-│   └── decisions/
-├── design/
-│   ├── principles.md
-│   ├── screen-inventory.md
-│   └── accessibility.md
-├── stories/
-└── testing/
-    ├── strategy.md
-    └── household-alpha.md
+## Approved delivery record
+Human approval: <reference>
+Commit: <hash>
+Branch: <branch>
+Remote: <remote>
+Push: <result>
+CI: <result or not applicable>
 ```
 
-Documentation should describe the implemented system, not an aspirational system that does not exist.
+## 13. Historical checkpoint state
 
----
+Checkpoints 0-5 were completed and approved in prior owner reviews. Checkpoint 5 consolidated the approved shelf, discovery, history, and quick-log surfaces with the current editorial design system; it did not implement the later Bright Snap shell. The implemented baseline remains subject to regression review and may be refined only within a later approved checkpoint. Much of that approved baseline is not yet tracked in Git, so the already authorized Checkpoint 4R must reconcile and deliver it before Checkpoint 5A begins.
 
-# 16. Suggested initial issue sequence
+Checkpoint 5A has design exploration but is not approved for implementation by this documentation revision.
 
-Create or track work in this order:
+## 14. Remaining checkpoint sequence
 
-1. `FOUND-001` — Repository foundation and CI
-2. `DATA-001` — Core domain schema and seed data
-3. `BOOK-001` — ISBN validation and metadata lookup
-4. `BOOK-002` — Add a book to the family shelf
-5. `SHELF-001` — View and filter the family shelf
-6. `READ-001` — Record reading events
-7. `REACT-001` — Record separate reactions
-8. `DESIGN-001` — Establish the visual system
-9. `LIB-001` — Generic library adapter
-10. `LIB-002` — Johnson County catalog handoff
-11. `REC-001` — Deterministic candidate scoring
-12. `BAG-001` — Persisted library bag
-13. `AI-001` — Controlled recommendation explanations
-14. `SCAN-001` — Single ISBN camera scan
-15. `SCAN-002` — Batch scan
-16. `ATTR-001` — Recommendation-to-scan attribution
-17. `PWA-001` — Installable PWA
-18. `DEPLOY-001` — Windows and hosted deployment
-19. `E2E-001` — Complete critical-path test suite
-20. `ALPHA-001` — Household alpha correction pass
+### Checkpoint 4R - Approved-baseline Git reconciliation
 
-Do not create all implementations in parallel. Respect checkpoint dependencies.
+Goal: create an auditable Git and GitHub baseline for the already approved Checkpoints 0-5 and the owner-approved SDD before any Checkpoint 5A work. The `4R` label is retained because the owner explicitly authorized that checkpoint name before the historical inventory confirmed Checkpoint 5's approved design-system consolidation.
 
----
+Included:
 
-# 17. First prompt to run in Codex
+- Inventory tracked, modified, and untracked files.
+- Map application, tests, schema, migrations, configuration, and documentation to approved Checkpoints 0-5.
+- Identify generated output, local environment files, secrets, private fixtures, and unrelated work for exclusion.
+- Verify `.gitignore`, repository identity, branch, and `origin` without changing the remote.
+- Run the complete baseline validation supported by the existing repository.
+- Present the exact proposed baseline and SDD commit scopes to the owner.
+- After explicit approval, create deliberate scoped commit or commits on the approved branch and push to `https://github.com/abg5043/Bookkin.git`.
+- Record hashes, branch, remote, push results, and CI results.
 
-Use the following prompt after adding this file to the repository:
+Excluded:
 
-```text
-Read CODEX_BUILD_PLAN.md in full.
+- Application changes, dependency installation, schema changes, migrations, refactors, new features, deployment, and Checkpoint 5A work.
+- Committing `.env`, secrets, private data, generated build output, test reports, or unrelated files.
 
-Begin Checkpoint 0 only: audit the repository and propose the initial
-architecture and implementation sequence.
+Acceptance evidence: complete file inventory; provenance to approved checkpoints; diff review; secret and generated-file audit; existing lint, type, test, and build results where runnable without new installation; clean post-delivery status except explicitly documented unrelated files.
 
-Do not modify application code, install dependencies, scaffold the app,
-or begin Checkpoint 1.
+Specialists: lead repository integrator; independent engineering and secret-scope reviewers.
 
-Use the required checkpoint report format and stop for my approval.
-```
+Owner decisions: exact files and commit boundaries, target branch, and authorization to push.
 
----
+Mandatory human stop: no inventory, validation, reviewer PASS, or prior checkpoint approval authorizes a commit or push. The lead presents the exact baseline scope, receives owner inspection and guidance, reverifies changes, and requires explicit approval before committing or pushing. After delivery, the owner receives the hashes and CI result. Checkpoint 5A does not begin until this gate is complete.
 
-# 18. Human product-owner rules
+### Checkpoint 5A - Bounded Bright Snap shell and fast capture
 
-The human should approve checkpoints based on observable product behavior, not merely code volume.
+Goal: apply the approved visual language to existing workflows and make Add and Log actions fast on phone without implementing later product capabilities.
 
-At each gate, ask:
+Included:
 
-1. Does this solve the intended user problem?
-2. Is the behavior truthful?
-3. Is the interaction simpler than the alternative?
-4. Is the code structure understandable?
-5. Did the agent introduce scope that was not requested?
-6. Can the next checkpoint build on this without rework?
-7. Would I personally use the completed workflow?
+- Approved Bright Snap tokens and primitives.
+- Responsive phone, tablet, and desktop shell.
+- Persistent elegant action control that fans out to Add book and Log a read.
+- Modal or sheet entry that never requires scrolling to initiate on phone.
+- Recent books and shelf search in Quick Log.
+- "Log another" after save.
+- One-tap reread event selection inside Quick Log, followed by the ordinary explicit Save action. Do not expose correction-backed Undo yet.
+- No preselected event or reaction.
+- Optional separate child and caregiver reactions.
+- Search and filtering patterns for growing collections.
+- Offline detection before Add or Log entry.
+- Interactive pre-implementation and post-implementation design reviews.
 
-When uncertain, request a smaller correction before continuing.
+Excluded:
 
----
+- Working camera scan.
+- Recommendations or a working Next Picks destination.
+- Library adapter or catalog handoff.
+- Profile or onboarding expansion.
+- PWA or service worker.
+- New dependencies unless separately justified and approved within the checkpoint.
 
-# 19. Product vision beyond V0.1
+Acceptance evidence:
 
-Do not implement these yet, but preserve a path toward:
+- Phone, tablet, and desktop review with realistic fixtures.
+- Keyboard-complete Add and Log paths.
+- Primary phone actions are reachable without unnecessary scrolling.
+- No event, reaction, book, or status is preselected.
+- Contrast, focus, reduced motion, errors, and offline entry prevention pass review.
+- Ordinary quick log and repeated bedtime-log budgets are measured as hypotheses.
 
-- Multiple children
-- Multiple caregivers
-- Shared family accounts
-- Multiple library systems
-- Approved availability and hold integrations
-- Taste evolution over time
-- Context-aware recommendations
-- Child-facing cover selection
-- Family reading memories
-- Printable lists for grandparents
-- Anonymized collaborative recommendation signals
-- Librarian-curated collections
-- Import/export tools
+Specialists: product/design implementer; human-factors and accessibility reviewer; independent engineering verifier.
 
-The long-term product vision is:
+Owner decisions: final Bright Snap balance, action-control interaction, copy vocabulary, and sensory restraint.
 
-> Every family has a personal librarian that grows up with the child.
+Mandatory human stop: specialist completion, independent PASS, tests, CI, agent consensus, and lead completion do not approve Checkpoint 5A. The lead presents the interactive result and evidence, stops, receives owner guidance, reverifies requested refinements, and waits for explicit approval before commit/push and before Checkpoint 5B work.
+
+### Checkpoint 5B - Recommendation readiness, data integrity, and PostgreSQL gate
+
+Goal: freeze the contracts and remove only blocking data-integrity debt required for recommendations.
+
+Phase one is proposal only. Present:
+
+- `PreferenceObservation` contract.
+- `RecommendationRequestReference` contract.
+- Subject and reporter provenance rules.
+- Interest-history contract.
+- Reading amendment and retraction ADR.
+- Candidate, score, composition, explanation, and typed bag-result contracts.
+- Proposed PostgreSQL canonical architecture.
+- Windows-local PostgreSQL alternatives.
+- Current SQLite data disposition.
+- Proposed schema, migration, rollback, and CI plan.
+- Bounded blocking-debt inventory with explicit exclusions.
+- Single-writer ownership for schema and migration history.
+
+No schema edit, database migration, dependency installation, implementation, or scaffolding occurs before the phase-one human decision.
+
+After phase-one approval, included implementation is limited to:
+
+- Approved PostgreSQL transition.
+- Approved schema and migrations.
+- Preference-observation and request-reference use cases.
+- Source-preserving correction and retraction use cases for reading events, reactions, preference observations, and interest phases.
+- Narrow Quick Log integration for immediate reread save, confirmation, and correction-backed Undo, with an updated interactive review.
+- Household-scoping invariants.
+- Typed `normal`, `limited_verified_pool`, and `no_eligible_candidates` result contract.
+- Domain and integration tests.
+
+Excluded:
+
+- Profile UI.
+- Candidate-provider implementation.
+- Scoring and composition.
+- Recommendation UI.
+- Library UI.
+- AI implementation.
+- General repository cleanup.
+- User-interface work other than the narrow correction and reread-Undo integration explicitly included above.
+
+Acceptance evidence:
+
+- Approved schema and database decision record.
+- Tests proving reference selection has no implicit shelf, history, reaction, event, or status side effects.
+- Tests proving correction chains affect derived counts and evidence correctly.
+- Tests proving retracted or superseded observations, reactions, and interests are immediately excluded from taste, scoring inputs, and explanations.
+- Household-scope and idempotency tests.
+- Migration, rollback, and PostgreSQL CI evidence.
+
+Specialists: domain/data single writer; staff-engineering, privacy, and migration reviewers.
+
+Owner decisions: exact contracts and schema; PostgreSQL approval; Windows-local method; current SQLite disposition; bounded debt list.
+
+Mandatory human stop: phase one stops for explicit owner approval before any implementation. After approved implementation and independent verification, Checkpoint 5B stops again for owner review, refinements, and explicit approval before commit/push and before Checkpoint 6 work.
+
+### Checkpoint 6 - Narrow library adapter
+
+Goal: provide an honest official-catalog handoff without claiming library-account integration.
+
+Included:
+
+- Generic `LibraryAdapter` and capability contract.
+- Johnson County Library official search URLs.
+- ISBN and title fallback tests.
+- Unsupported-capability tests.
+- External-handoff copy review.
+- Preferred library system only when needed for the handoff.
+
+Excluded: branch UI, availability, holds, credentials, loans, history, recommendation UI, analytics, and a dormant settings destination.
+
+Acceptance evidence: normalized inputs, deterministic URL construction, official-link verification, fallback and unsupported-state tests, and product-truth copy review.
+
+Specialists: provider integration implementer; product-truth and security reviewers.
+
+Owner decisions: selected library-system behavior, URL construction, and handoff wording.
+
+Mandatory human stop: all agent and test PASS states remain technical only. The lead presents the working handoff and evidence, stops for owner guidance and refinement, and requires explicit approval before commit/push and Checkpoint 7A.
+
+### Checkpoint 7A - Family context, preference evidence, and verified candidates
+
+Goal: collect minimal recommendation context and build a verified candidate pool without ranking or showing a bag.
+
+Included:
+
+- Coarse age or reading stage.
+- Editable current interests and retained historical phases.
+- Durable preference observations.
+- Request-scoped reference behavior.
+- Deterministic "What Bookkin is learning" view.
+- Verified candidate sourcing, hydration, normalization, provenance, coverage, deduplication, and exclusions.
+- Development-only candidate coverage and insufficiency previews. These are not final typed bag results.
+
+Excluded: scoring, composition, user-facing bags, AI, and library availability.
+
+Acceptance evidence: cold-start context can be completed without shelf construction; all candidate facts retain provenance; missing fields remain missing; observations retain subject and reporter; references have no implicit side effects.
+
+Specialists: product/domain and provider implementers; privacy and product-truth reviewers.
+
+Owner decisions: candidate coverage threshold and any fallback metadata provider.
+
+Mandatory human stop: agent consensus cannot authorize scoring work. The lead presents evidence and the interactive user-facing review, resolves owner guidance, and waits for explicit approval before commit/push and Checkpoint 7B.
+
+### Checkpoint 7B - Deterministic scoring, composition, and explanations
+
+Goal: produce inspectable recommendation results from fixed verified fixtures without exposing them as a product workflow.
+
+Included:
+
+- Versioned deterministic scoring.
+- Separate child, caregiver, family-reference, current-interest, historical-interest, reread, stopped-reading, `Decided not to read` reading-decision, `Not for us` recommendation-action, and request-context signals.
+- Neutral missing-metadata behavior.
+- Explicit suppression and exclusion rules.
+- Target-five composition and typed limited results.
+- Deterministic explanation payload.
+- Representative fixed fixtures.
+- Independent recommendation-quality verification.
+
+Excluded: user-facing bag, LLM implementation, library availability, and endless-feed behavior.
+
+Acceptance evidence: fixed inputs are repeatable; weights and source signals are inspectable; no unverified work or padded result can enter a bag; limited-pool and no-candidate cases are tested; explanations cite only verified or declared evidence.
+
+Specialists: recommendation implementer; independent scoring/test and product-truth reviewers.
+
+Owner decisions: scoring weights, suppression policy, composition behavior, and fixture plausibility.
+
+Mandatory human stop: recommendation-test PASS does not approve product behavior. The lead presents fixtures, rankings, explanations, and edge cases, applies owner guidance, and requires explicit approval before commit/push and Checkpoint 8.
+
+### Checkpoint 8 - First useful bag and catalog handoff
+
+Goal: deliver the outcome-first recommendation workflow.
+
+Included:
+
+- Minimum cold-start context enforcement.
+- No mandatory bag-setup form or shelf construction.
+- Persisted normal and limited-pool results.
+- Deterministic explanations and material uncertainty.
+- Save, "Not for us," optional controlled reason, and replace.
+- Library selection at first catalog action.
+- Official Johnson County catalog handoff.
+- Honest availability wording.
+- Action attribution.
+- Under-approximately-ten-minute first-bag usability budget.
+
+Excluded: LLM, availability, holds, infinite feeds, gamified replacement, public access, and camera scanning.
+
+Acceptance evidence: realistic empty-household flow; normal, limited, and zero states; at least two plausibly useful candidates in reviewed normal bags; truthful catalog handoff; keyboard, focus, contrast, recovery, and phone reachability review.
+
+Specialists: product/UI and domain implementers; recommendation, human-factors, accessibility, and product-truth reviewers.
+
+Owner decisions: whether the bag and deterministic explanations are plausibly worth pursuing.
+
+Mandatory human stop: the lead presents the interactive implementation and recommendation evidence, stops for owner inspection and guidance, reverifies refinements, and requires explicit approval before commit/push and Checkpoint 8A.
+
+### Checkpoint 8A - Protected hosted responsive web
+
+Goal: make the approved application safely usable on a phone outside the development machine.
+
+Phase one is an infrastructure decision and authority gate. Before account creation, billable use, remote push for deployment, secret handling, database provisioning, or deployment, present the exact vendor options, owners, costs, branch and commit scope, protection model, migration plan, rollback plan, and teardown path. Obtain explicit human authorization for the selected actions. This is checkpoint-internal execution authority, not final Checkpoint 8A approval.
+
+Included:
+
+- Protected HTTPS hosting.
+- Managed PostgreSQL.
+- Safe migration and production bootstrap.
+- No development-family seed data.
+- Household and API protection.
+- Persistence across deployments.
+- Preliminary backup, restore, rollback, logs, and service ownership.
+
+Excluded: public access, unrestricted registration, PWA requirement, offline cache, custom domain, and DNS unless separately approved as operationally necessary.
+
+Acceptance evidence: deployment runbook; account and cost ownership; protected phone access; persistence and recovery test; no-store behavior; secret and log review; rollback evidence.
+
+Specialists: deployment/operations implementer; security and privacy reviewers.
+
+Owner decisions: hosting and database vendors, accounts, expected costs, and protection configuration.
+
+Mandatory human stop: phase one stops before any external or billable action. After authorized execution, no deployment success or security PASS approves expansion. The lead presents the hosted result and operating implications, stops for owner guidance, reverifies requested changes, and requires final explicit approval before the delivery record and Checkpoint 9.
+
+### Checkpoint 9 - Camera, batch capture, and attribution
+
+Goal: reduce cataloging and outcome-entry effort without inventing facts.
+
+Included:
+
+- Just-in-time camera permission, denial, and fallback.
+- Single ISBN scan.
+- Batch scanning.
+- Batch classification selected once and reviewed before persistence.
+- Duplicate and partial-error recovery.
+- Manual ISBN fallback.
+- Recommendation recognition and attribution.
+- Online requirement shown before scanning.
+
+Excluded: frame upload or persistence; inferred borrowing, finish, reaction, reread, or library availability.
+
+Acceptance evidence: representative device review; permission and denial recovery; duplicate and mixed-success batches; review before save; manual fallback; camera privacy verification.
+
+Specialists: camera integration implementer; privacy, accessibility, device, and product-truth reviewers.
+
+Owner decisions: final batch-review behavior and acceptable device support.
+
+Mandatory human stop: device-test PASS does not authorize operational hardening. The lead presents the interactive scan paths and privacy evidence, incorporates owner guidance, and waits for explicit approval before commit/push and Checkpoint 10.
+
+### Checkpoint 10 - Alpha operational hardening
+
+Goal: make setup, deployment, recovery, and maintenance reproducible for household alpha.
+
+Included:
+
+- Reproducible Windows setup.
+- Environment validation.
+- PostgreSQL migration and bootstrap instructions.
+- Backup and restore drill.
+- Rollback rehearsal.
+- Health, runtime, build, and migration logs.
+- Monitoring and incident ownership.
+- Data deletion, recovery, and export boundaries.
+- Secret ownership and rotation.
+- Fresh-environment rehearsal.
+
+Excluded from Checkpoint 10 and V0.1: PWA installability, service worker, offline data, custom domain, DNS, and public launch. Each requires a separately approved future checkpoint. An inert manifest may be considered only after privacy review and cannot imply unsupported capabilities.
+
+Acceptance evidence: a fresh operator can follow the runbook; recovery and rollback are demonstrated; ownership and costs are explicit; no secret or private content appears in logs.
+
+Specialists: operations implementer; security, privacy, and independent runbook reviewers.
+
+Owner decisions: operational owners, retention, recovery expectations, and any optional domain work.
+
+Mandatory human stop: operational readiness remains subject to owner inspection. The lead presents drill evidence and unresolved burden, completes requested refinements, and requires explicit approval before commit/push and Checkpoint 10A.
+
+### Checkpoint 10A - Privacy-conscious measurement and alpha readiness
+
+Goal: measure product outcomes and reliability without collecting private content.
+
+Included:
+
+- Domain-derived activation and outcome queries.
+- Strict non-domain event allowlist.
+- First-bag and quick-log timing.
+- Normal-bag, limited-pool, and no-candidate rates.
+- Catalog, provider, scan, and camera reliability.
+- Sensitive-property rejection.
+- Analytics-disabled behavior.
+- Retention, deletion, export, and opt-out documentation.
+
+Excluded: raw titles, ISBNs, child names, interest text, free text, credentials, provider payloads, public marketing analytics, and third-party analytics without separate approval.
+
+Acceptance evidence: every event and property reviewed; sensitive payload tests; disabled-mode test; metric denominator audit; retention and deletion behavior.
+
+Specialists: measurement/domain implementer; privacy and analytics-payload reviewers.
+
+Owner decisions: every event, property, retention rule, deletion path, and any third-party provider.
+
+Mandatory human stop: measurement implementation and payload-test PASS do not authorize household use. The lead presents the exact dictionary and privacy evidence, applies owner guidance, and requires explicit approval before commit/push and Checkpoint 11.
+
+### Checkpoint 11 - Household alpha and correction pass
+
+Goal: validate the complete loop with real household behavior before any external beta.
+
+Run at least two realistic library-trip cycles from a truly empty household before loading a large shelf.
+
+Validate:
+
+- Minimum-context cold start.
+- First normal bag under approximately ten minutes.
+- Limited-evidence and limited-pool recovery.
+- At least two plausible recommendations in reviewed normal bags.
+- Catalog handoff and books brought home.
+- Reading events and separate reactions.
+- Four successive bedtime logs in approximately one minute.
+- Recent-book, "Log another," and one-tap reread behavior.
+- Three-way comprehension of "Stopped reading," "Decided not to read," and recommendation-level "Not for us."
+- Event correction and retraction.
+- Editable interest phases.
+- Batch scanning and attribution.
+- Offline warning and recovery.
+- Recommendation adaptation without erased history.
+- Deletion, export, backup, restore, and rollback.
+
+Synthetic-parent findings remain hypotheses and task budgets. Only observed household behavior is alpha evidence, and one household is not generalized to the whole ages 2-8 market.
+
+Specialists: human household participant and lead triage; independent regression, privacy, and human-factors reviewers.
+
+Owner decisions: alpha correction set and readiness for a controlled five-family beta.
+
+Mandatory human stop: Checkpoint 11 is the V0.1 gate. The lead presents observed evidence and the correction pass, stops for owner inspection and guidance, and requires explicit approval before commit/push. No beta identity, invitation, or public work begins without separate Checkpoint 12A authorization.
+
+### Checkpoint 12A - Secure controlled free beta
+
+Goal: support a small invited beta with application-level identity and household isolation.
+
+Phase one is an identity, participant, and external-action gate. Present provider options, accounts, costs, secrets, alpha-data migration, support ownership, exact proposed families, invitation wording, and who will send each invitation. Obtain explicit human authorization before provider creation, billable use, data migration, or contact. Invitations remain human-owned unless the owner explicitly delegates the exact recipients and wording. This execution authority is not final Checkpoint 12A approval.
+
+Included:
+
+- Authentication and authorization.
+- Household membership and isolation.
+- Recovery, logout, member removal, export, and deletion.
+- Alpha-to-beta migration decision.
+- Support and incident process.
+- Five invited households.
+- Free access.
+
+Excluded: unrestricted public registration, public child data, billing, public acquisition site, and marketing expansion. Public registration requires a separately specified future checkpoint and is authorized by neither 12A nor 12B.
+
+Acceptance evidence: cross-household isolation; recovery and deletion; support ownership; no alpha data leakage; explicit invited-family list and rollout plan.
+
+Specialists: authentication/domain implementer; security and privacy isolation reviewers.
+
+Owner decisions: authentication provider, exact invited families, support owner, and alpha-data migration.
+
+Mandatory human stop: phase one stops before provider creation, migration, or contact. After authorized execution, security PASS and successful invitations do not approve the checkpoint or public acquisition. The lead presents beta evidence and support burden, resolves owner guidance, reverifies affected work, and requires final explicit approval before delivery and before optional Checkpoint 12B or 12C work.
+
+### Checkpoint 12B - Optional public acquisition foundation
+
+Goal: decide whether evidence supports a truthful public information and waitlist surface.
+
+This checkpoint is optional and requires explicit owner authorization to begin after Checkpoint 12A. That start authorization permits only the approved implementation scope; it is not final approval to commit, push, deploy, or publish. Checkpoint 12C controlled expansion does not depend on performing 12B.
+
+Potential included scope:
+
+- Fixture-only public site.
+- Accurate positioning and approved screenshots.
+- Privacy explanation.
+- Waitlist or invitation CTA.
+- Privacy-safe acquisition-source attribution.
+- Separation of public analytics and private product data.
+- A truthful acquisition foundation for later owner-gated expansion; this checkpoint does not itself authorize new households.
+
+Excluded: private household content, public product navigation, unsupported claims, unrestricted registration, billing, ads, affiliates, sponsored ranking, or child-data monetization.
+
+Acceptance evidence: claim audit; fixture audit; public/private boundary test; privacy and accessibility review; acquisition measurement allowlist.
+
+Specialists: product/marketing implementer; privacy, accessibility, and claim-verification reviewers.
+
+Owner decisions: whether a public surface is warranted and the exact expansion gate.
+
+Mandatory human stop: a publishable site is not permission to publish. The lead presents the complete artifact and evidence, stops for owner guidance, reverifies requested changes, and requires explicit approval before commit, push, deployment, or publication. Checkpoint 12C remains separately gated.
+
+### Checkpoint 12C - Controlled beta expansion
+
+Goal: expand only after the five-family beta demonstrates value, privacy, reliability, and manageable support. This checkpoint requires Checkpoint 12A approval but may proceed whether or not optional Checkpoint 12B is performed.
+
+Phase one presents observed 12A evidence, support capacity, operating cost, privacy incidents, reliability, proposed participants and sourcing, exact invitation ownership, and rollback or enrollment-pause criteria.
+
+Stage one may expand to at most 25 households after explicit owner approval. It then stops for observed evidence and another explicit owner gate. Stage two may expand to at most 100 households only after that second approval.
+
+Included: controlled invitations, household-isolation monitoring, support and incident handling, approved aggregate outcome measurement, enrollment pause, and deletion/export support.
+
+Excluded: unrestricted registration, public child data, billing, advertising, sponsored ranking, child-data monetization, and automatic expansion.
+
+Acceptance evidence: activation and recommendation-outcome cohorts, Normal/Limited/No-candidate rates, retention, support burden, cost, privacy and security results, incident response, and deletion/export reliability.
+
+Specialists: product operations and identity implementers; security, privacy, measurement, and support reviewers.
+
+Owner decisions: each participant ceiling, participant sourcing, invitation execution, budget, support capacity, and whether to pause, continue, or stop.
+
+Mandatory human stop: neither metrics nor agent consensus authorizes enrollment. The lead stops before 25-household execution and again before 100-household execution, receives owner guidance, reverifies requested changes, and requires explicit authority for exact invitations and costs. Final Checkpoint 12C approval and Git delivery are required before Checkpoint 13 research.
+
+### Checkpoint 13 - Post-traction monetization research
+
+Goal: determine whether retained families have a specific unmet job worth funding.
+
+Research requires final Checkpoint 12C approval and evidence from the owner-gated expansion to at most 100 households. Prerequisites reviewed by the owner include recommendation coverage and outcomes, repeat library-trip use, household effort and abandonment, support burden, privacy, reliability, and operating cost.
+
+Phase one is a research and contact gate. Before contacting any participant, offering an incentive, recording a session, or collecting research data, present participant criteria or exact contacts, outreach wording, consent, incentive and cost, privacy protections, recording behavior, retention and deletion, analysis ownership, and who will conduct contact. Obtain explicit human authorization for the exact activity. Contact remains human-owned unless specifically delegated.
+
+Included:
+
+- Retained-user interviews and research synthesis.
+- Multiple-child or caregiver-coordination hypotheses.
+- Optional supporter-model research.
+- Long-term institutional hypotheses subject to privacy review.
+
+Excluded: billing, payment data, paywalls, ads, affiliates, sponsorships, commercial rank influence, recommendation degradation, or child-data monetization.
+
+Checkpoint 13 authorizes research only. Any pricing, billing, or commercial implementation requires a new explicitly specified checkpoint.
+
+Specialists: product and economic researcher; privacy reviewer; staff-engineering cost reviewer.
+
+Owner decisions: whether observed traction justifies research and whether any later commercial checkpoint should be proposed.
+
+Mandatory human stop: phase one stops before any participant contact, incentive, recording, or data collection. After authorized research, consensus cannot authorize monetization. The lead presents evidence and tradeoffs, stops for owner judgment, reverifies requested research corrections, and requires final explicit approval before the scoped research commit and push. No billing or commercial implementation occurs without a new explicit plan and approval.
+
+## 15. Provisional growth gates
+
+Before Checkpoint 12A:
+
+- First normal bag completed without developer intervention.
+- At least two realistic household trip cycles.
+- At least two plausible recommendations in most reviewed normal bags.
+- Successful catalog, obtainment, read, and reaction attribution.
+- No material truth, privacy, security, or recovery failure.
+- Owner judges a five-family beta supportable.
+
+Before Checkpoint 12C stage-one expansion to at most 25 households, provisional targets are:
+
+- At least 4 of 5 households reach core activation without live setup assistance.
+- At least 3 of 5 create a second bag within 45 days.
+- At least 80 percent of completed requests produce normal bags.
+- No severity-one privacy, security, cross-household, or invented-fact incident.
+- Support burden is manageable by a named owner.
+
+Checkpoint 12C must collect a fresh evidence set and stop again before expansion to at most 100 households. Optional public acquisition work in Checkpoint 12B is neither required nor sufficient for either enrollment decision.
+
+Before Checkpoint 13 research, provisional targets are:
+
+- At least 100 core-activated households across two cohorts.
+- At least 60 percent core activation from started onboarding.
+- At least 80 percent Normal Bag Rate.
+- At least 40 percent second-bag completion within 45 days.
+- At least 40 percent Useful Bag Rate among mature normal bags.
+- Stable truth, privacy, reliability, and support guardrails.
+- Retained-user evidence of a specific unmet job.
+
+These thresholds are planning hypotheses. The owner may revise them at a checkpoint gate based on observed evidence.
+
+## 16. Current owner decision
+
+The owner approved the revised SDD and authorized Checkpoint 4R on 2026-08-14. Until the Checkpoint 4R delivery gate receives separate explicit approval:
+
+- Inventory, validation, documentation reconciliation, and test-fixture truth corrections are authorized within Checkpoint 4R.
+- Do not modify application behavior, schema, migrations, dependencies, or runtime configuration.
+- Do not stage, commit, push, deploy, or change the remote.
+- Do not begin or delegate Checkpoint 5A implementation.
+- Do not begin Checkpoint 5B proposal work.
+- Do not start later-checkpoint research, scaffolding, deployment, or vendor setup.

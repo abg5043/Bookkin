@@ -1,0 +1,241 @@
+// Historical Checkpoint 2 proposal retained as a design reference.
+// The applied schema is prisma/schema.prisma.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Household {
+  id                     String                    @id @default(cuid())
+  createdAt              DateTime                  @default(now())
+  updatedAt              DateTime                  @updatedAt
+  children               ChildProfile[]
+  familyBooks            FamilyBook[]
+  readingEvents          ReadingEvent[]
+  recommendationBatches  RecommendationBatch[]
+  librarySettings        HouseholdLibrarySetting[]
+}
+
+model ChildProfile {
+  id                    String               @id @default(cuid())
+  householdId           String
+  displayName           String
+  ageBand               String?
+  birthMonthYear        String?
+  currentInterests      String?
+  contentPreferences    String?
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
+  household             Household            @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  readingEvents         ReadingEvent[]
+  recommendationBatches RecommendationBatch[]
+
+  @@index([householdId])
+}
+
+model BookWork {
+  id                  String          @id @default(cuid())
+  title               String
+  subtitle            String?
+  authors             String
+  description         String?
+  subjects            String?
+  series              String?
+  language            String?
+  metadataProvider    String?
+  metadataRecordId    String?
+  metadataProvenance  String?
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  editions            BookEdition[]
+  familyBooks         FamilyBook[]
+  readingEvents       ReadingEvent[]
+  recommendations     Recommendation[]
+
+  @@unique([metadataProvider, metadataRecordId])
+  @@index([title])
+}
+
+model BookEdition {
+  id                   String                @id @default(cuid())
+  workId               String
+  isbn10               String?               @unique
+  isbn13               String?               @unique
+  publisher            String?
+  publicationDate      String?
+  format               String?
+  pageCount            Int?
+  coverSmallUrl        String?
+  coverLargeUrl        String?
+  metadataProvider     String?
+  metadataRecordId     String?
+  metadataProvenance   String?
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  work                 BookWork              @relation(fields: [workId], references: [id])
+  familyBookLinks      FamilyBookEdition[]
+  readingEvents        ReadingEvent[]
+
+  @@unique([metadataProvider, metadataRecordId])
+  @@index([workId])
+}
+
+model FamilyBook {
+  id                  String                 @id @default(cuid())
+  householdId         String
+  workId              String
+  firstSeenAt         DateTime               @default(now())
+  lastSeenAt          DateTime               @default(now())
+  addedVia            String
+  shelfStatus         String?
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
+  household           Household              @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  work                BookWork               @relation(fields: [workId], references: [id])
+  editions            FamilyBookEdition[]
+
+  @@unique([householdId, workId])
+  @@index([householdId, lastSeenAt])
+}
+
+model FamilyBookEdition {
+  id             String                 @id @default(cuid())
+  familyBookId   String
+  editionId      String
+  firstSeenAt    DateTime               @default(now())
+  lastSeenAt     DateTime               @default(now())
+  addedVia       String
+  familyBook     FamilyBook             @relation(fields: [familyBookId], references: [id], onDelete: Cascade)
+  edition        BookEdition            @relation(fields: [editionId], references: [id])
+  recommendationActions RecommendationAction[]
+
+  @@unique([familyBookId, editionId])
+  @@index([editionId])
+}
+
+model ReadingEvent {
+  id                 String                @id @default(cuid())
+  householdId        String
+  childId            String
+  workId             String
+  editionId          String?
+  eventType          String
+  // Domain input must be UTC. This is the event's observed time, not a mutable status timestamp.
+  occurredAt         DateTime
+  context            String?
+  stopReason         String?
+  // Domain validation limits notes length and treats them as optional family data.
+  notes              String?
+  createdAt          DateTime              @default(now())
+  household          Household             @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  child              ChildProfile          @relation(fields: [childId], references: [id], onDelete: Cascade)
+  work               BookWork              @relation(fields: [workId], references: [id])
+  edition            BookEdition?          @relation(fields: [editionId], references: [id])
+  reactions          Reaction[]
+  recommendationActions RecommendationAction[]
+
+  @@index([householdId, occurredAt])
+  @@index([childId, occurredAt])
+  @@index([workId, occurredAt])
+}
+
+model Reaction {
+  id             String        @id @default(cuid())
+  readingEventId String
+  subjectType    String
+  value          String
+  tags           String?
+  createdAt      DateTime      @default(now())
+  readingEvent   ReadingEvent  @relation(fields: [readingEventId], references: [id], onDelete: Cascade)
+
+  @@unique([readingEventId, subjectType])
+}
+
+model RecommendationBatch {
+  id                 String           @id @default(cuid())
+  householdId        String
+  childId            String
+  requestedContext   String?
+  filters            String?
+  generatedAt        DateTime         @default(now())
+  scoringVersion     String
+  explanationProvider String?
+  createdAt          DateTime         @default(now())
+  household          Household        @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  child              ChildProfile     @relation(fields: [childId], references: [id], onDelete: Cascade)
+  recommendations    Recommendation[]
+
+  @@index([householdId, generatedAt])
+}
+
+model Recommendation {
+  id            String                 @id @default(cuid())
+  batchId       String
+  workId        String
+  score         Int
+  sourceSignals String
+  explanation   String?
+  rank          Int
+  createdAt     DateTime               @default(now())
+  batch         RecommendationBatch   @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  work          BookWork               @relation(fields: [workId], references: [id])
+  actions       RecommendationAction[]
+
+  @@unique([batchId, workId])
+  @@unique([batchId, rank])
+  @@index([workId])
+}
+
+model RecommendationAction {
+  id                 String              @id @default(cuid())
+  recommendationId   String
+  // Actions are append-only facts. Repeated actions are allowed; latest saved/rejected wins disposition.
+  actionType         String
+  occurredAt         DateTime            @default(now())
+  readingEventId     String?
+  familyBookEditionId String?
+  recommendation     Recommendation     @relation(fields: [recommendationId], references: [id], onDelete: Cascade)
+  readingEvent       ReadingEvent?      @relation(fields: [readingEventId], references: [id])
+  familyBookEdition  FamilyBookEdition? @relation(fields: [familyBookEditionId], references: [id])
+
+  @@index([recommendationId, occurredAt])
+  @@index([readingEventId])
+  @@index([familyBookEditionId])
+}
+
+model LibrarySystem {
+  id             String                    @id @default(cuid())
+  adapterId      String                    @unique
+  displayName    String
+  catalogBaseUrl String?
+  capabilities   String
+  createdAt      DateTime                  @default(now())
+  updatedAt      DateTime                  @updatedAt
+  householdSettings HouseholdLibrarySetting[]
+}
+
+model HouseholdLibrarySetting {
+  id             String                    @id @default(cuid())
+  householdId    String                    @unique
+  librarySystemId String
+  createdAt      DateTime                  @default(now())
+  updatedAt      DateTime                  @updatedAt
+  household      Household                 @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  librarySystem  LibrarySystem             @relation(fields: [librarySystemId], references: [id])
+  branches       HouseholdLibraryBranch[]
+}
+
+model HouseholdLibraryBranch {
+  id          String                  @id @default(cuid())
+  settingId   String
+  branchCode  String
+  displayName String?
+  setting     HouseholdLibrarySetting @relation(fields: [settingId], references: [id], onDelete: Cascade)
+
+  @@unique([settingId, branchCode])
+}
