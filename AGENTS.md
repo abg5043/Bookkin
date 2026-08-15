@@ -67,4 +67,4 @@ V0.1 is protected responsive web over HTTPS. Do not add a service worker, offlin
 
 ## Current authorization state
 
-The revised SDD was approved on 2026-08-14, Checkpoint 4R was approved and delivered, and Checkpoint 5A implementation was authorized on 2026-08-15 after its interactive design gate. Checkpoint 5A is technically verified and awaiting the mandatory human checkpoint review. Do not stage, commit, push, deploy, or begin Checkpoint 5B until the human product owner explicitly approves the Checkpoint 5A delivery scope.
+The revised SDD was approved on 2026-08-14, and Checkpoints 4R and 5A were approved and delivered. Checkpoint 5B phase-one proposal work is authorized. Do not edit schema or migrations, install dependencies, implement or scaffold Checkpoint 5B, stage or commit Checkpoint 5B code, deploy, or begin phase two until the human product owner reviews and explicitly approves the phase-one proposal.

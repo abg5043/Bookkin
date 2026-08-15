@@ -1,10 +1,10 @@
 # Bookkin Software Development Document and Agentic Build Plan
 
-Status: canonical planning document; Checkpoint 5A technically verified and awaiting human review
+Status: canonical planning document; Checkpoint 5A delivered; Checkpoint 5B phase-one proposal in progress
 
 Last revised: 2026-08-15
 
-The human product owner approved this SDD on 2026-08-14, approved Checkpoint 4R delivery, and authorized Checkpoint 5A implementation on 2026-08-15 after the interactive design review. This approval does not authorize Checkpoint 5B, database changes, deployment, staging, commit, or push beyond the separately authorized Checkpoint 5A design-decision commit.
+The human product owner approved this SDD on 2026-08-14, approved Checkpoint 4R delivery, approved and delivered Checkpoint 5A on 2026-08-15, and authorized Checkpoint 5B phase-one proposal work only. This authorization does not permit schema edits, migrations, dependency installation, implementation, scaffolding, deployment, or staging of Checkpoint 5B code before the phase-one human decision.
 
 ## 1. Purpose
 
@@ -465,7 +465,7 @@ CI: <result or not applicable>
 
 Checkpoints 0-5 were completed and approved in prior owner reviews. Checkpoint 5 consolidated the approved shelf, discovery, history, and quick-log surfaces with the current editorial design system; it did not implement the later Bright Snap shell. The implemented baseline remains subject to regression review and may be refined only within a later approved checkpoint. Much of that approved baseline is not yet tracked in Git, so the already authorized Checkpoint 4R must reconcile and deliver it before Checkpoint 5A begins.
 
-Checkpoint 5A implementation was authorized after its interactive design gate. Its bounded shell and fast-capture work is technically verified and awaits the mandatory human checkpoint review; no Checkpoint 5B work is authorized.
+Checkpoint 5A was approved and delivered on 2026-08-15. Checkpoint 5B phase-one proposal work is now authorized, but no Checkpoint 5B schema edit, database migration, dependency installation, implementation, or scaffolding is authorized before the phase-one human decision.
 
 ## 14. Remaining checkpoint sequence
 
@@ -539,6 +539,20 @@ Specialists: product/design implementer; human-factors and accessibility reviewe
 Owner decisions: final Bright Snap balance, action-control interaction, copy vocabulary, and sensory restraint.
 
 Mandatory human stop: specialist completion, independent PASS, tests, CI, agent consensus, and lead completion do not approve Checkpoint 5A. The lead presents the interactive result and evidence, stops, receives owner guidance, reverifies requested refinements, and waits for explicit approval before commit/push and before Checkpoint 5B work.
+
+#### Approved delivery record
+
+Human approval: owner approved Checkpoint 5A delivery and continuation to Checkpoint 5B on 2026-08-15.
+
+Commit: `519efdc`
+
+Branch: `codex/checkpoint-5a-bright-snap`
+
+Remote: `origin` (`https://github.com/abg5043/Bookkin.git`)
+
+Push: succeeded to `origin/codex/checkpoint-5a-bright-snap`
+
+CI: no remote workflow reported; local lint, typecheck, production build, 22 unit tests, and 13 browser acceptance tests passed.
 
 ### Checkpoint 5B - Recommendation readiness, data integrity, and PostgreSQL gate
 
