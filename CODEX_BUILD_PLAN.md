@@ -89,6 +89,7 @@ Required characteristics:
 - Fast search and filtering wherever collection size can grow.
 - One persistent, elegant thumb-reachable action control for Add book and Log a read on mobile.
 - Add and Log workflows open in focused modal or sheet experiences and do not require page scrolling to start.
+- Contextual Back returns to the immediate entry surface. Book history opened from Shelf returns to the same Shelf state; book history opened from household History returns to that History list. Restore scroll and focus to the triggering book. Browser Back follows the same stack and restoration rule. The persistent History navigation is the direct route to household History, so do not add a redundant "All history" action.
 - No unexplained numerical markers inside the product UI.
 
 Accessibility and sensory constraints:
@@ -106,6 +107,17 @@ Accessibility and sensory constraints:
 ### 3.1 Required design review for user-facing checkpoints
 
 Before implementation, the lead presents an interactive, marked-up HTML prototype using realistic non-sensitive fixtures. It includes representative phone, tablet, and desktop compositions, state controls, and selectable comments in a separate review panel.
+
+The product frame must use polished end-user language throughout. Prototype labels, sample-data notices, implementation explanations, reviewer guidance, and placeholder narration belong only in the separate design-comments area and must never appear as product copy.
+
+Until the owner selects a final system, every user-facing design review develops these two directions in parallel against the same content, states, and interactions:
+
+- **Original Bright Snap:** the high-contrast graphic camera language established in `bookkin-concept-bright-snap.html` - yellow, ink, white, cyan, rose, geometric display type, crisp borders, and restrained offset shadows.
+- **Refined Brighter:** the default review direction - the same bright Snap identity with editorial warmth, luminous cool neutrals, softer geometry, and parent-facing restraint. Do not regress to beige, brown, or a lower-energy default.
+
+A designer may propose a third direction only when it tests a genuinely distinct product hypothesis; it must not blur or replace the two required comparison tracks.
+
+Owner corrections made during design review are durable product decisions, not conversational memory. In the same review cycle, the lead records each accepted correction in this SDD or the owning document under `docs/design/`, keeps the interactive review aligned, and reports the changed decision record. Future agents must read those files instead of relying on chat history.
 
 The prototype is a decision artifact, not implementation permission. After implementation, the working screen is reviewed at phone and desktop widths, and the interactive review is updated to reflect the implementation. Keyboard flow, focus, contrast, error recovery, loading, empty, limited, and offline states are checked before the checkpoint report.
 
