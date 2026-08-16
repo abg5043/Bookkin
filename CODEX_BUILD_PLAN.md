@@ -488,7 +488,7 @@ CI: <result or not applicable>
 
 Checkpoints 0-5 were completed and approved in prior owner reviews. Checkpoint 5 consolidated the approved shelf, discovery, history, and quick-log surfaces with the current editorial design system; it did not implement the later Bright Snap shell. The implemented baseline remains subject to regression review and may be refined only within a later approved checkpoint. Much of that approved baseline is not yet tracked in Git, so the already authorized Checkpoint 4R must reconcile and deliver it before Checkpoint 5A begins.
 
-Checkpoint 5A was approved and delivered on 2026-08-15. The Checkpoint 5B phase-one proposal was approved on 2026-08-15, and its bounded phase-two implementation is in progress under the current owner-decision section. Final Checkpoint 5B approval is still required before commit/push or Checkpoint 6.
+Checkpoint 5A was approved and delivered on 2026-08-15. Checkpoint 5B was approved and delivered on 2026-08-15. The owner approved the Checkpoint 6 architecture proposal on 2026-08-15; its bounded implementation is technically verified and awaits final human checkpoint review before commit, push, or Checkpoint 7A.
 
 ## 14. Remaining checkpoint sequence
 
@@ -1020,5 +1020,6 @@ These thresholds are planning hypotheses. The owner may revise them at a checkpo
 The owner approved and delivered Checkpoint 5B on 2026-08-15 and explicitly authorized Checkpoint 6 to begin after its Git delivery:
 
 - Checkpoint 6 is limited to the generic `LibraryAdapter` capability contract, Johnson County Library official catalog-search URL construction, normalized ISBN and title fallback behavior, unsupported-capability handling, tests, diagrams, and product-truth/security review.
+- The owner approved the Checkpoint 6 contract, user-invoked fallback semantics, persistence decision, handoff language, and bounded implementation proposed in `docs/architecture/checkpoint-6-library-adapter-proposal.md` on 2026-08-15. Final checkpoint approval remains required before commit, push, or Checkpoint 7A.
 - Do not add branch UI, real-time availability, holds, credentials, loans, borrowing-history imports, recommendation UI, analytics, a dormant settings destination, or later-checkpoint behavior.
 - Do not deploy, provision hosted resources, contact external participants, stage, commit, push, or begin Checkpoint 7A before the final Checkpoint 6 owner review and explicit approval.
