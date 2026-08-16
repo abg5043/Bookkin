@@ -1,10 +1,10 @@
 # Bookkin Software Development Document and Agentic Build Plan
 
-Status: canonical planning document; Checkpoint 5B delivered; Checkpoint 6 in progress
+Status: canonical planning document; Checkpoint 6 delivered; Checkpoint 7A in progress
 
 Last revised: 2026-08-15
 
-The human product owner approved this SDD on 2026-08-14, approved and delivered Checkpoints 4R and 5A, and approved and delivered Checkpoint 5B on 2026-08-15. The owner explicitly authorized Checkpoint 6 to begin after the Checkpoint 5B commit and push. This does not authorize deployment, hosted resources, later-checkpoint implementation, or public actions.
+The human product owner approved this SDD on 2026-08-14 and approved and delivered Checkpoints 4R, 5A, 5B, and 6. On 2026-08-15, the owner explicitly authorized Checkpoint 7 to begin; under the approved split sequence, this authorizes Checkpoint 7A only. This does not authorize deployment, hosted resources, Checkpoint 7B, later-checkpoint implementation, or public actions.
 
 ## 1. Purpose
 
@@ -672,6 +672,20 @@ Owner decisions: selected library-system behavior, URL construction, and handoff
 
 Mandatory human stop: all agent and test PASS states remain technical only. The lead presents the working handoff and evidence, stops for owner guidance and refinement, and requires explicit approval before commit/push and Checkpoint 7A.
 
+#### Approved delivery record
+
+Human approval: owner approved final Checkpoint 6, its proposed commit and push, and the start of Checkpoint 7 on 2026-08-15.
+
+Commit: `31ef578 feat(library): add safe Johnson County catalog handoff`
+
+Branch: `codex/checkpoint-6-library-adapter`
+
+Remote: `origin` (`https://github.com/abg5043/Bookkin.git`)
+
+Push: succeeded on 2026-08-15; the branch now tracks `origin/codex/checkpoint-6-library-adapter`.
+
+CI: no run was triggered because the current workflow runs on pull requests and pushes to `main`; local `npm run validate` passed with lint, typecheck, 51 tests passing, and production build.
+
 ### Checkpoint 7A - Family context, preference evidence, and verified candidates
 
 Goal: collect minimal recommendation context and build a verified candidate pool without ranking or showing a bag.
@@ -1017,9 +1031,10 @@ These thresholds are planning hypotheses. The owner may revise them at a checkpo
 
 ## 16. Current owner decision
 
-The owner approved and delivered Checkpoint 5B on 2026-08-15 and explicitly authorized Checkpoint 6 to begin after its Git delivery:
+The owner approved and delivered Checkpoint 6 on 2026-08-15 and explicitly authorized Checkpoint 7 to begin. The approved plan splits Checkpoint 7 into separately gated 7A and 7B, so current authorization is limited to Checkpoint 7A:
 
-- Checkpoint 6 is limited to the generic `LibraryAdapter` capability contract, Johnson County Library official catalog-search URL construction, normalized ISBN and title fallback behavior, unsupported-capability handling, tests, diagrams, and product-truth/security review.
-- The owner approved the Checkpoint 6 contract, user-invoked fallback semantics, persistence decision, handoff language, and bounded implementation proposed in `docs/architecture/checkpoint-6-library-adapter-proposal.md` on 2026-08-15. Final checkpoint approval remains required before commit, push, or Checkpoint 7A.
-- Do not add branch UI, real-time availability, holds, credentials, loans, borrowing-history imports, recommendation UI, analytics, a dormant settings destination, or later-checkpoint behavior.
-- Do not deploy, provision hosted resources, contact external participants, stage, commit, push, or begin Checkpoint 7A before the final Checkpoint 6 owner review and explicit approval.
+- Collect minimal coarse age or reading-stage context, editable current interests and retained historical phases, durable preference observations, and explicit request-scoped reference behavior.
+- Source and hydrate a verified candidate pool with normalized facts, provenance, coverage, deduplication, and exclusions. Development-only coverage and insufficiency previews are allowed but are not recommendation results.
+- Provide the required diagrams and interactive user-facing design review before implementing user-facing workflow changes.
+- Do not add scoring, ranking, composition, recommendation bags, AI, library availability, or Checkpoint 7B behavior.
+- Do not deploy, provision hosted resources, contact external participants, stage, commit, push, or begin Checkpoint 7B before the final Checkpoint 7A owner review and explicit approval.
