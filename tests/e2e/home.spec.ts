@@ -74,6 +74,12 @@ async function mockBookHistory(page: Page, startingEvents: Array<Record<string, 
     history.events.unshift(event);
     await route.fulfill({ status: 201, json: { event } });
   });
+  await page.route("**/api/reading-events/*/retraction", async (route) => {
+    const eventId = new URL(route.request().url()).pathname.split("/").at(-2);
+    const index = history.events.findIndex((event) => event.id === eventId);
+    if (index >= 0) history.events.splice(index, 1);
+    await route.fulfill({ status: 201, json: { amendment: { id: "amendment-1", targetId: eventId } } });
+  });
   return history;
 }
 
@@ -163,11 +169,36 @@ test("searches and filters a growing shelf", async ({ page }) => {
   await expect(page.getByText("2 books")).toBeVisible();
 });
 
-test("Quick Log starts blank, records separate reactions, and resets for Log another", async ({ page }) => {
+test("Quick Log saves a recent reread in one action and offers correction-backed Undo", async ({ page }) => {
+  await mockShelf(page, [shelfBook]);
+  const history = await mockBookHistory(page);
+  await page.goto("/");
+  const dialog = await openQuickLog(page);
+  await expect(dialog.getByRole("heading", { name: "Recent books" })).toBeVisible();
+  await expect(dialog.getByText(verifiedBook.title)).toBeVisible();
+  await dialog.getByRole("button", { name: `Read ${verifiedBook.title} again` }).click();
+  const receipt = dialog.getByRole("status");
+  await expect(receipt.getByText("Reread saved")).toBeVisible();
+  await expect(receipt.getByText(verifiedBook.title)).toBeVisible();
+  expect(history.events).toHaveLength(1);
+  expect(history.events[0]).toMatchObject({ eventType: "reread" });
+  await dialog.getByRole("button", { name: `Undo reread for ${verifiedBook.title}` }).click();
+  await expect(dialog.getByText("Reread removed")).toBeVisible();
+  await expect(dialog.getByRole("button", { name: `Read ${verifiedBook.title} again` })).toBeFocused();
+  expect(history.events).toHaveLength(0);
+});
+
+test("Quick Log starts its different-outcome form blank and records separate reactions", async ({ page }) => {
   await mockShelf(page, [shelfBook]);
   await mockBookHistory(page);
   await page.goto("/");
   let dialog = await openQuickLog(page);
+  await dialog.getByRole("button", { name: "Log a different book or outcome" }).click();
+  await expect(dialog.getByRole("searchbox", { name: "Book" })).toBeFocused();
+  await dialog.getByRole("button", { name: "Recent books" }).click();
+  await expect(dialog.getByRole("button", { name: `Read ${verifiedBook.title} again` })).toBeFocused();
+  await dialog.getByRole("button", { name: "Log a different book or outcome" }).click();
+  await expect(dialog.getByRole("searchbox", { name: "Book" })).toBeFocused();
   await expect(dialog.getByRole("button", { name: "Save reading moment" })).toBeDisabled();
   await expect(dialog.getByRole("button", { name: new RegExp(verifiedBook.title) })).toHaveAttribute("aria-pressed", "false");
   await expect(dialog.getByRole("button", { name: "Finished" })).toHaveAttribute("aria-pressed", "false");
@@ -178,8 +209,10 @@ test("Quick Log starts blank, records separate reactions, and resets for Log ano
   await dialog.getByRole("group", { name: "Caregiver" }).getByRole("button", { name: "Like", exact: true }).click();
   await dialog.getByRole("button", { name: "Save reading moment" }).click();
   await expect(page.getByText(new RegExp(`Reading moment saved for ${verifiedBook.title}`))).toBeVisible();
-  await page.getByRole("button", { name: "Log another" }).click();
+  await page.getByRole("button", { name: "Log a different book or outcome" }).click();
   dialog = page.getByRole("dialog", { name: "Log a read" });
+  await expect(dialog.getByRole("heading", { name: "Recent books" })).toBeVisible();
+  await dialog.getByRole("button", { name: "Log a different book or outcome" }).click();
   await expect(dialog.getByRole("button", { name: "Save reading moment" })).toBeDisabled();
   await expect(dialog.getByRole("button", { name: "Read again" })).toHaveAttribute("aria-pressed", "false");
 });
@@ -189,6 +222,7 @@ test("Quick Log retains choices after a failed save and offers optional stop rea
   await page.route("**/api/family-books/family-book-1/reading-events", async (route) => { await route.fulfill({ status: 500, json: { error: "That reading moment was not saved." } }); });
   await page.goto("/");
   const dialog = await openQuickLog(page);
+  await dialog.getByRole("button", { name: "Log a different book or outcome" }).click();
   await dialog.getByRole("button", { name: new RegExp(verifiedBook.title) }).click();
   await dialog.getByRole("button", { name: "Stopped reading" }).click();
   await dialog.getByRole("button", { name: "Too scary" }).click();

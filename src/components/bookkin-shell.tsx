@@ -107,6 +107,10 @@ export function BookkinShell({ children }: { children: ReactNode }) {
     setToast({ message: `Reading moment saved for ${bookTitle}.`, canLogAnother: true });
   }
 
+  async function handleReadingDataChanged() {
+    await refreshShelf();
+  }
+
   const onShelf = pathname === "/";
   const onHistory = pathname === "/history" || pathname.startsWith("/books/");
   const contextValue: BookkinShellContextValue = {
@@ -147,13 +151,13 @@ export function BookkinShell({ children }: { children: ReactNode }) {
           {toast === undefined ? null : (
             <div className="bk-toast" role="status">
               <strong>{toast.message}</strong>
-              {toast.canLogAnother ? <button onClick={() => openCapture("log")} type="button">Log another</button> : <button aria-label="Dismiss message" onClick={() => setToast(undefined)} type="button">Dismiss</button>}
+              {toast.canLogAnother ? <button onClick={() => openCapture("log")} type="button">Log a different book or outcome</button> : <button aria-label="Dismiss message" onClick={() => setToast(undefined)} type="button">Dismiss</button>}
             </div>
           )}
         </div>
 
         {capture === "add" ? <AddBookDialog onAdded={handleAdded} onClose={() => setCapture(undefined)} /> : null}
-        {capture === "log" ? <QuickLogDialog onClose={() => setCapture(undefined)} onRequestAdd={() => setCapture("add")} onSaved={handleLogged} shelf={shelf} /> : null}
+        {capture === "log" ? <QuickLogDialog onClose={() => setCapture(undefined)} onDataChanged={handleReadingDataChanged} onRequestAdd={() => setCapture("add")} onSaved={handleLogged} shelf={shelf} /> : null}
       </main>
     </BookkinShellContext.Provider>
   );

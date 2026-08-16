@@ -382,6 +382,52 @@ button:focus-visible, input:focus-visible, summary:focus-visible, a:focus-visibl
 .bk-inline-message { margin: 0.85rem 0; padding: 0.75rem; border-radius: 0.8rem; background: var(--coral-soft); font-size: 0.82rem; line-height: 1.4; }
 
 .bk-book-picker { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.45rem; margin-top: 0.65rem; }
+.bk-quick-log-heading { margin: 0 0 0.65rem; font-size: 0.82rem; }
+.bk-reread-list { display: grid; gap: 0.45rem; }
+.bk-reread-row {
+  min-width: 0;
+  padding: 0.55rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--paper) 84%, var(--flash-soft));
+}
+.bk-reread-copy { min-width: 0; }
+.bk-reread-copy strong, .bk-reread-copy small { display: block; }
+.bk-reread-copy strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bk-reread-copy small { margin-top: 0.18rem; color: var(--muted); font-size: 0.72rem; }
+.bk-reread-row > button, .bk-reread-receipt > button {
+  min-height: 2.75rem;
+  padding: 0.45rem 0.72rem;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--flash);
+  cursor: pointer;
+  font-weight: 750;
+  white-space: nowrap;
+}
+.bk-reread-row > button:disabled, .bk-reread-receipt > button:disabled { cursor: wait; opacity: 0.55; }
+.bk-reread-receipt {
+  margin-top: 0.65rem;
+  padding: 0.55rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 36%, var(--mint));
+  border-radius: 1rem;
+  background: var(--mint);
+}
+.bk-reread-receipt.is-undone { background: var(--canvas); }
+.bk-reread-receipt strong, .bk-reread-receipt small { display: block; }
+.bk-reread-receipt small { margin-top: 0.15rem; color: var(--muted); font-size: 0.72rem; }
+.bk-reread-receipt > button { background: var(--paper); }
+.bk-quick-log-actions { justify-content: stretch; }
+.bk-quick-log-actions > button { width: 100%; }
+.bk-quick-log-back { min-height: 2.75rem; margin: -0.35rem 0 0.35rem; padding: 0; border: 0; background: transparent; cursor: pointer; font-weight: 750; }
 .bk-book-pick { min-width: 0; min-height: 6.8rem; padding: 0.45rem 0.3rem; display: grid; justify-items: center; align-content: start; gap: 0.35rem; border: 1px solid var(--line); border-radius: 0.85rem; background: var(--paper); cursor: pointer; text-align: center; }
 .bk-book-pick[aria-pressed="true"] { border: 2px solid var(--ink); background: var(--flash-soft); }
 .bk-book-pick-copy { min-width: 0; }

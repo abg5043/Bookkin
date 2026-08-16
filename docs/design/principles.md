@@ -19,6 +19,8 @@ Essential text uses high-contrast ink on solid surfaces. Decorative colors do no
 
 Growing shelves are searchable by title or author and filterable by current shelf status. Common logging starts from recent books or shelf search without forcing a detail-page visit.
 
+When recent reading exists, Quick Log opens on compact cover-backed recent rows with an explicit one-action `Read again`. A successful reread keeps the sheet open, identifies the saved book, and offers correction-backed `Undo`. The blank ordinary form remains separate behind `Log a different book or outcome`; it never preselects a book, outcome, or reaction.
+
 Every user-facing checkpoint reviews loading, empty, success, error, permission, limited-evidence, limited-pool, no-result, external-handoff, and relevant offline-warning states.
 
 ## Interactive design-review standard
@@ -31,6 +33,7 @@ Every design gate provides an interactive, marked-up HTML prototype before appli
 - Use polished end-user copy inside the product frame. Keep prototype labels, sample-data notices, implementation explanations, and reviewer narration in the separate review panel.
 - Present Original Bright Snap and Refined Brighter against the same content and interactions until the owner chooses a final system; default to Refined Brighter and do not regress to beige or brown.
 - Use realistic non-sensitive fixtures and never expose actual child, household, reading, or credential data.
+- Use verified real book-cover imagery when it is available; do not replace known covers with decorative stand-ins merely to simplify a review.
 - Make primary interactions usable with native keyboard-accessible controls.
 - Distinguish proposed design from implemented behavior.
 - Check WCAG 2.2 AA contrast, visible focus, logical focus return, 44-pixel minimum touch targets, reduced motion, 320-pixel reflow, and 400-percent zoom.
