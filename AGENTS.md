@@ -47,6 +47,8 @@ Provider responses must be normalized and validated before reaching user-facing 
 
 Recommendation ranking, composition, and V0.1 explanations are deterministic. Any future local LLM may only reword verified structured facts behind the AI-provider boundary after a separate human gate; it cannot create candidates, evidence, rankings, or facts. A hosted LLM requires a separate scope and child-privacy gate.
 
+For every owner-facing architecture, persistence, provider, deployment, or material data-model decision, include a legible architecture/data-flow diagram and an entity-relationship or lifecycle diagram when applicable. Label current, proposed, and deferred elements; show ownership, trust, privacy, and external-system boundaries; record the diagrams in the owning proposal or ADR; and include them in the checkpoint presentation. A diagram is a decision aid, not implementation authorization.
+
 ## Design review
 
 For every user-facing checkpoint:
@@ -67,4 +69,4 @@ V0.1 is protected responsive web over HTTPS. Do not add a service worker, offlin
 
 ## Current authorization state
 
-The revised SDD was approved on 2026-08-14, and Checkpoints 4R and 5A were approved and delivered. Checkpoint 5B phase-one proposal work is authorized. Do not edit schema or migrations, install dependencies, implement or scaffold Checkpoint 5B, stage or commit Checkpoint 5B code, deploy, or begin phase two until the human product owner reviews and explicitly approves the phase-one proposal.
+The revised SDD was approved on 2026-08-14, and Checkpoints 4R and 5A were approved and delivered. The Checkpoint 5B phase-one proposal was approved on 2026-08-15, and bounded phase-two implementation is authorized. Follow its single-writer and exclusion rules. Stop at the separate Quick Log interactive design gate before UI implementation. Do not stage, commit, push, deploy, provision hosted resources, begin Checkpoint 6, or add later-checkpoint scope before final Checkpoint 5B approval.

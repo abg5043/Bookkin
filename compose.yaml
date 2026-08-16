@@ -1,0 +1,39 @@
+name: bookkin
+
+services:
+  postgres:
+    image: postgres:18.4-bookworm
+    environment:
+      POSTGRES_DB: bookkin
+      POSTGRES_USER: bookkin_local
+      POSTGRES_PASSWORD: bookkin_local_only
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - bookkin-postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bookkin_local -d bookkin"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  postgres-test:
+    image: postgres:18.4-bookworm
+    profiles: ["test"]
+    environment:
+      POSTGRES_DB: bookkin_test
+      POSTGRES_USER: bookkin_test
+      POSTGRES_PASSWORD: bookkin_test_only
+    ports:
+      - "127.0.0.1:5433:5432"
+    tmpfs:
+      - /var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bookkin_test -d bookkin_test"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  bookkin-postgres-data:

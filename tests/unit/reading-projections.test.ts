@@ -15,10 +15,7 @@ vi.mock("@/infrastructure/db/prisma", () => ({
 import { listFamilyShelf } from "@/application/family-books/family-shelf";
 import { listHouseholdReadingHistory } from "@/application/reading/reading-history";
 
-const validEventFilter = {
-  householdId: "household-a",
-  eventType: { in: ["finished", "reread", "stopped", "rejected"] },
-};
+const householdEventFilter = { householdId: "household-a" };
 
 function historyBook(id: string, title: string, eventId: string, occurredAt: string) {
   return {
@@ -30,10 +27,18 @@ function historyBook(id: string, title: string, eventId: string, occurredAt: str
       authors: JSON.stringify([`${title} author`]),
       readingEvents: [{
         id: eventId,
+        householdId: "household-a",
+        childId: "child-a",
+        workId: `${id}-work`,
+        editionId: null,
         eventType: "finished",
         occurredAt: new Date(occurredAt),
         createdAt: new Date(occurredAt),
+        context: null,
         stopReason: null,
+        notes: null,
+        clientMutationId: `${eventId}-mutation`,
+        targetAmendment: null,
         reactions: [],
       }],
     },
@@ -57,7 +62,7 @@ describe("reading projections", () => {
     expect(prismaMocks.findMany).toHaveBeenCalledWith(expect.objectContaining({
       where: { householdId: "household-a" },
       include: expect.objectContaining({
-        work: { include: { readingEvents: expect.objectContaining({ where: validEventFilter }) } },
+        work: { include: { readingEvents: expect.objectContaining({ where: householdEventFilter }) } },
       }),
     }));
   });
@@ -70,7 +75,22 @@ describe("reading projections", () => {
       work: {
         title: "A Book",
         authors: JSON.stringify(["An Author"]),
-        readingEvents: [{ occurredAt: new Date("2026-08-10T18:30:00.000Z") }],
+        readingEvents: [{
+          id: "event-a",
+          householdId: "household-a",
+          childId: "child-a",
+          workId: "work-a",
+          editionId: null,
+          eventType: "reread",
+          occurredAt: new Date("2026-08-10T18:30:00.000Z"),
+          context: null,
+          stopReason: null,
+          notes: null,
+          clientMutationId: "event-a-mutation",
+          createdAt: new Date("2026-08-10T18:30:00.000Z"),
+          targetAmendment: null,
+          reactions: [],
+        }],
       },
     }]);
 
@@ -81,9 +101,7 @@ describe("reading projections", () => {
       where: { householdId: "household-a" },
       include: expect.objectContaining({
         work: { include: { readingEvents: expect.objectContaining({
-          where: validEventFilter,
-          orderBy: { occurredAt: "desc" },
-          take: 1,
+          where: householdEventFilter,
         }) } },
       }),
     }));

@@ -18,6 +18,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "test:db": "node scripts/test-database-integrity.mjs",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
@@ -25,7 +26,13 @@
     "db:validate": "prisma validate",
     "db:migrate": "tsx scripts/db-migrate.ts",
     "db:migrate:dev": "prisma migrate dev",
+    "db:migrate:status": "prisma migrate status",
     "db:seed": "prisma db seed",
+    "db:up": "docker compose up -d --wait --wait-timeout 60 postgres",
+    "db:down": "docker compose down",
+    "db:test:up": "docker compose --profile test up -d --wait --wait-timeout 60 postgres-test",
+    "db:rehearse:restore": "node scripts/postgres/rehearse-backup-restore.mjs",
+    "db:reset:local": "node scripts/postgres/reset-local-database.mjs",
     "validate": "npm run lint && npm run typecheck && npm run test && npm run build"
   },
   "prisma": {
