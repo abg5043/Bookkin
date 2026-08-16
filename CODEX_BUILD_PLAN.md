@@ -1,10 +1,10 @@
 # Bookkin Software Development Document and Agentic Build Plan
 
-Status: canonical planning document; Checkpoint 5A delivered; Checkpoint 5B phase two in progress
+Status: canonical planning document; Checkpoint 5B delivered; Checkpoint 6 in progress
 
 Last revised: 2026-08-15
 
-The human product owner approved this SDD on 2026-08-14, approved Checkpoint 4R delivery, approved and delivered Checkpoint 5A on 2026-08-15, approved the Checkpoint 5B phase-one proposal on 2026-08-15, and approved the separate Quick Log interactive design gate on 2026-08-15. Bounded Checkpoint 5B phase-two implementation, including the approved narrow Quick Log integration, is authorized. This does not authorize commit/push, deployment, or Checkpoint 6.
+The human product owner approved this SDD on 2026-08-14, approved and delivered Checkpoints 4R and 5A, and approved and delivered Checkpoint 5B on 2026-08-15. The owner explicitly authorized Checkpoint 6 to begin after the Checkpoint 5B commit and push. This does not authorize deployment, hosted resources, later-checkpoint implementation, or public actions.
 
 ## 1. Purpose
 
@@ -635,6 +635,20 @@ Owner decisions: exact contracts and schema; PostgreSQL approval; Windows-local 
 
 Mandatory human stop: phase one stops for explicit owner approval before any implementation. After approved implementation and independent verification, Checkpoint 5B stops again for owner review, refinements, and explicit approval before commit/push and before Checkpoint 6 work.
 
+#### Approved delivery record
+
+Human approval: owner approved final Checkpoint 5B, its family-usability research cadence, the two proposed commits, push, and the start of Checkpoint 6 on 2026-08-15.
+
+Commits: `12adc7e` (`feat(data): establish PostgreSQL recommendation-readiness baseline`) and `6b26255` (`feat(quick-log): add correction-backed one-tap reread`)
+
+Branch: `codex/checkpoint-5b-postgresql`
+
+Remote: `origin` (`https://github.com/abg5043/Bookkin.git`)
+
+Push: succeeded to `origin/codex/checkpoint-5b-postgresql`
+
+CI: not triggered by the branch push; the workflow runs on pull requests and pushes to `main`. Local lint, typecheck, production build, 31 unit tests, 14 browser acceptance tests, 6 PostgreSQL integrity tests, and backup/restore rehearsal passed.
+
 ### Checkpoint 6 - Narrow library adapter
 
 Goal: provide an honest official-catalog handoff without claiming library-account integration.
@@ -1003,10 +1017,8 @@ These thresholds are planning hypotheses. The owner may revise them at a checkpo
 
 ## 16. Current owner decision
 
-The owner approved the revised SDD and Checkpoint 4R, then approved and delivered Checkpoint 5A. On 2026-08-15 the owner approved the Checkpoint 5B phase-one proposal and authorized its bounded phase-two implementation:
+The owner approved and delivered Checkpoint 5B on 2026-08-15 and explicitly authorized Checkpoint 6 to begin after its Git delivery:
 
-- The approved PostgreSQL transition, schema/migrations, database tooling, frozen contracts, correction/reference/observation/interest use cases, domain-only typed-result validator, tests, and required reviews are authorized.
-- One domain/data writer owns the schema, active migration history, database scripts, Compose workflow, and database ADR implementation status.
-- The owner approved the separate Quick Log reread/Undo interactive gate on 2026-08-15; implementation is limited to that approved interaction and copy.
-- Do not stage, commit, push, deploy, provision hosted resources, or begin Checkpoint 6 before the final Checkpoint 5B owner review and explicit approval.
-- Do not implement candidate providers, scoring, composition, explanations, recommendation bags/actions, profile UI, library UI, AI, analytics, authentication, hosting, camera scanning, or other later-checkpoint scope.
+- Checkpoint 6 is limited to the generic `LibraryAdapter` capability contract, Johnson County Library official catalog-search URL construction, normalized ISBN and title fallback behavior, unsupported-capability handling, tests, diagrams, and product-truth/security review.
+- Do not add branch UI, real-time availability, holds, credentials, loans, borrowing-history imports, recommendation UI, analytics, a dormant settings destination, or later-checkpoint behavior.
+- Do not deploy, provision hosted resources, contact external participants, stage, commit, push, or begin Checkpoint 7A before the final Checkpoint 6 owner review and explicit approval.
