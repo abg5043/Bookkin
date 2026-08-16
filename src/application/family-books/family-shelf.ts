@@ -3,6 +3,8 @@ import { type z } from "zod";
 import {
   familyBookShelfStatusSchema,
 } from "@/domain/family-books/validation";
+import { readingGraphFromRows, resolveCurrentReadingRecords } from "@/application/reading/current-records";
+import { sortReadingEvents } from "@/application/reading/summary";
 import {
   encodeSerialized,
   metadataProvenanceSchema,
@@ -18,6 +20,7 @@ export type FamilyShelfItem = {
   authors: string[];
   coverUrl?: string;
   shelfStatus?: ShelfStatus;
+  lastReadAt?: string;
 };
 
 export type SaveFamilyBookResult = {
@@ -47,7 +50,17 @@ export async function listFamilyShelf(householdId: string): Promise<FamilyShelfI
     where: { householdId },
     orderBy: { lastSeenAt: "desc" },
     include: {
-      work: true,
+      work: {
+        include: {
+          readingEvents: {
+            where: { householdId },
+            include: {
+              targetAmendment: true,
+              reactions: { include: { targetAmendment: true } },
+            },
+          },
+        },
+      },
       editions: {
         orderBy: { lastSeenAt: "desc" },
         take: 1,
@@ -56,13 +69,26 @@ export async function listFamilyShelf(householdId: string): Promise<FamilyShelfI
     },
   });
 
-  return familyBooks.map((familyBook) => ({
-    id: familyBook.id,
-    title: familyBook.work.title,
-    authors: JSON.parse(familyBook.work.authors) as string[],
-    coverUrl: familyBook.editions[0]?.edition.coverLargeUrl ?? familyBook.editions[0]?.edition.coverSmallUrl ?? undefined,
-    shelfStatus: asShelfStatus(familyBook.shelfStatus),
-  }));
+  return familyBooks.map((familyBook) => {
+    const graph = readingGraphFromRows(familyBook.work.readingEvents);
+    const latestEvent = sortReadingEvents(resolveCurrentReadingRecords(
+      householdId,
+      graph.events,
+      graph.eventAmendments,
+      graph.reactions,
+      graph.reactionAmendments,
+    ))[0];
+    return {
+      id: familyBook.id,
+      title: familyBook.work.title,
+      authors: JSON.parse(familyBook.work.authors) as string[],
+      coverUrl: familyBook.editions[0]?.edition.coverLargeUrl
+        ?? familyBook.editions[0]?.edition.coverSmallUrl
+        ?? undefined,
+      shelfStatus: asShelfStatus(familyBook.shelfStatus),
+      lastReadAt: latestEvent?.occurredAt.toISOString(),
+    };
+  });
 }
 
 export async function saveToFamilyShelf(
@@ -157,6 +183,7 @@ export async function saveToFamilyShelf(
         where: { familyBookId_editionId: { familyBookId: familyBook.id, editionId: edition.id } },
         update: { lastSeenAt: new Date() },
         create: {
+          householdId,
           familyBookId: familyBook.id,
           editionId: edition.id,
           addedVia,

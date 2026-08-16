@@ -12,6 +12,24 @@ jobs:
   foundation:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:18.4-bookworm
+        env:
+          POSTGRES_DB: bookkin_ci
+          POSTGRES_USER: bookkin_ci
+          POSTGRES_PASSWORD: bookkin_ci_only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U bookkin_ci -d bookkin_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://bookkin_ci:bookkin_ci_only@127.0.0.1:5432/bookkin_ci?schema=public
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -25,14 +43,51 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate Prisma schema
+        run: npm run db:validate
+
+      - name: Generate Prisma client
+        run: npm run db:generate
+
+      - name: Replay PostgreSQL migrations
+        run: npm run db:migrate
+
+      - name: Verify migration status
+        run: npm run db:migrate:status
+
+      - name: Seed verified fixtures
+        run: npm run db:seed
+
+      - name: Verify migration history matches the Prisma schema
+        env:
+          SHADOW_DATABASE_URL: postgresql://bookkin_ci:bookkin_ci_only@127.0.0.1:5432/bookkin_ci_shadow?schema=public
+        run: |
+          docker exec ${{ job.services.postgres.id }} createdb -U bookkin_ci bookkin_ci_shadow
+          npx prisma migrate diff --from-migrations prisma/migrations --to-schema-datamodel prisma/schema.prisma --shadow-database-url "$SHADOW_DATABASE_URL" --exit-code
+          docker exec ${{ job.services.postgres.id }} dropdb -U bookkin_ci bookkin_ci_shadow
+
+      - name: Rehearse PostgreSQL backup and restore
+        env:
+          BOOKKIN_POSTGRES_CONTAINER: ${{ job.services.postgres.id }}
+          BOOKKIN_ALLOW_UNLABELED_CONTAINER: "true"
+          BOOKKIN_POSTGRES_USER: bookkin_ci
+          BOOKKIN_POSTGRES_DB: bookkin_ci
+          BOOKKIN_RESTORE_DB: bookkin_ci_restore_check
+        run: npm run db:rehearse:restore
+
       - name: Lint
         run: npm run lint
 
       - name: Type check
         run: npm run typecheck
 
-      - name: Unit tests
+      - name: Unit and integration tests
         run: npm run test
+
+      - name: Required PostgreSQL integrity tests
+        env:
+          BOOKKIN_REQUIRE_DB_TESTS: "true"
+        run: npm run test:db
 
       - name: Production build
         run: npm run build

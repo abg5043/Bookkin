@@ -1,6 +1,6 @@
 # Data model
 
-This document distinguishes the implemented historical model from the unapproved Checkpoint 5B proposal. The current implementation and migration remain in `prisma/`. No schema, migration, or database transition is authorized by this document.
+This document describes the historical model and the owner-approved Checkpoint 5B transition now in bounded implementation. The canonical PostgreSQL schema and active provider-specific migration history live in `prisma/`; the unchanged historical SQLite migrations are archived under `docs/architecture/migrations/sqlite/`.
 
 ## Current implemented concepts
 
@@ -15,9 +15,9 @@ This document distinguishes the implemented historical model from the unapproved
 
 `FamilyBook.shelfStatus` represents exactly one current relationship: `owned`, `borrowed`, or `wishlist`. Discovery, a recommendation, a scan, and reading history are not shelf statuses.
 
-## Checkpoint 5B proposed extensions
+## Checkpoint 5B approved extensions
 
-Phase one must present exact types, constraints, indexes, ownership, deletion, migration, and rollback behavior for human approval before implementation.
+The owner approved the exact phase-one types, constraints, ownership, deletion, migration, and rollback boundaries on 2026-08-15. Implementation remains limited to the Checkpoint 5B plan.
 
 ### PreferenceObservation
 
@@ -91,9 +91,9 @@ Exact birthdates, legal names, child photos, schools, location history, library 
 - Household, child, work, edition, event, and observation ownership is validated together in application use cases.
 - Repeated mutations are idempotent where appropriate.
 
-## Database decision gate
+## Database decision
 
-PostgreSQL is the proposed canonical database for local, CI, and hosted environments. Checkpoint 5B must present and obtain explicit approval for:
+PostgreSQL 18 is canonical for local development and CI and is the required database family for later hosting. The approved Checkpoint 5B decision selected:
 
 - Windows-local PostgreSQL method.
 - Canonical migration history.
@@ -102,4 +102,4 @@ PostgreSQL is the proposed canonical database for local, CI, and hosted environm
 - Backup and restore implications.
 - Blocking Prisma and use-case debt only.
 
-Long-lived dual SQLite and PostgreSQL production schemas are not the target. Until approval, the current implemented schema remains unchanged.
+There is no dual-write or dual-provider runtime. The SQLite migration history is audit-only, the ignored local SQLite data was privately backed up, and PostgreSQL starts from the approved minimal seed. Hosted provisioning remains Checkpoint 8A.

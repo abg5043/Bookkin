@@ -2,7 +2,7 @@
 
 ## Status
 
-Historical accepted decision for the current Checkpoint 2 SQLite implementation. It remains descriptive until Checkpoint 5B approval. If Checkpoint 5B approves canonical PostgreSQL, caregiver terminology, correction chains, and new evidence contracts, a new ADR must explicitly amend or supersede those parts. This ADR does not constrain that proposal and does not authorize a migration.
+Historical accepted decision for the Checkpoint 2 SQLite implementation. ADR 0004 supersedes its correction and reaction-provenance behavior, and ADR 0005 supersedes its database-provider and portability choices as of the approved Checkpoint 5B phase-one decision on 2026-08-15. Work/edition identity and the historical facts below remain descriptive where they do not conflict with those newer decisions.
 
 ## Work versus edition
 

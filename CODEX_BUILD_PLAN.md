@@ -1,10 +1,10 @@
 # Bookkin Software Development Document and Agentic Build Plan
 
-Status: canonical planning document; Checkpoint 4R in progress
+Status: canonical planning document; Checkpoint 6 delivered; Checkpoint 7A in progress
 
-Last revised: 2026-08-14
+Last revised: 2026-08-15
 
-The human product owner approved this SDD on 2026-08-14 and authorized Checkpoint 4R only. This approval does not authorize Checkpoint 5A, Checkpoint 5B, application implementation, database changes, deployment, staging, commit, or push.
+The human product owner approved this SDD on 2026-08-14 and approved and delivered Checkpoints 4R, 5A, 5B, and 6. On 2026-08-15, the owner explicitly authorized Checkpoint 7 to begin; under the approved split sequence, this authorizes Checkpoint 7A only. On 2026-08-16, the owner approved adding a separately gated protected-preview foundation after 7A so real-phone review can begin earlier. This sequencing decision does not authorize deployment, accounts, hosted resources, Checkpoint 7P, Checkpoint 7B, later-checkpoint implementation, or public actions.
 
 ## 1. Purpose
 
@@ -34,7 +34,7 @@ The V0.1 promise is:
 
 > Give Bookkin a small amount of truthful family context, receive a verified library bag in under approximately ten minutes, check candidates in the official library catalog, and record what happened so later bags improve.
 
-The initial target is a caregiver reading picture books or early readers with one child approximately ages 2-8 and visiting a public library at least monthly.
+The initial target is a caregiver reading picture books or early readers with one or more children approximately ages 2-8 and visiting a public library at least monthly. Every history, explicit preference, request, candidate pool, and recommendation bag is scoped to one selected child profile. Cross-child or combined family bags are deferred.
 
 ### 2.1 Primary loop
 
@@ -51,7 +51,7 @@ First value must not require shelf construction, five logged books, a library br
 
 The minimum context for a first recommendation request is:
 
-> A coarse age or reading-stage band and either one declared current interest or one verified reference work.
+> A completed child reading profile with one coarse age range and at least one current reading-relationship choice, plus at least one useful recommendation signal from valid reading/reaction history, one declared current topic interest, one declared controlled kind-of-book preference, one durable remembered work, or one verified request-only reference work.
 
 A nickname is optional. Exact birthdate, child photo, school, address, voice, and location history are not requested.
 
@@ -89,6 +89,11 @@ Required characteristics:
 - Fast search and filtering wherever collection size can grow.
 - One persistent, elegant thumb-reachable action control for Add book and Log a read on mobile.
 - Add and Log workflows open in focused modal or sheet experiences and do not require page scrolling to start.
+- A compact child-profile selector keeps the active child explicit wherever history, preferences, requests, or recommendations are shown. Switching profiles never merges evidence.
+- Initial age range, overlapping reading relationships, current interests, and kinds-of-books choices are collected during child-profile setup and edited later under that child’s Reading profile settings. They are not a permanent top-level `Learning` destination.
+- The Reading profile describes only explicit setup and current-context signals. Reading history, reactions, rereads, stopped reads, and later recommendation feedback remain the primary accumulated evidence and are summarized separately without implying an inferred child personality.
+- A request-only reference is presented only inside the recommendation-request flow with the wording `More like this book`. It never appears as a standalone profile-setting action and never creates durable preference, shelf, or history evidence.
+- Contextual Back returns to the immediate entry surface. Book history opened from Shelf returns to the same Shelf state; book history opened from household History returns to that History list. Restore scroll and focus to the triggering book. Browser Back follows the same stack and restoration rule. The persistent History navigation is the direct route to household History, so do not add a redundant "All history" action.
 - No unexplained numerical markers inside the product UI.
 
 Accessibility and sensory constraints:
@@ -107,7 +112,29 @@ Accessibility and sensory constraints:
 
 Before implementation, the lead presents an interactive, marked-up HTML prototype using realistic non-sensitive fixtures. It includes representative phone, tablet, and desktop compositions, state controls, and selectable comments in a separate review panel.
 
+The product frame must use polished end-user language throughout. Prototype labels, sample-data notices, implementation explanations, reviewer guidance, and placeholder narration belong only in the separate design-comments area and must never appear as product copy.
+
+Until the owner selects a final system, every user-facing design review develops these two directions in parallel against the same content, states, and interactions:
+
+- **Original Bright Snap:** the high-contrast graphic camera language established in `bookkin-concept-bright-snap.html` - yellow, ink, white, cyan, rose, geometric display type, crisp borders, and restrained offset shadows.
+- **Refined Brighter:** the default review direction - the same bright Snap identity with editorial warmth, luminous cool neutrals, softer geometry, and parent-facing restraint. Do not regress to beige, brown, or a lower-energy default.
+
+A designer may propose a third direction only when it tests a genuinely distinct product hypothesis; it must not blur or replace the two required comparison tracks.
+
+Owner corrections made during design review are durable product decisions, not conversational memory. In the same review cycle, the lead records each accepted correction in this SDD or the owning document under `docs/design/`, keeps the interactive review aligned, and reports the changed decision record. Future agents must read those files instead of relying on chat history.
+
 The prototype is a decision artifact, not implementation permission. After implementation, the working screen is reviewed at phone and desktop widths, and the interactive review is updated to reflect the implementation. Keyboard flow, focus, contrast, error recovery, loading, empty, limited, and offline states are checked before the checkpoint report.
+
+### 3.2 Required architecture and data-design review
+
+Every owner-facing decision that materially changes system architecture, data ownership, persistence, provider boundaries, deployment topology, or schema must include diagrams in both the owning proposal/ADR and the checkpoint presentation:
+
+- A current-versus-proposed architecture or data-flow diagram.
+- An entity-relationship, lifecycle, or sequence diagram when records or state transitions are involved.
+- Labels for current, proposed, and deferred elements, plus household ownership, private-data, trust, and external-system boundaries.
+- A short legend and decision callouts so the owner can recommend changes without reconstructing relationships from prose.
+
+Keep diagrams bounded and readable rather than exhaustive. Diagrams are decision artifacts and do not grant implementation authority.
 
 ## 4. V0.1 scope
 
@@ -115,11 +142,12 @@ V0.1 ends only after Checkpoint 11 is explicitly approved.
 
 Required:
 
-- One protected household and one child profile.
+- One protected household with one or more caregiver-managed child profiles.
 - Protected responsive mobile web over HTTPS.
 - PostgreSQL-backed hosted persistence after Checkpoint 5B approval.
-- Optional nickname and coarse age or reading-stage band.
+- Optional nickname, one coarse age range, and one or more nonexclusive current reading-relationship choices.
 - Editable current interests with retained historical phases.
+- Editable child-specific kinds-of-books preferences from a controlled V0.1 vocabulary, separate from topic interests and observed reading outcomes.
 - Durable, source-attributed preference observations created only after explicit input.
 - Request-scoped recommendation references without shelf or history side effects.
 - Verified ISBN, title, author, camera, and batch discovery.
@@ -144,7 +172,7 @@ Deferred:
 - Private-response caching, queued writes, or synchronization.
 - Preferred library branch.
 - Real-time availability, holds, library login, current loans, or borrowing-history import.
-- Multiple children, identified caregivers, or household invitations before controlled beta.
+- Combined family recommendation bags, identified caregivers, or household invitations before controlled beta.
 - Public child profiles or child accounts.
 - Social graphs, feeds, sharing, popularity, streaks, or disappearing records.
 - Public registration. Neither Checkpoint 12A nor 12B authorizes it; it requires a separately specified future checkpoint.
@@ -153,9 +181,9 @@ Deferred:
 - Child-data monetization.
 - Native applications, microservices, and large-scale recommendation infrastructure.
 
-## 5. Domain contracts to freeze at Checkpoint 5B
+## 5. Domain contracts frozen at Checkpoint 5B
 
-These semantics are agreed. Exact tables, constraints, indexes, lifecycle, and migration are not approved until the Checkpoint 5B schema gate.
+These semantics and their phase-one tables, constraints, indexes, lifecycle, and migration boundaries were approved at the Checkpoint 5B schema gate on 2026-08-15. Later-checkpoint deferrals remain in force.
 
 ### 5.1 PreferenceObservation
 
@@ -285,7 +313,7 @@ Preferred branch, branch filtering, availability, holds, loans, history import, 
 - Household deletion, export, backup, restore, and recovery are documented and tested.
 - Cross-household isolation is mandatory before external beta.
 
-PostgreSQL is the proposed canonical database. It is not approved by this document. Checkpoint 5B must present the Windows-local alternatives, hosted and CI implications, migration and rollback evidence, and disposition of current SQLite development data before any migration.
+PostgreSQL 18 is the owner-approved canonical local and CI database as of the Checkpoint 5B phase-one decision on 2026-08-15. The approved Docker Compose Windows workflow, fresh provider-specific baseline, backup/reseed disposition, rollback plan, and CI integration are delivered. Protected-preview vendor selection and provisioning are separately gated by Checkpoint 7P; hosted-alpha hardening remains gated by Checkpoint 8A.
 
 ## 9. Measurement and growth
 
@@ -295,7 +323,7 @@ Provisional effort budgets:
 
 - First normal bag from an empty household: under approximately ten minutes.
 - One ordinary quick log: approximately fifteen seconds or less.
-- Four successive bedtime logs with recent books and "Log another": approximately one minute.
+- Four successive bedtime logs with recent books and "Log a different book or outcome": approximately one minute.
 - Explicit reread from a recent book: one action followed by confirmation and Undo.
 
 Required result metrics:
@@ -311,6 +339,18 @@ Core activation is a household generating a normal bag and opening at least one 
 The provisional north-star hypothesis is the share of verified recommendations that are pursued, explicitly obtained, read, and positively received. Checkpoint 10A must approve the exact outcome conditions, maturity window, reaction subject, and denominator before implementation. Caregiver reaction quality remains separate.
 
 Growth remains free through controlled beta. Bookkin has no ads, affiliates, sponsored placement, commercial ranking influence, or child-data monetization. Monetization begins only as research at Checkpoint 13 after traction, privacy, reliability, support, and cost evidence.
+
+### 9.1 Family experience research cadence
+
+Major end-to-end experience reviews include a family perspective without turning every checkpoint into participant research:
+
+- Checkpoints 8 and 9 use a structured multi-agent preflight with product design, product management, human factors, accessibility, and contrasting synthetic caregiver/child-context personas. These findings are hypotheses and never count as user evidence.
+- Checkpoint 11 uses observed end-to-end behavior from the owner household across realistic library-trip and bedtime cycles. It produces corrections and a research protocol but is not generalized beyond that household.
+- Checkpoint 12A is the first external family-usability cohort. Within the five invited households, target at least three separately moderated caregiver-child dyad sessions covering onboarding, recommendation choice, catalog handoff, and later outcome logging, plus longitudinal follow-up across real use. A parent may describe or observe a young child's reaction; the child is never required to identify themselves to Bookkin.
+- Before Checkpoint 12C expands beyond five households, synthesize the dyad sessions, observed product behavior, support burden, accessibility findings, and recommendation outcomes. Expansion pauses when recurring comprehension, trust, effort, privacy, or safety failures remain unresolved.
+- Parent-only group discussion may supplement Checkpoint 12B positioning and invitation-language review, but it does not replace task observation and cannot validate recommendation quality.
+
+Individual caregiver-child sessions are preferred over placing children together in a conventional focus group, reducing peer influence and protecting privacy. Before any external recruitment, contact, incentive, recording, or child participation, the checkpoint's phase-one gate presents exact participants or criteria, consent and age-appropriate assent, caregiver presence, tasks, data collected, recording behavior, retention/deletion, compensation, moderator, and stop conditions for owner approval. No school, exact birthdate, child photo, location history, or unnecessary child identifier is collected.
 
 ## 10. Architecture
 
@@ -453,7 +493,7 @@ CI: <result or not applicable>
 
 Checkpoints 0-5 were completed and approved in prior owner reviews. Checkpoint 5 consolidated the approved shelf, discovery, history, and quick-log surfaces with the current editorial design system; it did not implement the later Bright Snap shell. The implemented baseline remains subject to regression review and may be refined only within a later approved checkpoint. Much of that approved baseline is not yet tracked in Git, so the already authorized Checkpoint 4R must reconcile and deliver it before Checkpoint 5A begins.
 
-Checkpoint 5A has design exploration but is not approved for implementation by this documentation revision.
+Checkpoint 5A was approved and delivered on 2026-08-15. Checkpoint 5B was approved and delivered on 2026-08-15. The owner approved the Checkpoint 6 architecture proposal on 2026-08-15; its bounded implementation is technically verified and awaits final human checkpoint review before commit, push, or Checkpoint 7A.
 
 ## 14. Remaining checkpoint sequence
 
@@ -528,6 +568,20 @@ Owner decisions: final Bright Snap balance, action-control interaction, copy voc
 
 Mandatory human stop: specialist completion, independent PASS, tests, CI, agent consensus, and lead completion do not approve Checkpoint 5A. The lead presents the interactive result and evidence, stops, receives owner guidance, reverifies requested refinements, and waits for explicit approval before commit/push and before Checkpoint 5B work.
 
+#### Approved delivery record
+
+Human approval: owner approved Checkpoint 5A delivery and continuation to Checkpoint 5B on 2026-08-15.
+
+Commit: `519efdc`
+
+Branch: `codex/checkpoint-5a-bright-snap`
+
+Remote: `origin` (`https://github.com/abg5043/Bookkin.git`)
+
+Push: succeeded to `origin/codex/checkpoint-5a-bright-snap`
+
+CI: no remote workflow reported; local lint, typecheck, production build, 22 unit tests, and 13 browser acceptance tests passed.
+
 ### Checkpoint 5B - Recommendation readiness, data integrity, and PostgreSQL gate
 
 Goal: freeze the contracts and remove only blocking data-integrity debt required for recommendations.
@@ -586,6 +640,20 @@ Owner decisions: exact contracts and schema; PostgreSQL approval; Windows-local 
 
 Mandatory human stop: phase one stops for explicit owner approval before any implementation. After approved implementation and independent verification, Checkpoint 5B stops again for owner review, refinements, and explicit approval before commit/push and before Checkpoint 6 work.
 
+#### Approved delivery record
+
+Human approval: owner approved final Checkpoint 5B, its family-usability research cadence, the two proposed commits, push, and the start of Checkpoint 6 on 2026-08-15.
+
+Commits: `12adc7e` (`feat(data): establish PostgreSQL recommendation-readiness baseline`) and `6b26255` (`feat(quick-log): add correction-backed one-tap reread`)
+
+Branch: `codex/checkpoint-5b-postgresql`
+
+Remote: `origin` (`https://github.com/abg5043/Bookkin.git`)
+
+Push: succeeded to `origin/codex/checkpoint-5b-postgresql`
+
+CI: not triggered by the branch push; the workflow runs on pull requests and pushes to `main`. Local lint, typecheck, production build, 31 unit tests, 14 browser acceptance tests, 6 PostgreSQL integrity tests, and backup/restore rehearsal passed.
+
 ### Checkpoint 6 - Narrow library adapter
 
 Goal: provide an honest official-catalog handoff without claiming library-account integration.
@@ -609,29 +677,98 @@ Owner decisions: selected library-system behavior, URL construction, and handoff
 
 Mandatory human stop: all agent and test PASS states remain technical only. The lead presents the working handoff and evidence, stops for owner guidance and refinement, and requires explicit approval before commit/push and Checkpoint 7A.
 
+#### Approved delivery record
+
+Human approval: owner approved final Checkpoint 6, its proposed commit and push, and the start of Checkpoint 7 on 2026-08-15.
+
+Commit: `31ef578 feat(library): add safe Johnson County catalog handoff`
+
+Branch: `codex/checkpoint-6-library-adapter`
+
+Remote: `origin` (`https://github.com/abg5043/Bookkin.git`)
+
+Push: succeeded on 2026-08-15; the branch now tracks `origin/codex/checkpoint-6-library-adapter`.
+
+CI: no run was triggered because the current workflow runs on pull requests and pushes to `main`; local `npm run validate` passed with lint, typecheck, 51 tests passing, and production build.
+
 ### Checkpoint 7A - Family context, preference evidence, and verified candidates
 
 Goal: collect minimal recommendation context and build a verified candidate pool without ranking or showing a bag.
 
 Included:
 
-- Coarse age or reading stage.
+- Caregiver-managed multiple child profiles with one explicit active child; no cross-child evidence or recommendation mixing.
+- Coarse age range plus nonexclusive current reading-relationship choices (`Read-alouds together`, `Reading together`, `Some independent reading`).
 - Editable current interests and retained historical phases.
+- Controlled kinds-of-books preferences such as funny, informative, fantasy, rhyming, interactive, and gentle/cozy, modeled separately from topic interests.
 - Durable preference observations.
-- Request-scoped reference behavior.
-- Deterministic "What Bookkin is learning" view.
+- Request-scoped `More like this book` behavior in the recommendation-request boundary, not profile settings.
+- Deterministic child-specific Reading profile settings/read model that distinguishes explicit profile signals from accumulated history and reactions.
 - Verified candidate sourcing, hydration, normalization, provenance, coverage, deduplication, and exclusions.
 - Development-only candidate coverage and insufficiency previews. These are not final typed bag results.
 
 Excluded: scoring, composition, user-facing bags, AI, and library availability.
 
-Acceptance evidence: cold-start context can be completed without shelf construction; all candidate facts retain provenance; missing fields remain missing; observations retain subject and reporter; references have no implicit side effects.
+Acceptance evidence: cold-start context can be completed without shelf construction; switching children never mixes evidence, requests, pools, or results; topic interests and kinds-of-books preferences remain distinct; all candidate facts retain provenance; missing fields remain missing; observations retain subject and reporter; references have no implicit side effects.
 
 Specialists: product/domain and provider implementers; privacy and product-truth reviewers.
 
 Owner decisions: candidate coverage threshold and any fallback metadata provider.
 
-Mandatory human stop: agent consensus cannot authorize scoring work. The lead presents evidence and the interactive user-facing review, resolves owner guidance, and waits for explicit approval before commit/push and Checkpoint 7B.
+Mandatory human stop: agent consensus cannot authorize hosting or scoring work. The lead presents evidence and the interactive user-facing review, resolves owner guidance, and waits for explicit approval before commit/push and Checkpoint 7P.
+
+### Checkpoint 7P - Protected preview foundation
+
+Goal: make the approved application privately reachable on real phones early enough for later checkpoints to receive continuous device feedback.
+
+Phase one is an infrastructure decision and authority gate. Before account creation, billable use, remote deployment push, secret handling, database provisioning, invitation, or deployment, present the exact vendor options, owners, current prices, branch and commit scope, protection model, synthetic-data policy, migration plan, rollback plan, and teardown path. Obtain explicit human authorization for the selected actions. Conceptual approval of this checkpoint is not execution authority.
+
+Included:
+
+- Protected HTTPS preview hosting with platform-level access control.
+- Managed PostgreSQL using the same canonical database family as local and CI.
+- Synthetic showcase data only; no copied local household database and no real child profile required.
+- Safe migration/bootstrap, deterministic reseed, and preview-reset path.
+- Real-phone smoke review at representative narrow widths.
+- Basic logs, secret ownership, cost ownership, rollback, and complete teardown instructions.
+- A deployment runbook sufficiently explicit for the owner to reproduce or recover the preview.
+
+Excluded: public registration, public indexing, unrestricted sharing, application authentication, production family-data migration, custom domain or DNS, PWA/offline cache, external focus-group invitations, and zero-setup local demo implementation.
+
+Acceptance evidence: exact authorized vendor/cost record; protected phone access; denied unauthenticated access; synthetic-data verification; persistence across one redeploy; migration and rollback smoke test; no-store and secret/log review; teardown rehearsal or verified dry run; owner-readable deployment instructions.
+
+Specialists: deployment/operations implementer; independent security, privacy, database, and responsive-device reviewers.
+
+Owner decisions: vendors, accounts, expected costs, exact protection configuration, authorized branch/commit, permitted reviewers, and whether the protected preview is ready to support continued checkpoint review.
+
+```mermaid
+flowchart LR
+    owner["Owner or explicitly invited reviewer<br/>phone / desktop"] --> protection["Platform access protection<br/>PROPOSED 7P"]
+    protection --> web["Bookkin protected preview<br/>PROPOSED 7P"]
+    web --> db[("Managed PostgreSQL<br/>PROPOSED 7P / synthetic data")]
+    web --> provider["Book metadata provider<br/>EXTERNAL / UNTRUSTED"]
+    public["Unauthenticated public internet"] -. "blocked" .-> web
+    local["Local development<br/>CURRENT: Docker PostgreSQL"] -. "same migrations; no data copy" .-> db
+    demo["Zero-setup npm run demo<br/>DEFERRED"] -.-> fixtures["Synthetic nonpersistent fixtures<br/>DEFERRED"]
+```
+
+```mermaid
+stateDiagram-v2
+    [*] --> Proposed
+    Proposed --> Authorized: owner approves exact vendors, cost, branch, and actions
+    Authorized --> Provisioned: accounts and managed resources created
+    Provisioned --> Protected: access boundary verified
+    Protected --> Seeded: synthetic showcase data only
+    Seeded --> PhoneVerified: owner completes real-device review
+    PhoneVerified --> Approved: final Checkpoint 7P approval
+    Approved --> [*]
+    Provisioned --> RolledBack: migration or protection failure
+    Protected --> TornDown: owner-authorized teardown
+    RolledBack --> [*]
+    TornDown --> [*]
+```
+
+Mandatory human stop: phase one stops before every external or billable action until the owner authorizes the exact action. Successful deployment does not approve the checkpoint. The lead presents the protected preview and operational evidence, resolves owner guidance, and requires final explicit approval before commit/push and Checkpoint 7B.
 
 ### Checkpoint 7B - Deterministic scoring, composition, and explanations
 
@@ -677,7 +814,7 @@ Included:
 
 Excluded: LLM, availability, holds, infinite feeds, gamified replacement, public access, and camera scanning.
 
-Acceptance evidence: realistic empty-household flow; normal, limited, and zero states; at least two plausibly useful candidates in reviewed normal bags; truthful catalog handoff; keyboard, focus, contrast, recovery, and phone reachability review.
+Acceptance evidence: realistic empty-household flow; normal, limited, and zero states; at least two plausibly useful candidates in reviewed normal bags; truthful catalog handoff; keyboard, focus, contrast, recovery, and phone reachability review; structured family-perspective agent preflight with hypotheses clearly separated from evidence.
 
 Specialists: product/UI and domain implementers; recommendation, human-factors, accessibility, and product-truth reviewers.
 
@@ -685,25 +822,25 @@ Owner decisions: whether the bag and deterministic explanations are plausibly wo
 
 Mandatory human stop: the lead presents the interactive implementation and recommendation evidence, stops for owner inspection and guidance, reverifies refinements, and requires explicit approval before commit/push and Checkpoint 8A.
 
-### Checkpoint 8A - Protected hosted responsive web
+### Checkpoint 8A - Hosted alpha hardening
 
-Goal: make the approved application safely usable on a phone outside the development machine.
+Goal: harden the earlier protected preview for sustained household-alpha use after the first useful recommendation bag is approved.
 
 Phase one is an infrastructure decision and authority gate. Before account creation, billable use, remote push for deployment, secret handling, database provisioning, or deployment, present the exact vendor options, owners, costs, branch and commit scope, protection model, migration plan, rollback plan, and teardown path. Obtain explicit human authorization for the selected actions. This is checkpoint-internal execution authority, not final Checkpoint 8A approval.
 
 Included:
 
-- Protected HTTPS hosting.
-- Managed PostgreSQL.
+- Reconfirm protected HTTPS hosting and managed PostgreSQL ownership.
 - Safe migration and production bootstrap.
 - No development-family seed data.
 - Household and API protection.
 - Persistence across deployments.
-- Preliminary backup, restore, rollback, logs, and service ownership.
+- Tested backup, restore, rollback, logs, monitoring, and service ownership.
+- Removal of synthetic showcase data before any approved real household use.
 
 Excluded: public access, unrestricted registration, PWA requirement, offline cache, custom domain, and DNS unless separately approved as operationally necessary.
 
-Acceptance evidence: deployment runbook; account and cost ownership; protected phone access; persistence and recovery test; no-store behavior; secret and log review; rollback evidence.
+Acceptance evidence: updated deployment runbook; account and cost ownership; protected phone access; synthetic-data removal; persistence and recovery test; no-store behavior; secret and log review; tested backup/restore and rollback evidence.
 
 Specialists: deployment/operations implementer; security and privacy reviewers.
 
@@ -803,7 +940,7 @@ Validate:
 - Catalog handoff and books brought home.
 - Reading events and separate reactions.
 - Four successive bedtime logs in approximately one minute.
-- Recent-book, "Log another," and one-tap reread behavior.
+- Recent-book, "Log a different book or outcome," and one-tap reread behavior.
 - Three-way comprehension of "Stopped reading," "Decided not to read," and recommendation-level "Not for us."
 - Event correction and retraction.
 - Editable interest phases.
@@ -834,11 +971,13 @@ Included:
 - Alpha-to-beta migration decision.
 - Support and incident process.
 - Five invited households.
+- At least three separately moderated caregiver-child end-to-end usability sessions when participation and consent permit.
+- Longitudinal follow-up across recommendation choice, library pursuit, reading outcome, correction, and later adaptation.
 - Free access.
 
 Excluded: unrestricted public registration, public child data, billing, public acquisition site, and marketing expansion. Public registration requires a separately specified future checkpoint and is authorized by neither 12A nor 12B.
 
-Acceptance evidence: cross-household isolation; recovery and deletion; support ownership; no alpha data leakage; explicit invited-family list and rollout plan.
+Acceptance evidence: cross-household isolation; recovery and deletion; support ownership; no alpha data leakage; explicit invited-family list and rollout plan; owner-approved family-research protocol; moderated-session synthesis with child participation kept minimal and private; disposition of recurring comprehension, trust, effort, accessibility, and recommendation-quality findings.
 
 Specialists: authentication/domain implementer; security and privacy isolation reviewers.
 
@@ -952,11 +1091,10 @@ These thresholds are planning hypotheses. The owner may revise them at a checkpo
 
 ## 16. Current owner decision
 
-The owner approved the revised SDD and authorized Checkpoint 4R on 2026-08-14. Until the Checkpoint 4R delivery gate receives separate explicit approval:
+The owner approved and delivered Checkpoint 6 on 2026-08-15 and explicitly authorized Checkpoint 7 to begin. The approved plan splits Checkpoint 7 into separately gated 7A and 7B, so current authorization is limited to Checkpoint 7A:
 
-- Inventory, validation, documentation reconciliation, and test-fixture truth corrections are authorized within Checkpoint 4R.
-- Do not modify application behavior, schema, migrations, dependencies, or runtime configuration.
-- Do not stage, commit, push, deploy, or change the remote.
-- Do not begin or delegate Checkpoint 5A implementation.
-- Do not begin Checkpoint 5B proposal work.
-- Do not start later-checkpoint research, scaffolding, deployment, or vendor setup.
+- Support one or more caregiver-managed child profiles with an explicit active child; collect one coarse age range plus nonexclusive current reading-relationship choices, editable current interests and retained historical phases, controlled kinds-of-books preferences, durable preference observations, and explicit request-scoped reference behavior without cross-child mixing.
+- Source and hydrate a verified candidate pool with normalized facts, provenance, coverage, deduplication, and exclusions. Development-only coverage and insufficiency previews are allowed but are not recommendation results.
+- Provide the required diagrams and interactive user-facing design review before implementing user-facing workflow changes.
+- Do not add scoring, ranking, composition, recommendation bags, AI, library availability, or Checkpoint 7B behavior.
+- Do not deploy, provision hosted resources, contact external participants, stage, commit, push, or begin Checkpoint 7P or 7B before the final Checkpoint 7A owner review and explicit approval. Checkpoint 7P then requires its own exact-action infrastructure authorization before any external change.

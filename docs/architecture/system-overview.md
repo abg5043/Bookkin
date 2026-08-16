@@ -24,7 +24,7 @@ Managed PostgreSQL
 Approved metadata and narrow library adapters
 ```
 
-PostgreSQL is a proposal until the Checkpoint 5B human gate approves the schema, Windows-local method, migration and rollback plan, CI behavior, and disposition of current SQLite development data.
+PostgreSQL 18 was approved at the Checkpoint 5B phase-one human gate on 2026-08-15. Docker Compose is the canonical Windows-local workflow, CI uses the same database family, SQLite is audit/rollback-only, and hosted provisioning remains separately gated by Checkpoint 8A.
 
 V0.1 implements responsive protected web, not a PWA. It does not implement a service worker, offline writes, private-response caching, or an installability promise. Each requires a separately approved future checkpoint. A protected hosted preview precedes camera testing.
 

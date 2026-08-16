@@ -11,12 +11,15 @@ Bookkin should feel fun enough to invite a child and refined enough to earn care
 - Keep Log a read and Add a book reachable without scrolling on phone through one elegant thumb-reachable action that fans out to explicit labels.
 - Open Add and Log in focused modals or mobile sheets; preserve safe-area clearance, conventional dismissal, focus trapping, and focus return.
 - Let book cards open detail and history directly; avoid repetitive text actions when persistent quick capture is faster.
+- Make Back origin-aware. A book opened from Shelf returns to the same Shelf search, filter, scroll position, and triggering card; a book opened from household History returns to the same History position and row. Label the single control `Back to Shelf` or `Back to History`. Browser Back follows the same stack. Use the persistent History navigation for household History rather than adding a redundant action.
 - Keep child-facing play contained to appropriate moments and avoid babyish decoration.
 - Avoid dashboards, gamified streaks, guilt, scarcity, fake availability, and generic purple-gradient AI styling.
 
 Essential text uses high-contrast ink on solid surfaces. Decorative colors do not carry low-contrast text or color-only meaning. Review metadata, pills, placeholders, modal controls, errors, and action labels explicitly.
 
 Growing shelves are searchable by title or author and filterable by current shelf status. Common logging starts from recent books or shelf search without forcing a detail-page visit.
+
+When recent reading exists, Quick Log opens on compact cover-backed recent rows with an explicit one-action `Read again`. A successful reread keeps the sheet open, identifies the saved book, and offers correction-backed `Undo`. The blank ordinary form remains separate behind `Log a different book or outcome`; it never preselects a book, outcome, or reaction.
 
 Every user-facing checkpoint reviews loading, empty, success, error, permission, limited-evidence, limited-pool, no-result, external-handoff, and relevant offline-warning states.
 
@@ -27,9 +30,14 @@ Every design gate provides an interactive, marked-up HTML prototype before appli
 - Switch among relevant states and representative phone, tablet, and desktop compositions.
 - Include selectable annotations for hierarchy, copy, responsive behavior, tradeoffs, and open decisions.
 - Keep comments and labels in a separate review panel; do not put unexplained numbers inside the product interface.
+- Use polished end-user copy inside the product frame. Keep prototype labels, sample-data notices, implementation explanations, and reviewer narration in the separate review panel.
+- Present Original Bright Snap and Refined Brighter against the same content and interactions until the owner chooses a final system; default to Refined Brighter and do not regress to beige or brown.
 - Use realistic non-sensitive fixtures and never expose actual child, household, reading, or credential data.
+- Use verified real book-cover imagery when it is available; do not replace known covers with decorative stand-ins merely to simplify a review.
 - Make primary interactions usable with native keyboard-accessible controls.
 - Distinguish proposed design from implemented behavior.
 - Check WCAG 2.2 AA contrast, visible focus, logical focus return, 44-pixel minimum touch targets, reduced motion, 320-pixel reflow, and 400-percent zoom.
 
 After implementation, update or recreate the interactive review from the working workflow and realistic states. Re-present it after requested refinements. Static screenshots may supplement but do not replace the interactive artifact unless the human owner approves another format.
+
+Owner corrections are recorded in the canonical SDD or this design-principles file during the same review cycle. Chat history alone is never the decision record.

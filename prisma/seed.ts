@@ -15,10 +15,9 @@ async function main() {
     create: {
       id: "seed-child",
       householdId: household.id,
-      displayName: "Demo Reader",
-      ageBand: "2-4",
-      currentInterests: JSON.stringify(["picture books"]),
-      contentPreferences: JSON.stringify([]),
+      nickname: "Demo reader",
+      ageStageBasis: "age",
+      ageStageValue: "age_2_3",
     },
   });
 
