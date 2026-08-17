@@ -132,6 +132,8 @@ Until the owner selects a final system, every user-facing design review develops
 
 A designer may propose a third direction only when it tests a genuinely distinct product hypothesis; it must not blur or replace the two required comparison tracks.
 
+**Any design pivot or new user-facing surface is presented as at least three distinct options.** The owner chooses; the lead does not present a single design for ratification, and does not present only two. The options must differ in approach — information architecture, emphasis, or interaction model — not in decoration; three variations of one layout are one option presented three times and do not satisfy this. The lead states a recommendation among them, and every option remains genuinely choosable. This is additional to the two-direction visual-language comparison above: once a visual direction is locked, the three-or-more options concern layout, hierarchy, and approach within that language. The Checkpoint 5A exploration worked this way across nine concepts and produced the Personal Librarian thesis that later proved correct, which is the precedent this rule preserves.
+
 The owner selects a final direction no later than the Checkpoint 7P protected-preview review, using the preview-only styling toggle (see Checkpoint 7P) so real feedback replaces the lead building and reviewing both directions in every subsequent prototype. Checkpoint 8 and later user-facing design reviews present the selected direction only.
 
 Owner corrections made during design review are durable product decisions, not conversational memory. In the same review cycle, the lead records each accepted correction in this SDD or the owning document under `docs/design/`, keeps the interactive review aligned, and reports the changed decision record. Future agents must read those files instead of relying on chat history.
@@ -554,6 +556,10 @@ Every checkpoint ends in this order:
 6. Explicit human approval.
 7. Scoped checkpoint commit and push to the approved GitHub remote and branch.
 8. Only then may the next checkpoint begin.
+
+**Every checkpoint report answers the north-star question.** Before anything else, it states plainly: *does this checkpoint move Bookkin closer to surfacing excellent books for this child that the caregiver would not have found on their own?* The answer may legitimately be "indirectly" or "not at all, and here is why it is still necessary" — infrastructure, privacy, and correctness work often qualify. What is not acceptable is skipping the question, or answering it with a restatement of what was built. If a checkpoint cannot connect its work to that goal, that is a finding to surface, not a formality to satisfy.
+
+This exists because the goal is narrower than "a book app," and narrow goals drift quietly. The owner's problem is stated in `docs/product/north-star.md`: he already works through award-winning children's authors, and what he cannot do without this product is find the smaller books that are just as good. A checkpoint that improves tracking, browsing, or logging without improving that is not obviously wrong, but it is not progress toward the reason this product exists.
 
 **Merge to `main` immediately after approval.** Once the owner explicitly approves a checkpoint and authorizes commit and push, the checkpoint branch is merged into `main` as part of closing that checkpoint, not left to accumulate. `main` is the deployable truth: any hosted environment tracks it, so a branch left unmerged after approval means the deployed application silently lags the approved one. This is a delivery step of the approved checkpoint and needs no separate authorization beyond the approval itself. It does not authorize deploying, provisioning, or any other external action.
 
