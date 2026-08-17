@@ -125,6 +125,107 @@ button:focus-visible, input:focus-visible, summary:focus-visible, a:focus-visibl
   text-decoration: none;
 }
 .bk-primary-nav a[aria-current="page"] { background: var(--flash-soft); }
+.bk-reader-select select, .bk-reader-add {
+  min-height: 2.75rem;
+  max-width: 10rem;
+  padding: 0.5rem 0.8rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  cursor: pointer;
+  font-weight: 700;
+  color: inherit;
+}
+
+.bk-reading-profile { display: grid; gap: 1.1rem; max-width: 46rem; }
+.bk-profile-card {
+  padding: 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 1.2rem;
+  background: var(--paper);
+  box-shadow: var(--shadow-soft);
+}
+/* The yellow accent was approved to relieve blandness on the calm, repeatedly-edited settings
+   surface only. First-run setup keeps its energy in the primary action, not in every card. */
+.bk-reading-profile[data-view="settings"] .bk-profile-card { border-top: 4px solid var(--flash); }
+.bk-profile-card h2 { margin: 0 0 0.25rem; font-family: Georgia, "Times New Roman", serif; font-size: 1.3rem; }
+.bk-profile-card-head { display: flex; align-items: start; justify-content: space-between; gap: 0.75rem; }
+.bk-profile-card .bk-support { margin: 0 0 0.7rem; color: var(--muted); font-size: 0.88rem; }
+.bk-choice-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.bk-choice {
+  min-height: 2.9rem;
+  padding: 0.6rem 0.9rem;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--paper);
+  cursor: pointer;
+  font-weight: 600;
+}
+.bk-choice[aria-pressed="true"] { border-color: var(--ink); background: var(--flash); font-weight: 700; }
+.bk-check-grid { display: grid; gap: 0.55rem; margin-top: 0.6rem; }
+.bk-check-card {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: start;
+  gap: 0.65rem;
+  min-height: 3rem;
+  padding: 0.65rem;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 0.9rem;
+  background: var(--paper);
+}
+.bk-check-card:has(input:checked) { border-color: var(--ink); background: var(--flash-soft); }
+.bk-check-card input { width: 20px; height: 20px; margin-top: 0.1rem; accent-color: var(--ink); }
+.bk-check-card strong, .bk-check-card small { display: block; }
+.bk-check-card small { margin-top: 0.15rem; color: var(--muted); font-size: 0.78rem; }
+.bk-kind-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.bk-kind-grid .bk-check-card { grid-template-columns: 1fr; text-align: center; min-height: 2.75rem; align-items: center; padding: 0.55rem; }
+.bk-chip-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.65rem; }
+.bk-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2.75rem;
+  padding: 0.2rem 0.7rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--canvas);
+}
+.bk-interest-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0.5rem; padding: 0.6rem 0; border-top: 1px solid var(--line); }
+.bk-interest-row:first-of-type { border-top: 0; }
+.bk-interest-row strong { display: block; }
+.bk-interest-row small { display: block; margin-top: 0.15rem; color: var(--muted); font-size: 0.78rem; }
+.bk-interest-form { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.5rem; }
+.bk-interest-form input { width: 100%; min-height: 2.9rem; padding: 0.6rem 0.85rem; border: 1.5px solid var(--line-strong); border-radius: 0.9rem; background: var(--paper); }
+.bk-topic-confirm { margin-top: 0.65rem; padding: 0.7rem; border: 1px solid var(--line); border-radius: 0.9rem; background: var(--blue); }
+.bk-topic-confirm p { margin: 0 0 0.5rem; font-size: 0.9rem; }
+.bk-topic-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.bk-book-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0.65rem; padding: 0.65rem 0; border-top: 1px solid var(--line); }
+.bk-book-row:first-of-type { border-top: 0; }
+.bk-book-row strong, .bk-book-row small { display: block; }
+.bk-history-fact { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.6rem 0; border-top: 1px solid var(--line); }
+.bk-history-fact:first-of-type { border-top: 0; }
+.bk-history-fact strong { display: block; }
+.bk-history-fact small { display: block; margin-top: 0.15rem; color: var(--muted); font-size: 0.78rem; }
+.bk-save-row { display: flex; justify-content: flex-end; margin-top: 0.3rem; }
+.bk-required {
+  margin-left: 0.4rem;
+  font-family: var(--font-sans, inherit);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6b6000;
+  vertical-align: middle;
+}
+
+@media (max-width: 600px) {
+  .bk-reader-select select, .bk-reader-add { max-width: 8rem; font-size: 0.85rem; }
+  .bk-kind-grid { grid-template-columns: 1fr; }
+  /* Stack the topic input above its button so one-handed typing is not cramped. */
+  .bk-interest-form { grid-template-columns: 1fr; }
+  .bk-interest-form button { width: 100%; }
+}
 
 .bk-page { min-height: 36rem; padding: clamp(1.5rem, 4vw, 3.3rem) clamp(1rem, 4vw, 3.4rem) 8.5rem; }
 .bk-page::before {

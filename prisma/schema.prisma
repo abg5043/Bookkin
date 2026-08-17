@@ -81,33 +81,114 @@ enum AmendmentKind {
   replace
 }
 
+enum AgeRange {
+  age_2_3 @map("2_3")
+  age_4_5 @map("4_5")
+  age_6_8 @map("6_8")
+}
+
+enum ReadingRelationshipCode {
+  read_aloud
+  reading_together
+  some_independent
+}
+
+enum BookKindCode {
+  funny
+  informative
+  fantasy
+  rhyming
+  interactive
+  gentle_cozy
+  longer_stories
+  wordless_picture_led
+}
+
+enum TopicCode {
+  children_general
+  animals
+  dinosaurs
+  vehicles
+  construction_vehicles
+  space
+  weather
+  ocean
+  feelings
+  friendship
+  music
+  fairy_tales
+  humor
+  bedtime
+}
+
+enum CandidateSourceDisposition {
+  resolved
+  unverified_identity
+  source_record_unavailable
+  hydration_failed
+}
+
+enum CandidateEvaluationState {
+  eligible
+  excluded
+}
+
+enum CandidateExclusionReason {
+  missing_required_metadata
+  duplicate_canonical_work
+  request_reference_work
+}
+
+enum CandidatePoolAttemptStatus {
+  started
+  sourced
+  hydrated
+  normalized
+  deduplicated
+  evaluated
+  completed
+  failed
+}
+
 model Household {
-  id                     String                    @id @default(cuid())
-  createdAt              DateTime                  @default(now()) @db.Timestamptz(3)
-  updatedAt              DateTime                  @updatedAt @db.Timestamptz(3)
-  children               ChildProfile[]
-  familyBooks            FamilyBook[]
-  readingEvents          ReadingEvent[]
-  preferenceObservations PreferenceObservation[]
-  interestPhases         InterestPhase[]
-  recommendationRequests RecommendationRequest[]
-  librarySettings        HouseholdLibrarySetting[]
+  id                                   String                                @id @default(cuid())
+  createdAt                            DateTime                              @default(now()) @db.Timestamptz(3)
+  updatedAt                            DateTime                              @updatedAt @db.Timestamptz(3)
+  children                             ChildProfile[]
+  familyBooks                          FamilyBook[]
+  readingEvents                        ReadingEvent[]
+  preferenceObservations               PreferenceObservation[]
+  interestPhases                       InterestPhase[]
+  recommendationRequests               RecommendationRequest[]
+  librarySettings                      HouseholdLibrarySetting[]
+  readingRelationshipPhases            ReadingRelationshipPhase[]
+  bookKindPhases                       BookKindPhase[]
+  interestTopicConfirmations           InterestTopicConfirmation[]
+  interestTopicConfirmationRevocations InterestTopicConfirmationRevocation[]
+  candidatePoolAttempts                CandidatePoolAttempt[]
+  candidateSourceRecords               CandidateSourceRecord[]
+  candidateEvaluations                 CandidateEvaluation[]
 }
 
 model ChildProfile {
-  id                     String                  @id @default(cuid())
-  householdId            String
-  nickname               String?                 @db.VarChar(80)
-  ageStageBasis          AgeStageBasis?
-  ageStageValue          AgeStageValue?
-  contentPreferences     String?
-  createdAt              DateTime                @default(now()) @db.Timestamptz(3)
-  updatedAt              DateTime                @updatedAt @db.Timestamptz(3)
-  household              Household               @relation(fields: [householdId], references: [id], onDelete: Cascade)
-  readingEvents          ReadingEvent[]
-  preferenceObservations PreferenceObservation[]
-  interestPhases         InterestPhase[]
-  recommendationRequests RecommendationRequest[]
+  id                         String                      @id @default(cuid())
+  householdId                String
+  nickname                   String?                     @db.VarChar(80)
+  ageStageBasis              AgeStageBasis?
+  ageStageValue              AgeStageValue?
+  ageRange                   AgeRange?
+  contentPreferences         String?
+  createdAt                  DateTime                    @default(now()) @db.Timestamptz(3)
+  updatedAt                  DateTime                    @updatedAt @db.Timestamptz(3)
+  household                  Household                   @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  readingEvents              ReadingEvent[]
+  preferenceObservations     PreferenceObservation[]
+  interestPhases             InterestPhase[]
+  recommendationRequests     RecommendationRequest[]
+  readingRelationshipPhases  ReadingRelationshipPhase[]
+  bookKindPhases             BookKindPhase[]
+  interestTopicConfirmations InterestTopicConfirmation[]
+  candidatePoolAttempts      CandidatePoolAttempt[]
 
   @@unique([id, householdId])
   @@index([householdId])
@@ -132,6 +213,8 @@ model BookWork {
   readingEvents          ReadingEvent[]
   preferenceObservations PreferenceObservation[]
   requestReferences      RecommendationRequestReference[]
+  candidateSourceRecords CandidateSourceRecord[]
+  candidateEvaluations   CandidateEvaluation[]
 
   @@unique([metadataProvider, metadataRecordId])
   @@index([title])
@@ -273,23 +356,25 @@ model PreferenceObservation {
 }
 
 model InterestPhase {
-  id                      String                  @id @default(cuid())
+  id                      String                     @id @default(cuid())
   householdId             String
   childId                 String
-  label                   String                  @db.VarChar(120)
-  startedAt               DateTime                @db.Timestamptz(3)
-  declaredAt              DateTime                @db.Timestamptz(3)
+  label                   String                     @db.VarChar(120)
+  startedAt               DateTime                   @db.Timestamptz(3)
+  declaredAt              DateTime                   @db.Timestamptz(3)
   reporterType            ReporterType
-  sourceVersion           String                  @db.VarChar(80)
-  clientMutationId        String                  @db.VarChar(120)
-  createdAt               DateTime                @default(now()) @db.Timestamptz(3)
-  household               Household               @relation(fields: [householdId], references: [id], onDelete: Cascade)
-  child                   ChildProfile            @relation(fields: [childId, householdId], references: [id, householdId], onDelete: Cascade)
+  sourceVersion           String                     @db.VarChar(80)
+  clientMutationId        String                     @db.VarChar(120)
+  createdAt               DateTime                   @default(now()) @db.Timestamptz(3)
+  household               Household                  @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  child                   ChildProfile               @relation(fields: [childId, householdId], references: [id, householdId], onDelete: Cascade)
   end                     InterestPhaseEnd?
-  targetAmendment         InterestPhaseAmendment? @relation("InterestPhaseAmendmentTarget")
-  replacementForAmendment InterestPhaseAmendment? @relation("InterestPhaseAmendmentReplacement")
+  targetAmendment         InterestPhaseAmendment?    @relation("InterestPhaseAmendmentTarget")
+  replacementForAmendment InterestPhaseAmendment?    @relation("InterestPhaseAmendmentReplacement")
+  topicConfirmation       InterestTopicConfirmation?
 
   @@unique([id, householdId])
+  @@unique([id, householdId, childId])
   @@unique([householdId, clientMutationId])
   @@index([householdId, childId, startedAt])
 }
@@ -317,8 +402,8 @@ model RecommendationRequest {
   householdId             String
   childId                 String
   requestedAt             DateTime                         @db.Timestamptz(3)
-  ageStageBasis           AgeStageBasis
-  ageStageValue           AgeStageValue
+  ageStageBasis           AgeStageBasis?
+  ageStageValue           AgeStageValue?
   evidenceSnapshotVersion String                           @default("request-evidence-v1") @db.VarChar(80)
   evidenceSnapshot        Json                             @db.JsonB
   clientMutationId        String                           @db.VarChar(120)
@@ -326,8 +411,10 @@ model RecommendationRequest {
   household               Household                        @relation(fields: [householdId], references: [id], onDelete: Cascade)
   child                   ChildProfile                     @relation(fields: [childId, householdId], references: [id, householdId], onDelete: Cascade)
   references              RecommendationRequestReference[]
+  candidatePoolAttempts   CandidatePoolAttempt[]
 
   @@unique([id, householdId])
+  @@unique([id, householdId, childId])
   @@unique([householdId, clientMutationId])
   @@index([householdId, requestedAt])
   @@index([householdId, childId, requestedAt])
@@ -467,4 +554,252 @@ model HouseholdLibraryBranch {
 
   @@unique([settingId, branchCode])
   @@index([householdId, settingId])
+}
+
+model ReadingRelationshipPhase {
+  id                      String                             @id @default(cuid())
+  householdId             String
+  childId                 String
+  code                    ReadingRelationshipCode
+  startedAt               DateTime                           @db.Timestamptz(3)
+  declaredAt              DateTime                           @db.Timestamptz(3)
+  reporterType            ReporterType
+  sourceVersion           String                             @db.VarChar(80)
+  clientMutationId        String                             @db.VarChar(120)
+  createdAt               DateTime                           @default(now()) @db.Timestamptz(3)
+  household               Household                          @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  child                   ChildProfile                       @relation(fields: [childId, householdId], references: [id, householdId], onDelete: Cascade)
+  end                     ReadingRelationshipPhaseEnd?
+  targetAmendment         ReadingRelationshipPhaseAmendment? @relation("ReadingRelationshipPhaseAmendmentTarget")
+  replacementForAmendment ReadingRelationshipPhaseAmendment? @relation("ReadingRelationshipPhaseAmendmentReplacement")
+
+  @@unique([id, householdId])
+  @@unique([householdId, clientMutationId])
+  @@index([householdId, childId, startedAt])
+}
+
+model ReadingRelationshipPhaseEnd {
+  id                  String                   @id @default(cuid())
+  householdId         String
+  relationshipPhaseId String                   @unique
+  endedAt             DateTime                 @db.Timestamptz(3)
+  declaredAt          DateTime                 @db.Timestamptz(3)
+  reporterType        ReporterType
+  sourceVersion       String                   @db.VarChar(80)
+  clientMutationId    String                   @db.VarChar(120)
+  createdAt           DateTime                 @default(now()) @db.Timestamptz(3)
+  phase               ReadingRelationshipPhase @relation(fields: [relationshipPhaseId, householdId], references: [id, householdId], onDelete: Cascade)
+
+  @@unique([id, householdId])
+  @@unique([relationshipPhaseId, householdId])
+  @@unique([householdId, clientMutationId])
+  @@index([householdId, endedAt])
+}
+
+model ReadingRelationshipPhaseAmendment {
+  id               String                    @id @default(cuid())
+  householdId      String
+  kind             AmendmentKind
+  targetId         String                    @unique
+  replacementId    String?                   @unique
+  declaredAt       DateTime                  @db.Timestamptz(3)
+  reporterType     ReporterType
+  reasonCode       String?                   @db.VarChar(80)
+  clientMutationId String                    @db.VarChar(120)
+  createdAt        DateTime                  @default(now()) @db.Timestamptz(3)
+  target           ReadingRelationshipPhase  @relation("ReadingRelationshipPhaseAmendmentTarget", fields: [targetId, householdId], references: [id, householdId], onDelete: Cascade)
+  replacement      ReadingRelationshipPhase? @relation("ReadingRelationshipPhaseAmendmentReplacement", fields: [replacementId, householdId], references: [id, householdId], onDelete: Cascade)
+
+  @@unique([householdId, clientMutationId])
+  @@unique([targetId, householdId])
+  @@unique([replacementId, householdId])
+  @@index([householdId, declaredAt])
+}
+
+model BookKindPhase {
+  id                      String                  @id @default(cuid())
+  householdId             String
+  childId                 String
+  code                    BookKindCode
+  startedAt               DateTime                @db.Timestamptz(3)
+  declaredAt              DateTime                @db.Timestamptz(3)
+  reporterType            ReporterType
+  sourceVersion           String                  @db.VarChar(80)
+  clientMutationId        String                  @db.VarChar(120)
+  createdAt               DateTime                @default(now()) @db.Timestamptz(3)
+  household               Household               @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  child                   ChildProfile            @relation(fields: [childId, householdId], references: [id, householdId], onDelete: Cascade)
+  end                     BookKindPhaseEnd?
+  targetAmendment         BookKindPhaseAmendment? @relation("BookKindPhaseAmendmentTarget")
+  replacementForAmendment BookKindPhaseAmendment? @relation("BookKindPhaseAmendmentReplacement")
+
+  @@unique([id, householdId])
+  @@unique([householdId, clientMutationId])
+  @@index([householdId, childId, startedAt])
+}
+
+model BookKindPhaseEnd {
+  id               String        @id @default(cuid())
+  householdId      String
+  bookKindPhaseId  String        @unique
+  endedAt          DateTime      @db.Timestamptz(3)
+  declaredAt       DateTime      @db.Timestamptz(3)
+  reporterType     ReporterType
+  sourceVersion    String        @db.VarChar(80)
+  clientMutationId String        @db.VarChar(120)
+  createdAt        DateTime      @default(now()) @db.Timestamptz(3)
+  phase            BookKindPhase @relation(fields: [bookKindPhaseId, householdId], references: [id, householdId], onDelete: Cascade)
+
+  @@unique([id, householdId])
+  @@unique([bookKindPhaseId, householdId])
+  @@unique([householdId, clientMutationId])
+  @@index([householdId, endedAt])
+}
+
+model BookKindPhaseAmendment {
+  id               String         @id @default(cuid())
+  householdId      String
+  kind             AmendmentKind
+  targetId         String         @unique
+  replacementId    String?        @unique
+  declaredAt       DateTime       @db.Timestamptz(3)
+  reporterType     ReporterType
+  reasonCode       String?        @db.VarChar(80)
+  clientMutationId String         @db.VarChar(120)
+  createdAt        DateTime       @default(now()) @db.Timestamptz(3)
+  target           BookKindPhase  @relation("BookKindPhaseAmendmentTarget", fields: [targetId, householdId], references: [id, householdId], onDelete: Cascade)
+  replacement      BookKindPhase? @relation("BookKindPhaseAmendmentReplacement", fields: [replacementId, householdId], references: [id, householdId], onDelete: Cascade)
+
+  @@unique([householdId, clientMutationId])
+  @@unique([targetId, householdId])
+  @@unique([replacementId, householdId])
+  @@index([householdId, declaredAt])
+}
+
+model InterestTopicConfirmation {
+  id               String                               @id @default(cuid())
+  householdId      String
+  childId          String
+  interestPhaseId  String
+  topicCode        TopicCode
+  declaredAt       DateTime                             @db.Timestamptz(3)
+  reporterType     ReporterType
+  sourceVersion    String                               @db.VarChar(80)
+  clientMutationId String                               @db.VarChar(120)
+  createdAt        DateTime                             @default(now()) @db.Timestamptz(3)
+  household        Household                            @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  child            ChildProfile                         @relation(fields: [childId, householdId], references: [id, householdId], onDelete: Cascade)
+  interestPhase    InterestPhase                        @relation(fields: [interestPhaseId, householdId, childId], references: [id, householdId, childId], onDelete: Cascade)
+  revocation       InterestTopicConfirmationRevocation?
+
+  @@unique([id, householdId])
+  @@unique([interestPhaseId, householdId])
+  @@unique([interestPhaseId, householdId, childId])
+  @@unique([householdId, clientMutationId])
+  @@index([householdId, childId])
+}
+
+model InterestTopicConfirmationRevocation {
+  id               String                    @id @default(cuid())
+  householdId      String
+  childId          String
+  confirmationId   String                    @unique
+  reasonCode       String?                   @db.VarChar(80)
+  declaredAt       DateTime                  @db.Timestamptz(3)
+  reporterType     ReporterType
+  clientMutationId String                    @db.VarChar(120)
+  createdAt        DateTime                  @default(now()) @db.Timestamptz(3)
+  household        Household                 @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  confirmation     InterestTopicConfirmation @relation(fields: [confirmationId, householdId], references: [id, householdId], onDelete: Cascade)
+
+  @@unique([id, householdId])
+  @@unique([confirmationId, householdId])
+  @@unique([householdId, clientMutationId])
+  @@index([householdId, childId])
+}
+
+model CandidatePoolAttempt {
+  id                   String                     @id @default(cuid())
+  householdId          String
+  childId              String
+  requestId            String
+  attemptNumber        Int
+  status               CandidatePoolAttemptStatus
+  strategyVersion      String                     @db.VarChar(80)
+  normalizationVersion String                     @db.VarChar(80)
+  eligibilityVersion   String                     @db.VarChar(80)
+  failureCode          String?                    @db.VarChar(80)
+  coverageSummary      Json?                      @db.JsonB
+  startedAt            DateTime                   @db.Timestamptz(3)
+  completedAt          DateTime?                  @db.Timestamptz(3)
+  createdAt            DateTime                   @default(now()) @db.Timestamptz(3)
+  household            Household                  @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  child                ChildProfile               @relation(fields: [childId, householdId], references: [id, householdId], onDelete: Cascade)
+  request              RecommendationRequest      @relation(fields: [requestId, householdId, childId], references: [id, householdId, childId], onDelete: Cascade)
+  sourceRecords        CandidateSourceRecord[]
+  evaluations          CandidateEvaluation[]
+
+  @@unique([id, householdId])
+  @@unique([id, householdId, childId])
+  @@unique([requestId, householdId, childId, attemptNumber])
+  @@index([householdId, childId, requestId])
+}
+
+model CandidateSourceRecord {
+  id                     String                      @id @default(cuid())
+  householdId            String
+  childId                String
+  attemptId              String
+  provider               String                      @db.VarChar(80)
+  providerRecordId       String                      @db.VarChar(200)
+  sourceCode             TopicCode
+  providerResultPosition Int?
+  resolvedWorkId         String?
+  disposition            CandidateSourceDisposition
+  createdAt              DateTime                    @default(now()) @db.Timestamptz(3)
+  household              Household                   @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  attempt                CandidatePoolAttempt        @relation(fields: [attemptId, householdId, childId], references: [id, householdId, childId], onDelete: Cascade)
+  resolvedWork           BookWork?                   @relation(fields: [resolvedWorkId], references: [id], onDelete: SetNull)
+  evaluationLinks        CandidateEvaluationSource[]
+
+  @@unique([id, householdId])
+  @@unique([id, householdId, childId, attemptId])
+  @@unique([attemptId, householdId, childId, provider, providerRecordId, sourceCode])
+  @@index([householdId, childId, attemptId])
+}
+
+model CandidateEvaluation {
+  id              String                      @id @default(cuid())
+  householdId     String
+  childId         String
+  attemptId       String
+  workId          String
+  state           CandidateEvaluationState
+  exclusionReason CandidateExclusionReason?
+  fieldCoverage   Json                        @db.JsonB
+  dedupeEvidence  Json?                       @db.JsonB
+  createdAt       DateTime                    @default(now()) @db.Timestamptz(3)
+  household       Household                   @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  attempt         CandidatePoolAttempt        @relation(fields: [attemptId, householdId, childId], references: [id, householdId, childId], onDelete: Cascade)
+  work            BookWork                    @relation(fields: [workId], references: [id], onDelete: Restrict)
+  sourceLinks     CandidateEvaluationSource[]
+
+  @@unique([id, householdId])
+  @@unique([id, householdId, childId, attemptId])
+  @@unique([attemptId, householdId, childId, workId])
+  @@index([householdId, childId, attemptId])
+}
+
+model CandidateEvaluationSource {
+  evaluationId   String
+  sourceRecordId String
+  householdId    String
+  childId        String
+  attemptId      String
+  createdAt      DateTime              @default(now()) @db.Timestamptz(3)
+  evaluation     CandidateEvaluation   @relation(fields: [evaluationId, householdId, childId, attemptId], references: [id, householdId, childId, attemptId], onDelete: Cascade)
+  sourceRecord   CandidateSourceRecord @relation(fields: [sourceRecordId, householdId, childId, attemptId], references: [id, householdId, childId, attemptId], onDelete: Cascade)
+
+  @@id([evaluationId, sourceRecordId])
+  @@index([householdId, childId, attemptId])
 }

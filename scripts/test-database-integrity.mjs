@@ -30,6 +30,8 @@ execFileSync(process.execPath, [
   vitestCli,
   "run",
   "tests/integration/checkpoint-5b-data-integrity.test.ts",
+  "tests/integration/checkpoint-7a-family-context.test.ts",
+  "tests/integration/checkpoint-7a-candidate-pool.test.ts",
   "--reporter=verbose",
 ], {
   cwd: projectRoot,

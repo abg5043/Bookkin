@@ -31,6 +31,7 @@
     "db:up": "docker compose up -d --wait --wait-timeout 60 postgres",
     "db:down": "docker compose down",
     "db:test:up": "docker compose --profile test up -d --wait --wait-timeout 60 postgres-test",
+    "candidates:capture-fixtures": "tsx scripts/candidates/capture-open-library-fixtures.ts",
     "db:rehearse:restore": "node scripts/postgres/rehearse-backup-restore.mjs",
     "db:reset:local": "node scripts/postgres/reset-local-database.mjs",
     "validate": "npm run lint && npm run typecheck && npm run test && npm run build"

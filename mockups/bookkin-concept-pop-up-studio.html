@@ -1,0 +1,509 @@
+<div id="bookkin-concept-pop-up-studio">
+  <div class="bkps-controls" aria-label="Prototype controls">
+    <span>Preview</span>
+    <div role="group" aria-label="Device preview">
+      <button type="button" data-device="desktop" aria-pressed="true">Desktop</button>
+      <button type="button" data-device="tablet" aria-pressed="false">Tablet</button>
+      <button type="button" data-device="phone" aria-pressed="false">Phone</button>
+    </div>
+    <label>Review state <select data-state><option value="populated">Populated</option><option value="first-run">First run / empty</option><option value="no-results">No results</option><option value="loading">Loading</option><option value="success">Success</option><option value="validation">Validation error</option><option value="provider">Provider error</option><option value="duplicate">Duplicate</option><option value="offline">Offline</option><option value="missing-cover">Missing cover</option><option value="failed-cover">Failed cover</option></select></label>
+  </div>
+
+  <div class="bkps-review-layout">
+    <div class="bkps-stage">
+      <div class="bkps-device is-desktop" data-device-frame>
+        <section class="bkps-product" aria-label="Bookkin Pop-up Studio concept">
+          <header class="bkps-header" data-review="identity">
+            <button type="button" data-home class="bkps-brand">Bookkin<span aria-hidden="true">●</span></button>
+            <nav aria-label="Primary navigation"><button type="button" data-home aria-current="page">Our shelf</button></nav>
+            <span class="bkps-private">Private alpha</span>
+          </header>
+
+          <main>
+            <section class="bkps-title-block" data-review="hierarchy">
+              <p>Family shelf · <span data-count role="status" aria-live="polite">6 of 6 shown</span></p>
+              <h1>Remember what worked.</h1><p class="bkps-subhead">Find a book and log the reading moment—without turning the shelf into a dashboard.</p>
+              <div class="bkps-burst" aria-hidden="true"><span>✦</span></div>
+            </section>
+
+            <section class="bkps-ribbon" aria-label="Search and filter shelf" data-review="discovery">
+              <label for="bkps-search">Find a book</label>
+              <input id="bkps-search" data-search type="search" placeholder="Search title or author" autocomplete="off">
+              <div role="group" aria-label="Filter shelf by status">
+                <button type="button" data-filter="all" aria-pressed="true">All</button>
+                <button type="button" data-filter="owned" aria-pressed="false">Owned</button>
+                <button type="button" data-filter="borrowed" aria-pressed="false">Borrowed</button>
+                <button type="button" data-filter="wishlist" aria-pressed="false">Wishlist</button>
+              </div>
+            </section>
+
+            <section class="bkps-spread" aria-label="Family books" data-review="cards">
+              <button class="bkps-book bkps-lead" type="button" data-book data-title="the snowy day" data-author="ezra jack keats" data-status="owned">
+                <span class="bkps-cover bkps-snow" aria-hidden="true"><i></i><b>The<br>Snowy<br>Day</b></span>
+                <span class="bkps-copy"><span class="bkps-status">Owned</span><strong>The Snowy Day</strong><small>Ezra Jack Keats</small><em>Child: Love · Caregiver: Like</em></span>
+              </button>
+              <button class="bkps-book bkps-blue" type="button" data-book data-title="last stop on market" data-author="matt de la pena" data-status="borrowed">
+                <span class="bkps-cover bkps-market" aria-hidden="true"><i></i><b>Last Stop<br>on Market</b></span>
+                <span class="bkps-copy"><span class="bkps-status">Borrowed</span><strong>Last Stop on Market</strong><small>Matt de la Peña</small></span>
+              </button>
+              <button class="bkps-book bkps-pink" type="button" data-book data-title="saturday" data-author="oge mora" data-status="owned">
+                <span class="bkps-cover bkps-saturday" aria-hidden="true"><i></i><b>Saturday</b></span>
+                <span class="bkps-copy"><span class="bkps-status">Owned</span><strong>Saturday</strong><small>Oge Mora</small></span>
+              </button>
+              <button class="bkps-book bkps-green" type="button" data-book data-title="jabari jumps" data-author="gaia cornwall" data-status="wishlist">
+                <span class="bkps-cover bkps-jabari" aria-hidden="true"><i></i><b>Jabari<br>Jumps</b></span>
+                <span class="bkps-copy"><span class="bkps-status">Wishlist</span><strong>Jabari Jumps</strong><small>Gaia Cornwall</small></span>
+              </button>
+              <button class="bkps-book bkps-yellow" type="button" data-book data-title="the rabbit listened" data-author="cori doerrfeld" data-status="borrowed">
+                <span class="bkps-cover bkps-rabbit" aria-hidden="true"><i></i><b>The Rabbit<br>Listened</b></span>
+                <span class="bkps-copy"><span class="bkps-status">Borrowed</span><strong>The Rabbit Listened</strong><small>Cori Doerrfeld</small><em>Read again this week</em></span>
+              </button>
+              <button class="bkps-book bkps-red" type="button" data-book data-title="the dot" data-author="peter h reynolds" data-status="owned">
+                <span class="bkps-cover bkps-dot" aria-hidden="true"><i></i><b>The Dot</b></span>
+                <span class="bkps-copy"><span class="bkps-status">Owned</span><strong>The Dot</strong><small>Peter H. Reynolds</small></span>
+              </button>
+            </section>
+            <p class="bkps-empty" data-empty hidden>No books found. Change the search or status to bring the shelf back.</p>
+            <section class="bkps-review-state" data-review-state role="status" aria-live="polite" hidden></section>
+            <section class="bkps-value-loop" data-review="loop"><strong>Better future choices need clear signals</strong><p>Separate events, optional child and caregiver reactions, and changing interests can support later choices without guarantees.</p></section>
+          </main>
+
+          <div class="bkps-dock"><div class="bkps-actions" data-review="actions">
+            <div class="bkps-fan" data-fab-menu hidden>
+              <button type="button" data-open="log"><span>Log a read</span><b aria-hidden="true">✓</b></button>
+              <button type="button" data-open="add"><span>Add a book</span><b aria-hidden="true">＋</b></button>
+            </div>
+            <button class="bkps-fab" type="button" data-fab aria-expanded="false" aria-label="Open quick actions"><span aria-hidden="true">✦</span></button>
+          </div></div>
+
+          <div class="bkps-overlay" data-overlay hidden>
+            <section class="bkps-modal" role="dialog" aria-modal="true" aria-labelledby="bkps-dialog-title" data-dialog data-review="flow">
+              <div class="bkps-modal-head"><div><p data-dialog-kicker>Quick action</p><h2 id="bkps-dialog-title" data-dialog-title>Log a read</h2></div><button type="button" data-close>Close</button></div>
+              <form data-panel="log" novalidate>
+                <div class="bkps-step"><label for="bkps-log-search"><strong>Find a shelf book</strong></label><input id="bkps-log-search" data-log-search type="search" placeholder="Type at least 2 characters"><div class="bkps-lookup" data-log-lookup role="status" aria-live="polite">No book selected.</div></div>
+                <fieldset><legend>Reading event <span>Required</span></legend><div class="bkps-choices" data-group="event"><button type="button" data-value="Finished" aria-pressed="false">Finished</button><button type="button" data-value="Read again" aria-pressed="false">Read again</button><button type="button" data-value="Stopped" aria-pressed="false">Stopped</button><button type="button" data-value="Rejected" aria-pressed="false">Rejected</button></div></fieldset>
+                <div class="bkps-reactions">
+                  <fieldset><legend>Child’s reaction <span>Optional · from child</span></legend><div class="bkps-choices" data-group="child"><button type="button" data-value="Love" aria-pressed="false">Love</button><button type="button" data-value="Like" aria-pressed="false">Like</button><button type="button" data-value="Not for me" aria-pressed="false">Not for me</button></div></fieldset>
+                  <fieldset><legend>Caregiver’s reaction <span>Optional · from caregiver</span></legend><div class="bkps-choices" data-group="caregiver"><button type="button" data-value="Love" aria-pressed="false">Love</button><button type="button" data-value="Like" aria-pressed="false">Like</button><button type="button" data-value="Dislike" aria-pressed="false">Dislike</button></div></fieldset>
+                </div>
+                <p class="bkps-message" data-log-message role="status"></p><div class="bkps-savebar"><button class="bkps-primary" type="button" data-save-log>Save reading moment</button></div>
+              </form>
+
+              <form data-panel="add" novalidate hidden>
+                <p>Find a verified record, then choose where it belongs on the shelf.</p>
+                <label for="bkps-add-search">Title or author</label><input id="bkps-add-search" data-add-search type="search" placeholder="Try “Mooncake”"><button class="bkps-secondary" type="button" data-find>Find verified book</button><div class="bkps-lookup" data-add-lookup role="status" aria-live="polite">No provider request has started.</div>
+                <div class="bkps-scan"><span aria-hidden="true">▣</span><p><strong>Camera ISBN scan · planned</strong><br>Shown as a future path only; it does not activate a camera.</p></div>
+                <fieldset><legend>Shelf status <span>Required after selecting a result</span></legend><div class="bkps-choices" data-group="status"><button type="button" data-value="Owned" aria-pressed="false">Owned</button><button type="button" data-value="Borrowed" aria-pressed="false">Borrowed</button><button type="button" data-value="Wishlist" aria-pressed="false">Wishlist</button></div></fieldset><p class="bkps-message" data-add-message role="status"></p><div class="bkps-savebar"><button class="bkps-primary" type="button" data-save-add>Add selected book</button></div>
+              </form>
+
+              <div data-panel="detail" hidden>
+                <span class="bkps-status" data-detail-status>Owned</span><h3 data-detail-title>Book title</h3><p data-detail-author>Author</p>
+                <div class="bkps-detail-history" data-detail-history aria-live="polite"></div>
+                <button class="bkps-primary" type="button" data-close>Back to the shelf</button>
+              </div>
+            </section>
+          </div>
+          <p class="bkps-toast" data-toast role="status" aria-live="polite" hidden>Prototype action complete.</p>
+        </section>
+      </div>
+    </div>
+
+    <details class="bkps-comments" open>
+      <summary>Design comments</summary>
+      <div>
+        <p><strong>Positioning:</strong> a contemporary children’s-publishing studio—optimistic, inclusive, and highly ownable for a broad consumer audience.</p>
+        <button type="button" data-comment="identity" aria-pressed="false"><strong>Commercial wordmark.</strong> Cobalt, red, pink, mint, and yellow create memorable shelf presence without a childish mascot. Critique brand longevity.</button>
+        <button type="button" data-comment="hierarchy" aria-pressed="false"><strong>Poster-like promise.</strong> The opening reads as a family value statement, then gives way immediately to utility. Critique how much of it should remain after onboarding.</button>
+        <button type="button" data-comment="discovery" aria-pressed="false"><strong>Search ribbon.</strong> A full-width color band keeps search and four statuses impossible to miss at every width.</button>
+        <button type="button" data-comment="cards" aria-pressed="false"><strong>Modular magazine spread.</strong> One recent success leads while the rest tile around it. Critique whether unequal card prominence overstates importance.</button>
+        <button type="button" data-comment="actions" aria-pressed="false"><strong>Pull-tab action.</strong> The square-round form feels like a pop-up mechanism; fan labels remain literal and thumb-sized.</button>
+        <button type="button" data-comment="flow" aria-pressed="false"><strong>Chunked quick log.</strong> Bold step blocks support fast scanning while child and caregiver reactions remain separate.</button>
+        <button type="button" data-comment="measurement" aria-pressed="false"><strong>Privacy-safe measurement transitions.</strong> Review start, completion, cancel, error, duration, and future catalog handoff without titles, names, reactions, interests, ISBNs, or free text.</button>
+        <p><strong>Tradeoff:</strong> strongest broad-audience visual memorability, but the graphic system needs disciplined templates to avoid becoming visually loud as features expand.</p>
+      </div>
+    </details>
+    <details class="bkps-comments"><summary>Future ideas discovered · not Checkpoint 5A scope</summary><div><p>A later recommendation bridge may connect current and earlier interests plus separate reactions to inspectable reasons; keep the repeat shelf calmer than marketing or onboarding surfaces.</p></div></details>
+  </div>
+</div>
+
+<style>
+  #bookkin-concept-pop-up-studio {
+    --bkps-paper: light-dark(#fffef8, #191b26);
+    --bkps-canvas: light-dark(#f5f5ef, #11131d);
+    --bkps-ink: light-dark(#15182a, #fffdf2);
+    --bkps-muted: light-dark(#596073, #c8ccd6);
+    --bkps-line: light-dark(#9ca5ba, #50586c);
+    --bkps-blue: light-dark(#174ed6, #769aff);
+    --bkps-blue-ink: light-dark(#ffffff, #0d1734);
+    --bkps-red: light-dark(#b92f2d, #ff8178);
+    --bkps-red-ink: light-dark(#ffffff, #2d1210);
+    --bkps-yellow: light-dark(#ffe349, #c09a17);
+    --bkps-pink: light-dark(#ffbfd5, #6b354d);
+    --bkps-green: light-dark(#a8e7ce, #285845);
+    --bkps-shadow: light-dark(rgb(23 29 55 / .16), rgb(0 0 0 / .48));
+    --bkps-dim: light-dark(rgb(21 24 42 / .52), rgb(0 0 0 / .72));
+    color: var(--bkps-ink);
+    color-scheme: light dark;
+    width: 100%;
+  }
+  #bookkin-concept-pop-up-studio * { box-sizing: border-box; }
+  #bookkin-concept-pop-up-studio button,
+  #bookkin-concept-pop-up-studio input,
+  #bookkin-concept-pop-up-studio select { font: inherit; }
+  #bookkin-concept-pop-up-studio button:focus-visible,
+  #bookkin-concept-pop-up-studio a:focus-visible,
+  #bookkin-concept-pop-up-studio input:focus-visible,
+  #bookkin-concept-pop-up-studio select:focus-visible,
+  #bookkin-concept-pop-up-studio summary:focus-visible { outline: 3px solid var(--bkps-red); outline-offset: 3px; }
+  #bookkin-concept-pop-up-studio p,
+  #bookkin-concept-pop-up-studio h1,
+  #bookkin-concept-pop-up-studio h2,
+  #bookkin-concept-pop-up-studio h3 { margin-top: 0; }
+  #bookkin-concept-pop-up-studio .bkps-controls { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem; margin-bottom: .75rem; }
+  #bookkin-concept-pop-up-studio .bkps-controls > div { display: flex; padding: .22rem; border: 2px solid light-dark(#252b42, #656b7c); background: light-dark(#ffffff, #20232f); }
+  #bookkin-concept-pop-up-studio .bkps-controls button { padding: .5rem .75rem; border: 0; background: transparent; color: inherit; cursor: pointer; }
+  #bookkin-concept-pop-up-studio .bkps-controls button[aria-pressed="true"] { background: light-dark(#252b42, #f7f4ff); color: light-dark(#ffffff, #1a1c29); }
+  #bookkin-concept-pop-up-studio .bkps-review-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(230px, 310px); gap: 1rem; align-items: start; }
+  #bookkin-concept-pop-up-studio .bkps-stage { min-width: 0; display: flex; justify-content: center; }
+  #bookkin-concept-pop-up-studio .bkps-device { width: 100%; transition: width 180ms ease; }
+  #bookkin-concept-pop-up-studio .bkps-device.is-tablet { width: min(100%, 760px); }
+  #bookkin-concept-pop-up-studio .bkps-device.is-phone { width: min(100%, 390px); }
+  #bookkin-concept-pop-up-studio .bkps-product { position: relative; overflow: hidden; min-height: 730px; border: 2px solid var(--bkps-ink); border-radius: .5rem; background: var(--bkps-paper); color: var(--bkps-ink); box-shadow: 12px 12px 0 var(--bkps-blue); font-family: ui-sans-serif, system-ui, sans-serif; }
+  #bookkin-concept-pop-up-studio .bkps-header { display: flex; align-items: stretch; min-height: 64px; border-bottom: 2px solid var(--bkps-ink); }
+  #bookkin-concept-pop-up-studio .bkps-brand { display: flex; align-items: center; gap: .35rem; margin-right: auto; padding: .8rem 1.2rem; border-right: 2px solid var(--bkps-ink); color: var(--bkps-ink); font-family: Georgia, serif; font-weight: 500; text-decoration: none; }
+  #bookkin-concept-pop-up-studio .bkps-brand span { color: var(--bkps-red); }
+  #bookkin-concept-pop-up-studio .bkps-header nav { display: flex; }
+  #bookkin-concept-pop-up-studio .bkps-header nav a { display: flex; align-items: center; padding: .7rem 1rem; border-right: 2px solid var(--bkps-ink); color: var(--bkps-ink); text-decoration: none; }
+  #bookkin-concept-pop-up-studio .bkps-header nav a[aria-current="page"] { background: var(--bkps-yellow); }
+  #bookkin-concept-pop-up-studio .bkps-private { display: flex; align-items: center; padding: .7rem 1rem; }
+  #bookkin-concept-pop-up-studio main { padding-bottom: 6rem; }
+  #bookkin-concept-pop-up-studio .bkps-title-block { position: relative; min-height: 230px; padding: clamp(1.1rem, 3vw, 2.2rem); border-bottom: 2px solid var(--bkps-ink); background: var(--bkps-paper); overflow: hidden; }
+  #bookkin-concept-pop-up-studio .bkps-title-block > p { letter-spacing: .12em; text-transform: uppercase; }
+  #bookkin-concept-pop-up-studio h1 { position: relative; z-index: 1; width: 75%; margin-bottom: 0; font-family: Arial Black, ui-sans-serif, sans-serif; font-weight: 500; letter-spacing: -.045em; }
+  #bookkin-concept-pop-up-studio .bkps-burst { position: absolute; right: 5%; top: 14%; display: grid; place-items: center; width: 150px; aspect-ratio: 1; background: var(--bkps-red); color: var(--bkps-red-ink); clip-path: polygon(50% 0,60% 34%,85% 15%,70% 41%,100% 50%,69% 60%,85% 85%,60% 70%,50% 100%,40% 70%,15% 85%,30% 59%,0 50%,31% 40%,15% 15%,40% 33%); transform: rotate(8deg); }
+  #bookkin-concept-pop-up-studio .bkps-ribbon { display: grid; grid-template-columns: auto minmax(180px, 1fr) auto; align-items: center; gap: .7rem; padding: .8rem 1rem; border-bottom: 2px solid var(--bkps-ink); background: var(--bkps-blue); color: var(--bkps-blue-ink); }
+  #bookkin-concept-pop-up-studio .bkps-ribbon label { font-weight: 500; }
+  #bookkin-concept-pop-up-studio .bkps-ribbon input { min-width: 0; width: 100%; min-height: 44px; padding: .65rem .75rem; border: 2px solid var(--bkps-ink); background: var(--bkps-paper); color: var(--bkps-ink); }
+  #bookkin-concept-pop-up-studio .bkps-ribbon > div { display: flex; flex-wrap: wrap; gap: .3rem; }
+  #bookkin-concept-pop-up-studio .bkps-ribbon button { min-height: 42px; padding: .5rem .65rem; border: 2px solid var(--bkps-blue-ink); background: transparent; color: inherit; cursor: pointer; }
+  #bookkin-concept-pop-up-studio .bkps-ribbon button[aria-pressed="true"] { background: var(--bkps-yellow); color: var(--bkps-ink); border-color: var(--bkps-ink); }
+  #bookkin-concept-pop-up-studio .bkps-spread { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: 2px solid var(--bkps-ink); }
+  #bookkin-concept-pop-up-studio .bkps-book { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: .75rem; min-width: 0; min-height: 190px; padding: 1rem; border: 0; border-right: 2px solid var(--bkps-ink); border-bottom: 2px solid var(--bkps-ink); background: var(--bkps-paper); color: var(--bkps-ink); text-align: left; cursor: pointer; }
+  #bookkin-concept-pop-up-studio .bkps-lead { grid-column: span 2; grid-row: span 2; grid-template-columns: minmax(130px, 1fr) minmax(140px, 1fr); align-items: end; background: var(--bkps-yellow); }
+  #bookkin-concept-pop-up-studio .bkps-blue { background: var(--bkps-blue); color: var(--bkps-blue-ink); }
+  #bookkin-concept-pop-up-studio .bkps-pink { background: var(--bkps-pink); }
+  #bookkin-concept-pop-up-studio .bkps-green { background: var(--bkps-green); }
+  #bookkin-concept-pop-up-studio .bkps-yellow { background: var(--bkps-yellow); }
+  #bookkin-concept-pop-up-studio .bkps-red { background: var(--bkps-red); color: var(--bkps-red-ink); }
+  #bookkin-concept-pop-up-studio .bkps-cover { position: relative; display: grid; place-items: center; aspect-ratio: 2 / 3; overflow: hidden; padding: .45rem; border: 2px solid var(--bkps-ink); background: var(--bkps-blue); color: var(--bkps-blue-ink); box-shadow: 5px 5px 0 var(--bkps-ink); text-align: center; font-family: Georgia, serif; transition: transform 150ms ease; }
+  #bookkin-concept-pop-up-studio .bkps-book:hover .bkps-cover { transform: rotate(-2deg) translateY(-4px); }
+  #bookkin-concept-pop-up-studio .bkps-cover i { position: absolute; width: 58%; aspect-ratio: 1; border-radius: 50%; background: var(--bkps-yellow); transform: translate(24%, 34%); }
+  #bookkin-concept-pop-up-studio .bkps-cover b { position: relative; z-index: 1; font-weight: 500; }
+  #bookkin-concept-pop-up-studio .bkps-market { background: var(--bkps-red); color: var(--bkps-red-ink); }
+  #bookkin-concept-pop-up-studio .bkps-market i { border-radius: 0; transform: rotate(18deg); }
+  #bookkin-concept-pop-up-studio .bkps-saturday { background: var(--bkps-pink); color: var(--bkps-ink); }
+  #bookkin-concept-pop-up-studio .bkps-saturday i { background: var(--bkps-red); }
+  #bookkin-concept-pop-up-studio .bkps-jabari { background: var(--bkps-green); color: var(--bkps-ink); }
+  #bookkin-concept-pop-up-studio .bkps-jabari i { background: transparent; border: 6px solid var(--bkps-blue); }
+  #bookkin-concept-pop-up-studio .bkps-rabbit { background: var(--bkps-pink); color: var(--bkps-ink); }
+  #bookkin-concept-pop-up-studio .bkps-rabbit i { background: var(--bkps-green); border-radius: 50% 50% 36% 36%; }
+  #bookkin-concept-pop-up-studio .bkps-dot { background: var(--bkps-yellow); color: var(--bkps-ink); }
+  #bookkin-concept-pop-up-studio .bkps-dot i { background: var(--bkps-red); transform: none; }
+  #bookkin-concept-pop-up-studio .bkps-copy { display: flex; flex-direction: column; align-items: flex-start; gap: .16rem; min-width: 0; }
+  #bookkin-concept-pop-up-studio .bkps-copy small { color: inherit; opacity: .78; }
+  #bookkin-concept-pop-up-studio .bkps-copy em { margin-top: .35rem; font-style: normal; font-weight: 500; }
+  #bookkin-concept-pop-up-studio .bkps-status { width: fit-content; padding: .22rem .45rem; border: 1px solid currentColor; }
+  #bookkin-concept-pop-up-studio .bkps-empty { margin: 1rem; padding: 2rem; border: 2px dashed var(--bkps-line); text-align: center; color: var(--bkps-muted); }
+  #bookkin-concept-pop-up-studio .bkps-actions { position: absolute; z-index: 8; right: 1.2rem; bottom: 1rem; display: flex; flex-direction: column; align-items: flex-end; gap: .55rem; }
+  #bookkin-concept-pop-up-studio .bkps-fan { display: flex; flex-direction: column; align-items: flex-end; gap: .45rem; }
+  #bookkin-concept-pop-up-studio .bkps-fan[hidden] { display: none; }
+  #bookkin-concept-pop-up-studio .bkps-fan button { display: flex; align-items: center; gap: .55rem; min-height: 46px; padding: .4rem .4rem .4rem .8rem; border: 2px solid var(--bkps-ink); background: var(--bkps-paper); color: var(--bkps-ink); box-shadow: 5px 5px 0 var(--bkps-ink); cursor: pointer; }
+  #bookkin-concept-pop-up-studio .bkps-fan button:first-child { transform: translateX(-1rem); }
+  #bookkin-concept-pop-up-studio .bkps-fan b { display: grid; place-items: center; width: 34px; aspect-ratio: 1; background: var(--bkps-yellow); font-weight: 500; }
+  #bookkin-concept-pop-up-studio .bkps-fab { display: grid; place-items: center; width: 58px; aspect-ratio: 1; border: 2px solid var(--bkps-ink); border-radius: 45% 55% 55% 45% / 55% 45% 55% 45%; background: var(--bkps-red); color: var(--bkps-red-ink); box-shadow: 6px 6px 0 var(--bkps-ink); cursor: pointer; transition: transform 150ms ease; }
+  #bookkin-concept-pop-up-studio .bkps-fab[aria-expanded="true"] { transform: rotate(45deg); }
+  #bookkin-concept-pop-up-studio .bkps-overlay { position: absolute; z-index: 20; inset: 0; display: grid; place-items: center; padding: 1rem; background: var(--bkps-dim); }
+  #bookkin-concept-pop-up-studio .bkps-overlay[hidden] { display: none; }
+  #bookkin-concept-pop-up-studio .bkps-modal { width: min(100%, 720px); padding: 1.2rem; border: 2px solid var(--bkps-ink); background: var(--bkps-paper); color: var(--bkps-ink); box-shadow: 12px 12px 0 var(--bkps-blue); }
+  #bookkin-concept-pop-up-studio .bkps-modal-head { display: flex; justify-content: space-between; gap: 1rem; align-items: start; }
+  #bookkin-concept-pop-up-studio .bkps-modal-head p { margin-bottom: .2rem; letter-spacing: .1em; text-transform: uppercase; color: var(--bkps-muted); }
+  #bookkin-concept-pop-up-studio .bkps-modal-head h2 { font-family: Arial Black, ui-sans-serif, sans-serif; font-weight: 500; }
+  #bookkin-concept-pop-up-studio .bkps-modal-head button { border: 0; background: transparent; color: var(--bkps-muted); cursor: pointer; }
+  #bookkin-concept-pop-up-studio .bkps-modal label { display: block; margin: .6rem 0 .3rem; font-weight: 500; }
+  #bookkin-concept-pop-up-studio .bkps-modal input,
+  #bookkin-concept-pop-up-studio .bkps-modal select { width: 100%; min-height: 46px; padding: .65rem .75rem; border: 2px solid var(--bkps-ink); background: var(--bkps-paper); color: var(--bkps-ink); }
+  #bookkin-concept-pop-up-studio .bkps-step { margin-top: .7rem; padding: .75rem; border: 2px solid var(--bkps-ink); }
+  #bookkin-concept-pop-up-studio .bkps-step:nth-child(2) { background: var(--bkps-yellow); }
+  #bookkin-concept-pop-up-studio .bkps-picks,
+  #bookkin-concept-pop-up-studio .bkps-choices { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .5rem; }
+  #bookkin-concept-pop-up-studio .bkps-picks button,
+  #bookkin-concept-pop-up-studio .bkps-choices button { min-height: 42px; padding: .48rem .6rem; border: 2px solid var(--bkps-ink); background: var(--bkps-paper); color: var(--bkps-ink); cursor: pointer; }
+  #bookkin-concept-pop-up-studio .bkps-picks button[aria-pressed="true"],
+  #bookkin-concept-pop-up-studio .bkps-choices button[aria-pressed="true"] { background: var(--bkps-blue); color: var(--bkps-blue-ink); }
+  #bookkin-concept-pop-up-studio fieldset { margin: 1rem 0 0; padding: .75rem; border: 2px solid var(--bkps-ink); }
+  #bookkin-concept-pop-up-studio legend { padding: 0 .35rem; font-weight: 500; }
+  #bookkin-concept-pop-up-studio .bkps-reactions { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+  #bookkin-concept-pop-up-studio .bkps-scan { display: flex; gap: .65rem; margin-top: .9rem; padding: .75rem; border: 2px dashed var(--bkps-ink); background: var(--bkps-green); }
+  #bookkin-concept-pop-up-studio .bkps-scan p { margin: 0; }
+  #bookkin-concept-pop-up-studio .bkps-primary { width: 100%; min-height: 48px; margin-top: 1rem; padding: .7rem 1rem; border: 2px solid var(--bkps-ink); background: var(--bkps-red); color: var(--bkps-red-ink); box-shadow: 5px 5px 0 var(--bkps-ink); font-weight: 500; cursor: pointer; }
+  #bookkin-concept-pop-up-studio .bkps-toast { position: absolute; z-index: 30; left: 50%; bottom: 1rem; transform: translateX(-50%); margin: 0; padding: .7rem 1rem; border: 2px solid var(--bkps-ink); background: var(--bkps-yellow); color: var(--bkps-ink); box-shadow: 5px 5px 0 var(--bkps-ink); }
+  #bookkin-concept-pop-up-studio .bkps-comments { border: 2px solid light-dark(#24293c, #666b7b); background: light-dark(#ffffff, #20232f); color: light-dark(#20263b, #f6f3ff); }
+  #bookkin-concept-pop-up-studio .bkps-comments summary { padding: .9rem 1rem; cursor: pointer; font-weight: 500; }
+  #bookkin-concept-pop-up-studio .bkps-comments > div { display: grid; gap: .55rem; padding: 0 1rem 1rem; }
+  #bookkin-concept-pop-up-studio .bkps-comments p { margin: 0; color: light-dark(#4f566b, #c9cbd4); }
+  #bookkin-concept-pop-up-studio .bkps-comments button { padding: .7rem; border: 2px solid light-dark(#aeb4c4, #545a69); background: transparent; color: inherit; text-align: left; cursor: pointer; }
+  #bookkin-concept-pop-up-studio .bkps-comments button[aria-pressed="true"] { border-color: light-dark(#174ed6, #769aff); background: light-dark(#e8edff, #2b3551); }
+  #bookkin-concept-pop-up-studio .bkps-highlight { outline: 5px solid var(--bkps-red); outline-offset: 4px; }
+  #bookkin-concept-pop-up-studio .is-tablet .bkps-spread { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #bookkin-concept-pop-up-studio .is-tablet .bkps-ribbon,
+  #bookkin-concept-pop-up-studio .is-phone .bkps-ribbon { grid-template-columns: 1fr; }
+  #bookkin-concept-pop-up-studio .is-phone .bkps-header { flex-wrap: wrap; }
+  #bookkin-concept-pop-up-studio .is-phone .bkps-brand { flex: 1; }
+  #bookkin-concept-pop-up-studio .is-phone .bkps-private { display: none; }
+  #bookkin-concept-pop-up-studio .is-phone .bkps-header nav { width: 100%; border-top: 2px solid var(--bkps-ink); }
+  #bookkin-concept-pop-up-studio .is-phone .bkps-title-block { min-height: 205px; padding: 1rem; }
+  #bookkin-concept-pop-up-studio .is-phone h1 { width: 82%; }
+  #bookkin-concept-pop-up-studio .is-phone .bkps-burst { width: 88px; top: 34%; right: 2%; }
+  #bookkin-concept-pop-up-studio .is-phone .bkps-spread { grid-template-columns: 1fr; }
+  #bookkin-concept-pop-up-studio .is-phone .bkps-lead { grid-column: auto; grid-row: auto; grid-template-columns: 100px minmax(0, 1fr); }
+  #bookkin-concept-pop-up-studio .is-phone .bkps-book { min-height: 150px; grid-template-columns: 76px minmax(0, 1fr); border-right: 0; }
+  #bookkin-concept-pop-up-studio .is-phone .bkps-overlay { align-items: end; padding: 0; }
+  #bookkin-concept-pop-up-studio .is-phone .bkps-modal { box-shadow: 0 -8px 0 var(--bkps-blue); }
+  #bookkin-concept-pop-up-studio .is-phone .bkps-reactions { grid-template-columns: 1fr; }
+  @media (max-width: 850px) { #bookkin-concept-pop-up-studio .bkps-review-layout { grid-template-columns: 1fr; } }
+  @media (max-width: 420px) {
+    #bookkin-concept-pop-up-studio .bkps-controls > div { width: 100%; }
+    #bookkin-concept-pop-up-studio .bkps-controls button { flex: 1; padding-inline: .3rem; }
+    #bookkin-concept-pop-up-studio .bkps-device { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #bookkin-concept-pop-up-studio .bkps-device,
+    #bookkin-concept-pop-up-studio .bkps-cover,
+    #bookkin-concept-pop-up-studio .bkps-fab { transition: none; }
+  }
+  #bookkin-concept-pop-up-studio .bkps-controls label{display:flex;align-items:center;gap:.4rem}#bookkin-concept-pop-up-studio .bkps-controls select{min-height:44px;padding:.5rem .65rem;border:2px solid light-dark(#252b42,#656b7c);background:light-dark(#fff,#20232f);color:inherit}
+  #bookkin-concept-pop-up-studio .bkps-brand,#bookkin-concept-pop-up-studio .bkps-header nav button{min-height:44px;border:0;background:transparent;color:inherit}#bookkin-concept-pop-up-studio .bkps-header nav button[aria-current=page]{background:var(--bkps-yellow);padding:.6rem 1rem}
+  #bookkin-concept-pop-up-studio .bkps-title-block{min-height:150px}#bookkin-concept-pop-up-studio .bkps-subhead{position:relative;z-index:1;max-width:560px;margin:.5rem 0 0}#bookkin-concept-pop-up-studio .bkps-burst{width:94px;opacity:.68}#bookkin-concept-pop-up-studio .bkps-spread{grid-template-columns:repeat(3,minmax(0,1fr))}#bookkin-concept-pop-up-studio .bkps-lead{grid-column:span 1;grid-row:auto;grid-template-columns:84px minmax(0,1fr);background:var(--bkps-yellow)}
+  #bookkin-concept-pop-up-studio .bkps-book{min-height:165px}.bkps-blue,.bkps-red{background:var(--bkps-paper)!important;color:var(--bkps-ink)!important}.bkps-pink{background:color-mix(in srgb,var(--bkps-pink) 55%,var(--bkps-paper))!important}.bkps-green{background:color-mix(in srgb,var(--bkps-green) 55%,var(--bkps-paper))!important}.bkps-yellow{background:color-mix(in srgb,var(--bkps-yellow) 65%,var(--bkps-paper))!important}
+  #bookkin-concept-pop-up-studio .bkps-value-loop{margin:1rem;padding:.8rem;border-left:5px solid var(--bkps-blue);background:var(--bkps-green)}#bookkin-concept-pop-up-studio .bkps-value-loop p{margin:.2rem 0 0}.bkps-review-state{margin:1rem;padding:1.1rem;border:2px dashed var(--bkps-ink);background:var(--bkps-paper)}.bkps-review-state button,.bkps-secondary{min-height:44px;margin-top:.45rem;padding:.55rem .7rem;border:2px solid var(--bkps-ink);background:var(--bkps-paper);color:var(--bkps-ink)}
+  #bookkin-concept-pop-up-studio .bkps-dock{position:sticky;z-index:8;right:0;bottom:0;left:0;height:94px;margin-top:-94px;pointer-events:none;background:linear-gradient(transparent,var(--bkps-paper) 62%)}#bookkin-concept-pop-up-studio .bkps-actions{right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));pointer-events:auto}
+  #bookkin-concept-pop-up-studio .bkps-ribbon button,#bookkin-concept-pop-up-studio .bkps-picks button,#bookkin-concept-pop-up-studio .bkps-choices button,#bookkin-concept-pop-up-studio .bkps-modal-head button{min-width:44px;min-height:44px}.bkps-modal{display:flex;flex-direction:column;max-height:min(84vh,700px);overflow:hidden}.bkps-modal>form,.bkps-modal>div[data-panel]{overflow:auto;overscroll-behavior:contain;padding-right:.15rem}.bkps-lookup{margin-top:.6rem;padding:.65rem;border:2px dashed var(--bkps-ink);background:var(--bkps-paper)}.bkps-lookup button{display:grid;width:100%;min-height:56px;margin-top:.4rem;padding:.6rem;border:2px solid var(--bkps-ink);background:var(--bkps-paper);color:var(--bkps-ink);text-align:left}.bkps-lookup button[aria-pressed=true]{box-shadow:inset 6px 0 var(--bkps-blue)}.bkps-modal legend span{font-weight:400}.bkps-message{min-height:1.5rem;margin:.6rem 0 0;color:light-dark(#9d2020,#ffada8)}.bkps-savebar{position:sticky;bottom:0;margin:1rem 0 0;padding:.7rem 0 calc(.4rem + env(safe-area-inset-bottom));background:var(--bkps-paper)}.bkps-comments+.bkps-comments{margin-top:.75rem}.is-phone .bkps-modal{max-height:min(78vh,620px)}
+  @media(max-width:420px){#bookkin-concept-pop-up-studio .bkps-controls label,#bookkin-concept-pop-up-studio .bkps-controls select{width:100%}}@media(max-width:340px){#bookkin-concept-pop-up-studio .bkps-ribbon>div button{flex:1;padding-inline:.25rem}}
+  #bookkin-concept-pop-up-studio .bkps-product{overflow:clip}#bookkin-concept-pop-up-studio .bkps-controls button,#bookkin-concept-pop-up-studio .bkps-controls select,#bookkin-concept-pop-up-studio .bkps-header button,#bookkin-concept-pop-up-studio .bkps-comments button,#bookkin-concept-pop-up-studio .bkps-primary,#bookkin-concept-pop-up-studio .bkps-secondary{min-width:44px;min-height:44px}#bookkin-concept-pop-up-studio .is-phone .bkps-spread{grid-template-columns:1fr}#bookkin-concept-pop-up-studio .is-phone .bkps-lead{grid-column:auto;grid-row:auto;grid-template-columns:100px minmax(0,1fr)}
+  #bookkin-concept-pop-up-studio .bkps-detail-history{display:grid;gap:.65rem;margin-top:1rem;padding:1rem;border:2px solid var(--bkps-ink);background:var(--bkps-canvas)}#bookkin-concept-pop-up-studio .bkps-detail-history h3,#bookkin-concept-pop-up-studio .bkps-detail-history p{margin:0}#bookkin-concept-pop-up-studio .bkps-detail-history dl{display:grid;grid-template-columns:auto 1fr;gap:.35rem .75rem;margin:0}#bookkin-concept-pop-up-studio .bkps-detail-history dt{font-weight:500}#bookkin-concept-pop-up-studio .bkps-detail-history dd{margin:0}
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('bookkin-concept-pop-up-studio');
+    const frame = root.querySelector('[data-device-frame]');
+    const product = root.querySelector('.bkps-product');
+    const search = root.querySelector('[data-search]');
+    const empty = root.querySelector('[data-empty]');
+    const spread = root.querySelector('.bkps-spread');
+    const count = root.querySelector('[data-count]');
+    const reviewState = root.querySelector('[data-review-state]');
+    const stateSelect = root.querySelector('[data-state]');
+    const fab = root.querySelector('[data-fab]');
+    const menu = root.querySelector('[data-fab-menu]');
+    const overlay = root.querySelector('[data-overlay]');
+    const dialog = root.querySelector('[data-dialog]');
+    const toast = root.querySelector('[data-toast]');
+    const firstCover = root.querySelector('.bkps-cover');
+    const originalCoverClass = firstCover.className;
+    const originalCoverMarkup = firstCover.innerHTML;
+    let filter = 'all';
+    let currentState = 'populated';
+    let returnFocus = null;
+    let logBook = null;
+    let addResult = null;
+    let addChosen = false;
+    let timer = null;
+    const messages = {
+      'first-run': ['Your shelf is ready for its first book.', 'Add a verified book; no reading history starts automatically.'],
+      'no-results': ['No books match.', 'Change the search or status. Nothing changed.'],
+      loading: ['Loading the shelf…', 'No history is being created.'],
+      success: ['Reading moment saved.', 'Only explicit selections were recorded.'],
+      validation: ['Nothing was saved.', 'Select a book and event; reactions may stay blank.'],
+      provider: ['Book search is unavailable.', 'Try another title or author. Nothing was added.'],
+      duplicate: ['Already on the shelf.', 'No duplicate was created or changed.'],
+      offline: ['You’re offline.', 'Reconnect before adding or saving.'],
+      'missing-cover': ['Missing-cover treatment.', 'Title, author, and status remain readable.'],
+      'failed-cover': ['Failed-cover treatment.', 'The card remains tappable and no metadata was invented.']
+    };
+    const detailHistory = {
+      'the snowy day': { moment: 'This week · Finished', child: 'Love', caregiver: 'Like' },
+      'the rabbit listened': { moment: 'This week · Read again', child: 'Not recorded', caregiver: 'Not recorded' }
+    };
+
+    function books() { return Array.from(root.querySelectorAll('[data-book]')); }
+    function showToast(message, duration = 2800) { toast.textContent = message; toast.hidden = false; window.setTimeout(() => { toast.hidden = true; }, duration); }
+    function applyFilters() {
+      const query = search.value.trim().toLowerCase();
+      let visible = 0;
+      books().forEach((book) => {
+        const show = (!query || book.dataset.title.includes(query) || book.dataset.author.includes(query)) && (filter === 'all' || book.dataset.status === filter);
+        book.hidden = !show;
+        if (show) visible += 1;
+      });
+      empty.hidden = visible !== 0;
+      count.textContent = `${visible} of ${books().length} shown`;
+    }
+    function showState(name) {
+      currentState = name;
+      stateSelect.value = name;
+      firstCover.className = originalCoverClass;
+      firstCover.innerHTML = originalCoverMarkup;
+      if (name === 'populated' || name === 'offline' || name === 'missing-cover' || name === 'failed-cover') {
+        reviewState.hidden = name === 'populated' || name === 'missing-cover' || name === 'failed-cover';
+        spread.hidden = false;
+        if (name === 'offline') reviewState.innerHTML = '<h2>You’re offline.</h2><p>The shelf stays available to browse. Lookup, Add, and Log are guarded until reconnection.</p>';
+        if (name === 'missing-cover' || name === 'failed-cover') { firstCover.className = 'bkps-cover'; firstCover.innerHTML = `<b>${name === 'missing-cover' ? 'Cover unavailable' : 'Cover failed to load'}</b>`; }
+        applyFilters();
+        return;
+      }
+      spread.hidden = true;
+      empty.hidden = true;
+      reviewState.hidden = false;
+      const copy = messages[name];
+      const action = name === 'first-run' || name === 'provider' ? 'Open Add a book' : name === 'validation' ? 'Open Log a read' : 'Return to shelf';
+      reviewState.innerHTML = `<h2>${copy[0]}</h2><p>${copy[1]}</p><button type="button" data-ps-recover>${action}</button>`;
+    }
+    function setFab(open) {
+      fab.setAttribute('aria-expanded', String(open));
+      fab.setAttribute('aria-label', open ? 'Close quick actions' : 'Open quick actions');
+      menu.hidden = !open;
+      if (open) window.requestAnimationFrame(() => menu.querySelector('[data-open="log"]').focus());
+    }
+    function resetPanel(panel) {
+      panel.querySelectorAll('[data-group] button').forEach((button) => button.setAttribute('aria-pressed', 'false'));
+      panel.querySelectorAll('input').forEach((input) => { input.value = ''; });
+      panel.querySelectorAll('.bkps-message').forEach((message) => { message.textContent = ''; });
+      root.querySelector('[data-log-lookup]').textContent = 'No book selected.';
+      root.querySelector('[data-add-lookup]').textContent = 'No provider request has started.';
+      logBook = null;
+      addResult = null;
+      addChosen = false;
+    }
+    function setProductInert(inert) {
+      root.querySelector('.bkps-header').toggleAttribute('inert', inert);
+      root.querySelector('main').toggleAttribute('inert', inert);
+      root.querySelector('.bkps-dock').toggleAttribute('inert', inert);
+    }
+    function openPanel(name, source) {
+      returnFocus = source || document.activeElement || fab;
+      setFab(false);
+      if (name !== 'detail') resetPanel(root.querySelector(`[data-panel="${name}"]`));
+      root.querySelectorAll('[data-panel]').forEach((panel) => { panel.hidden = panel.dataset.panel !== name; });
+      const titles = { log: ['Quick action', 'Log a read'], add: ['Verified fixture search', 'Add a book'], detail: ['Shelf book', 'Book details'] };
+      root.querySelector('[data-dialog-kicker]').textContent = titles[name][0];
+      root.querySelector('[data-dialog-title]').textContent = titles[name][1];
+      setProductInert(true);
+      overlay.hidden = false;
+      const target = name === 'detail' ? root.querySelector('[data-panel="detail"] [data-close]') : root.querySelector(`[data-panel="${name}"] input`);
+      window.requestAnimationFrame(() => target.focus());
+    }
+    function closePanel(cancelled = true) {
+      overlay.hidden = true;
+      setProductInert(false);
+      if (cancelled) showToast('Action cancelled. Nothing was saved.', 1800);
+      const target = returnFocus && returnFocus.isConnected ? returnFocus : fab;
+      returnFocus = null;
+      target.focus();
+    }
+    function lookup(kind, value) {
+      const box = root.querySelector(`[data-${kind}-lookup]`);
+      window.clearTimeout(timer);
+      if (currentState === 'offline') { box.textContent = 'Offline: no lookup was started.'; return; }
+      const query = value.trim().toLowerCase();
+      if (query.length < 2) { box.textContent = kind === 'log' ? 'Type at least 2 characters. No book selected.' : 'Type at least 2 characters. No provider request was started.'; return; }
+      box.textContent = 'Loading verified fixture results…';
+      timer = window.setTimeout(() => {
+        if (query.includes('error')) { box.innerHTML = '<strong>Provider error.</strong><br>Try “Mooncake” or another title or author.'; return; }
+        if (query.includes('none')) { box.innerHTML = '<strong>No verified result.</strong><br>Try a more complete title or author.'; return; }
+        let result = null;
+        if (kind === 'log') {
+          const match = books().find((book) => book.dataset.title.includes(query) || book.dataset.author.includes(query));
+          if (match) result = { t: match.querySelector('.bkps-copy strong').textContent, a: match.querySelector('.bkps-copy small').textContent };
+        } else if (query.includes('snow') || query.includes('ezra')) result = { t: 'The Snowy Day', a: 'Ezra Jack Keats', duplicate: true };
+        else if (query.includes('moon') || query.includes('grace')) result = { t: 'A Big Mooncake for Little Star', a: 'Grace Lin', duplicate: false };
+        if (!result) { box.innerHTML = `<strong>No ${kind === 'log' ? 'shelf' : 'verified fixture'} result.</strong><br>Try another title or author.`; return; }
+        box.innerHTML = `<button type="button" data-ps-result="${kind}" aria-pressed="false"><strong>${result.t}</strong><span>${result.a}</span></button>`;
+        if (kind === 'add') addResult = result;
+      }, 380);
+    }
+    function trapFocus(event) {
+      if (event.key === 'Escape') { event.preventDefault(); closePanel(true); return; }
+      if (event.key !== 'Tab') return;
+      const focusable = Array.from(dialog.querySelectorAll('button:not(:disabled), input:not(:disabled), select:not(:disabled)')).filter((element) => element.offsetParent !== null);
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
+
+    root.addEventListener('input', (event) => {
+      setFab(false);
+      if (event.target === search) { if (currentState !== 'offline') { currentState = 'populated'; stateSelect.value = 'populated'; } applyFilters(); }
+      if (event.target.matches('[data-log-search]')) lookup('log', event.target.value);
+      if (event.target.matches('[data-add-search]')) lookup('add', event.target.value);
+    });
+    root.addEventListener('change', (event) => { setFab(false); if (event.target === stateSelect) showState(event.target.value); });
+    root.addEventListener('click', (event) => {
+      if (!event.target.closest('[data-fab]')) setFab(false);
+      const device = event.target.closest('[data-device]');
+      if (device) { root.querySelectorAll('[data-device]').forEach((button) => button.setAttribute('aria-pressed', String(button === device))); frame.className = `bkps-device is-${device.dataset.device}`; return; }
+      const status = event.target.closest('[data-filter]');
+      if (status) { filter = status.dataset.filter; root.querySelectorAll('[data-filter]').forEach((button) => button.setAttribute('aria-pressed', String(button === status))); if (currentState === 'offline') applyFilters(); else showState('populated'); return; }
+      if (event.target.closest('[data-fab]')) { setFab(fab.getAttribute('aria-expanded') !== 'true'); return; }
+      const opener = event.target.closest('[data-open]');
+      if (opener) { openPanel(opener.dataset.open, fab); return; }
+      const book = event.target.closest('[data-book]');
+      if (book) { const history=detailHistory[book.dataset.title];root.querySelector('[data-detail-title]').textContent = book.querySelector('.bkps-copy strong').textContent; root.querySelector('[data-detail-author]').textContent = book.querySelector('.bkps-copy small').textContent; root.querySelector('[data-detail-status]').textContent = book.querySelector('.bkps-status').textContent;root.querySelector('[data-detail-history]').innerHTML=history?`<h3>Chronological history</h3><p><strong>${history.moment}</strong></p><dl><dt>Child</dt><dd>${history.child}</dd><dt>Caregiver</dt><dd>${history.caregiver}</dd></dl>`:'<h3>Chronological history</h3><p>No reading moments are logged for this fixture book.</p><dl><dt>Child</dt><dd>Not recorded</dd><dt>Caregiver</dt><dd>Not recorded</dd></dl>'; openPanel('detail', book); return; }
+      if (event.target.closest('[data-close]')) { closePanel(false); return; }
+      if (event.target === overlay) { closePanel(true); return; }
+      const result = event.target.closest('[data-ps-result]');
+      if (result) { result.setAttribute('aria-pressed', 'true'); if (result.dataset.psResult === 'log') logBook = result.querySelector('strong').textContent; else addChosen = true; return; }
+      const choice = event.target.closest('[data-group] button');
+      if (choice) { const next = choice.getAttribute('aria-pressed') !== 'true'; choice.parentElement.querySelectorAll('button').forEach((button) => button.setAttribute('aria-pressed', 'false')); choice.setAttribute('aria-pressed', String(next)); return; }
+      if (event.target.closest('[data-find]')) { lookup('add', root.querySelector('[data-add-search]').value); return; }
+      if (event.target.closest('[data-ps-recover]')) { if (currentState === 'first-run' || currentState === 'provider') openPanel('add', fab); else if (currentState === 'validation') openPanel('log', fab); else showState('populated'); return; }
+      if (event.target.closest('[data-home]')) { search.value = ''; filter = 'all'; root.querySelectorAll('[data-filter]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.filter === 'all'))); if (currentState === 'offline') applyFilters(); else showState('populated'); return; }
+      const comment = event.target.closest('[data-comment]');
+      if (comment) { const activate = comment.getAttribute('aria-pressed') !== 'true'; root.querySelectorAll('[data-comment]').forEach((button) => button.setAttribute('aria-pressed', 'false')); root.querySelectorAll('[data-review]').forEach((target) => target.classList.remove('bkps-highlight')); if (activate) { comment.setAttribute('aria-pressed', 'true'); root.querySelectorAll(`[data-review="${comment.dataset.comment}"]`).forEach((target) => target.classList.add('bkps-highlight')); } return; }
+    });
+
+    function saveLog() {
+      const readingEvent = root.querySelector('[data-group="event"] button[aria-pressed="true"]');
+      const message = root.querySelector('[data-log-message]');
+      if (currentState === 'offline') { message.textContent = 'Offline: nothing was saved. Reconnect and try again.'; return; }
+      if (!logBook || !readingEvent) { message.textContent = 'Nothing was saved. Select a shelf book and event; reactions may stay blank.'; return; }
+      const child = root.querySelector('[data-group="child"] button[aria-pressed="true"]');
+      const caregiver = root.querySelector('[data-group="caregiver"] button[aria-pressed="true"]');
+      closePanel(false);
+      showToast(`Saved ${readingEvent.dataset.value} for ${logBook}.${child ? ` Child: ${child.dataset.value}.` : ''}${caregiver ? ` Caregiver: ${caregiver.dataset.value}.` : ''}${!child && !caregiver ? ' No reactions recorded.' : ''}`, 3200);
+    }
+    function saveAdd() {
+      const status = root.querySelector('[data-group="status"] button[aria-pressed="true"]');
+      const message = root.querySelector('[data-add-message]');
+      if (currentState === 'offline') { message.textContent = 'Offline: nothing was added. Reconnect and try again.'; return; }
+      if (!addChosen || !addResult || !status) { message.textContent = 'Nothing was added. Select a verified result and shelf status.'; return; }
+      if (addResult.duplicate) { message.textContent = 'Already on the shelf. No duplicate was created or changed.'; return; }
+      closePanel(false);
+      showToast(`Added ${addResult.t} as ${status.dataset.value}. No history or reactions were created.`, 3300);
+    }
+    root.querySelector('[data-save-log]').addEventListener('click', saveLog);
+    root.querySelector('[data-save-add]').addEventListener('click', saveAdd);
+    root.querySelector('[data-panel="log"]').addEventListener('submit', (event) => { event.preventDefault(); saveLog(); });
+    root.querySelector('[data-panel="add"]').addEventListener('submit', (event) => { event.preventDefault(); saveAdd(); });
+    root.addEventListener('pointerdown', (event) => {
+      const wasOpen = fab.getAttribute('aria-expanded') === 'true';
+      if (!wasOpen || event.target.closest('[data-fab]') || event.target.closest('[data-fab-menu]')) return;
+      setFab(false);
+      if (!event.target.closest('[data-open],[data-book],[data-ps-recover]')) window.requestAnimationFrame(() => fab.focus());
+    }, true);
+    dialog.addEventListener('keydown', trapFocus);
+    product.addEventListener('keydown', (event) => { if (event.key === 'Escape' && overlay.hidden && fab.getAttribute('aria-expanded') === 'true') { setFab(false); fab.focus(); } });
+    showState('populated');
+  })();
+</script>

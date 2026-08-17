@@ -1,0 +1,994 @@
+<div id="bookkin-5a-review-v2">
+  <div class="viz-controls" aria-label="Prototype controls">
+    <span class="text-small text-muted">Screen</span>
+    <button class="btn btn-primary" type="button" data-screen="shelf" aria-pressed="true">Shelf</button>
+    <button class="btn" type="button" data-screen="first-run" aria-pressed="false">First run</button>
+    <button class="btn" type="button" data-screen="history" aria-pressed="false">Book history</button>
+    <span class="text-small text-muted">Viewport</span>
+    <button class="btn btn-primary" type="button" data-viewport="desktop" aria-pressed="true">Desktop</button>
+    <button class="btn" type="button" data-viewport="tablet" aria-pressed="false">Tablet</button>
+    <button class="btn" type="button" data-viewport="phone" aria-pressed="false">Phone</button>
+    <label class="form-check form-switch">
+      <input class="form-check-input" id="bk2-show-notes" type="checkbox" checked>
+      <span class="form-check-label">Design notes</span>
+    </label>
+  </div>
+
+  <div class="bk2-review-layout">
+    <div class="bk2-stage">
+      <div class="bk2-device bk2-desktop" data-device>
+        <div class="bk2-prototype" data-prototype aria-live="polite"></div>
+      </div>
+    </div>
+    <aside class="card bk2-notes" aria-label="Design comments">
+      <p class="text-small text-muted">Select a comment to highlight its decision.</p>
+      <div data-notes></div>
+    </aside>
+  </div>
+</div>
+
+<style>
+  #bookkin-5a-review-v2 {
+    --bk2-mist: light-dark(#f3f7f5, #141b18);
+    --bk2-surface: light-dark(#ffffff, #1c2622);
+    --bk2-soft: light-dark(#e4eeea, #263630);
+    --bk2-ink: light-dark(#17231f, #edf5f1);
+    --bk2-muted: light-dark(#62716b, #a9bbb3);
+    --bk2-green: light-dark(#176b54, #5fc09d);
+    --bk2-green-strong: light-dark(#0f5945, #7bd1b1);
+    --bk2-green-ink: light-dark(#ffffff, #10231c);
+    --bk2-line: light-dark(#cfddd7, #3a4d45);
+    --bk2-focus: light-dark(#315bc5, #8ca9ff);
+    --bk2-danger: light-dark(#a33f54, #ef8da1);
+    color-scheme: light dark;
+  }
+
+  #bookkin-5a-review-v2 .bk2-review-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(200px, 0.3fr);
+    gap: 1rem;
+    align-items: start;
+    margin-top: 1rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-stage {
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  #bookkin-5a-review-v2 .bk2-device {
+    width: 100%;
+    transition: width 180ms ease;
+  }
+
+  #bookkin-5a-review-v2 .bk2-device.bk2-tablet {
+    width: min(100%, 620px);
+  }
+
+  #bookkin-5a-review-v2 .bk2-device.bk2-phone {
+    width: min(100%, 390px);
+  }
+
+  #bookkin-5a-review-v2 .bk2-prototype {
+    position: relative;
+    overflow: hidden;
+    min-height: 650px;
+    border: 1px solid var(--bk2-line);
+    border-radius: 1.25rem;
+    background: var(--bk2-mist);
+    color: var(--bk2-ink);
+    box-shadow: 0 18px 50px light-dark(rgb(29 63 52 / 0.12), rgb(0 0 0 / 0.32));
+    font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+
+  #bookkin-5a-review-v2 .bk2-shell {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1.2rem;
+    border-bottom: 1px solid var(--bk2-line);
+    background: var(--bk2-surface);
+  }
+
+  #bookkin-5a-review-v2 .bk2-brand {
+    margin-right: auto;
+    font-family: Charter, Georgia, serif;
+    font-size: 1.55rem;
+    font-weight: 500;
+    letter-spacing: -0.045em;
+  }
+
+  #bookkin-5a-review-v2 .bk2-nav {
+    display: flex;
+    gap: 0.3rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-nav button,
+  #bookkin-5a-review-v2 .bk2-filter,
+  #bookkin-5a-review-v2 .bk2-book-button,
+  #bookkin-5a-review-v2 .bk2-choice,
+  #bookkin-5a-review-v2 .bk2-tab,
+  #bookkin-5a-review-v2 .bk2-close,
+  #bookkin-5a-review-v2 .bk2-recent {
+    border: 0;
+    background: transparent;
+    color: var(--bk2-ink);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  #bookkin-5a-review-v2 .bk2-nav button {
+    padding: 0.45rem 0.6rem;
+    border-bottom: 2px solid transparent;
+  }
+
+  #bookkin-5a-review-v2 .bk2-nav button[aria-current="page"] {
+    border-color: var(--bk2-green);
+  }
+
+  #bookkin-5a-review-v2 .bk2-alpha {
+    color: var(--bk2-muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #bookkin-5a-review-v2 .bk2-page {
+    padding: 1.4rem 1.5rem 6rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-kicker {
+    margin: 0;
+    color: var(--bk2-green);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  #bookkin-5a-review-v2 .bk2-title {
+    max-width: 780px;
+    margin: 0.28rem 0 0;
+    font-family: Charter, Georgia, serif;
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    font-weight: 400;
+  }
+
+  #bookkin-5a-review-v2 .bk2-lede {
+    max-width: 610px;
+    margin: 0.8rem 0 0;
+    color: var(--bk2-muted);
+    line-height: 1.65;
+  }
+
+  #bookkin-5a-review-v2 .bk2-count {
+    color: var(--bk2-muted);
+    font-size: 0.82rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-library-tools {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) auto;
+    gap: 0.75rem;
+    margin-top: 1.2rem;
+    align-items: center;
+  }
+
+  #bookkin-5a-review-v2 .bk2-search {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.72rem 0.85rem;
+    border: 1px solid var(--bk2-line);
+    border-radius: 0.8rem;
+    background: var(--bk2-surface);
+    color: var(--bk2-ink);
+    font: inherit;
+  }
+
+  #bookkin-5a-review-v2 .bk2-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-filter {
+    padding: 0.52rem 0.72rem;
+    border: 1px solid var(--bk2-line);
+    border-radius: 999px;
+    background: var(--bk2-surface);
+    color: var(--bk2-muted);
+    font-size: 0.8rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-filter[aria-pressed="true"] {
+    border-color: var(--bk2-green);
+    background: var(--bk2-soft);
+    color: var(--bk2-ink);
+  }
+
+  #bookkin-5a-review-v2 .bk2-books {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.2rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-book-button {
+    width: 100%;
+    padding: 0;
+    text-align: left;
+  }
+
+  #bookkin-5a-review-v2 .bk2-book-button:hover .bk2-cover {
+    border-color: var(--bk2-green);
+    transform: translateY(-2px);
+  }
+
+  #bookkin-5a-review-v2 .bk2-cover {
+    aspect-ratio: 2 / 3;
+    display: flex;
+    align-items: flex-end;
+    box-sizing: border-box;
+    padding: 0.7rem;
+    overflow: hidden;
+    border: 1px solid var(--bk2-line);
+    border-radius: 0.85rem;
+    background: var(--bk2-soft);
+    color: var(--bk2-muted);
+    font-family: Charter, Georgia, serif;
+    transition: transform 130ms ease, border-color 130ms ease;
+  }
+
+  #bookkin-5a-review-v2 .bk2-cover-provider {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(145deg, var(--bk2-soft), var(--bk2-surface));
+  }
+
+  #bookkin-5a-review-v2 .bk2-book-name {
+    display: block;
+    margin-top: 0.52rem;
+    font-family: Charter, Georgia, serif;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  #bookkin-5a-review-v2 .bk2-meta {
+    display: block;
+    margin-top: 0.16rem;
+    color: var(--bk2-muted);
+    font-size: 0.78rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-chip {
+    display: inline-block;
+    margin-top: 0.42rem;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    background: var(--bk2-soft);
+    color: var(--bk2-muted);
+    font-size: 0.72rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-no-results {
+    grid-column: 1 / -1;
+    padding: 1.2rem 0;
+    color: var(--bk2-muted);
+  }
+
+  #bookkin-5a-review-v2 .bk2-action-dock {
+    position: absolute;
+    z-index: 12;
+    right: 1.2rem;
+    bottom: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.45rem;
+    border: 1px solid var(--bk2-line);
+    border-radius: 999px;
+    background: var(--bk2-surface);
+    box-shadow: 0 12px 34px light-dark(rgb(24 64 51 / 0.18), rgb(0 0 0 / 0.38));
+  }
+
+  #bookkin-5a-review-v2 .bk2-dock-secondary,
+  #bookkin-5a-review-v2 .bk2-dock-primary,
+  #bookkin-5a-review-v2 .bk2-primary,
+  #bookkin-5a-review-v2 .bk2-secondary {
+    border: 0;
+    border-radius: 999px;
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  #bookkin-5a-review-v2 .bk2-dock-secondary {
+    padding: 0.7rem 0.85rem;
+    background: var(--bk2-soft);
+    color: var(--bk2-ink);
+  }
+
+  #bookkin-5a-review-v2 .bk2-dock-primary {
+    padding: 0.78rem 1.05rem;
+    background: var(--bk2-green);
+    color: var(--bk2-green-ink);
+  }
+
+  #bookkin-5a-review-v2 .bk2-first-run {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(230px, 0.42fr);
+    gap: 2rem;
+    align-items: center;
+    min-height: 470px;
+  }
+
+  #bookkin-5a-review-v2 .bk2-first-card {
+    padding: 1.1rem;
+    border: 1px solid var(--bk2-line);
+    border-radius: 1rem;
+    background: var(--bk2-surface);
+  }
+
+  #bookkin-5a-review-v2 .bk2-first-card h2,
+  #bookkin-5a-review-v2 .bk2-sheet h2,
+  #bookkin-5a-review-v2 .bk2-history h2 {
+    margin: 0.25rem 0 0;
+    font-family: Charter, Georgia, serif;
+    font-size: 1.45rem;
+    font-weight: 400;
+  }
+
+  #bookkin-5a-review-v2 .bk2-primary {
+    width: 100%;
+    margin-top: 0.8rem;
+    padding: 0.75rem 1rem;
+    background: var(--bk2-green);
+    color: var(--bk2-green-ink);
+  }
+
+  #bookkin-5a-review-v2 .bk2-sheet > .bk2-primary {
+    position: sticky;
+    bottom: 0;
+    box-shadow: 0 -8px 18px var(--bk2-surface);
+  }
+
+  #bookkin-5a-review-v2 .bk2-secondary {
+    padding: 0.65rem 0.85rem;
+    background: var(--bk2-soft);
+    color: var(--bk2-ink);
+  }
+
+  #bookkin-5a-review-v2 .bk2-history-grid {
+    display: grid;
+    grid-template-columns: 130px minmax(0, 1fr);
+    gap: 1.1rem;
+    align-items: start;
+    margin-top: 1.2rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-history h2 {
+    font-size: 2rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-timeline {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--bk2-line);
+  }
+
+  #bookkin-5a-review-v2 .bk2-event {
+    margin-top: 0.8rem;
+    padding-left: 0.8rem;
+    border-left: 2px solid var(--bk2-line);
+  }
+
+  #bookkin-5a-review-v2 .bk2-backdrop {
+    position: absolute;
+    z-index: 20;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 1rem;
+    box-sizing: border-box;
+    background: light-dark(rgb(18 36 30 / 0.36), rgb(0 0 0 / 0.56));
+  }
+
+  #bookkin-5a-review-v2 .bk2-sheet {
+    width: min(100%, 560px);
+    max-height: 84%;
+    overflow: auto;
+    box-sizing: border-box;
+    padding: 1.1rem;
+    border: 1px solid var(--bk2-line);
+    border-radius: 1.2rem;
+    background: var(--bk2-surface);
+    color: var(--bk2-ink);
+    box-shadow: 0 22px 60px light-dark(rgb(18 47 38 / 0.25), rgb(0 0 0 / 0.5));
+  }
+
+  #bookkin-5a-review-v2 .bk2-sheet-head {
+    display: flex;
+    align-items: start;
+    gap: 1rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-sheet-head > div {
+    flex: 1;
+  }
+
+  #bookkin-5a-review-v2 .bk2-close {
+    padding: 0.45rem;
+    color: var(--bk2-muted);
+  }
+
+  #bookkin-5a-review-v2 .bk2-recent-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.55rem;
+    margin-top: 0.85rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-recent {
+    padding: 0.7rem;
+    border: 1px solid var(--bk2-line);
+    border-radius: 0.75rem;
+    background: var(--bk2-mist);
+    text-align: left;
+    font-size: 0.8rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-recent[aria-pressed="true"] {
+    border-color: var(--bk2-green);
+    background: var(--bk2-soft);
+  }
+
+  #bookkin-5a-review-v2 .bk2-choice-label {
+    margin: 0.9rem 0 0.35rem;
+    color: var(--bk2-muted);
+    font-size: 0.8rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-choice-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.4rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-choice {
+    padding: 0.58rem 0.4rem;
+    border: 1px solid var(--bk2-line);
+    border-radius: 0.65rem;
+    background: var(--bk2-mist);
+    font-size: 0.78rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-choice[aria-pressed="true"] {
+    border-color: var(--bk2-green);
+    background: var(--bk2-soft);
+  }
+
+  #bookkin-5a-review-v2 .bk2-tabs {
+    display: flex;
+    gap: 0.35rem;
+    margin-top: 0.85rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-tab {
+    flex: 1;
+    padding: 0.55rem 0.35rem;
+    border-bottom: 2px solid var(--bk2-line);
+    color: var(--bk2-muted);
+  }
+
+  #bookkin-5a-review-v2 .bk2-tab[aria-selected="true"] {
+    border-color: var(--bk2-green);
+    color: var(--bk2-ink);
+  }
+
+  #bookkin-5a-review-v2 .bk2-field-label {
+    display: block;
+    margin-top: 0.85rem;
+    color: var(--bk2-muted);
+    font-size: 0.8rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-scan-note {
+    margin: 0.75rem 0 0;
+    padding: 0.65rem;
+    border-left: 3px solid var(--bk2-green);
+    background: var(--bk2-mist);
+    color: var(--bk2-muted);
+    font-size: 0.78rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-confirm {
+    margin: 0.7rem 0 0;
+    color: var(--bk2-green-strong);
+    font-size: 0.8rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-phone .bk2-shell,
+  #bookkin-5a-review-v2 .bk2-tablet .bk2-shell {
+    flex-wrap: wrap;
+  }
+
+  #bookkin-5a-review-v2 .bk2-phone .bk2-nav {
+    order: 3;
+    width: 100%;
+  }
+
+  #bookkin-5a-review-v2 .bk2-phone .bk2-page {
+    padding: 1rem 1rem 6.5rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-phone .bk2-library-tools {
+    grid-template-columns: 1fr;
+  }
+
+  #bookkin-5a-review-v2 .bk2-phone .bk2-filters {
+    flex-wrap: nowrap;
+  }
+
+  #bookkin-5a-review-v2 .bk2-phone .bk2-filter {
+    flex: 1;
+    padding-inline: 0.35rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-phone .bk2-books {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #bookkin-5a-review-v2 .bk2-phone .bk2-action-dock {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: calc(100% - 1.25rem);
+  }
+
+  #bookkin-5a-review-v2 .bk2-phone .bk2-first-run {
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+    min-height: 0;
+  }
+
+  #bookkin-5a-review-v2 .bk2-phone .bk2-history-grid {
+    grid-template-columns: 90px minmax(0, 1fr);
+  }
+
+  #bookkin-5a-review-v2 .bk2-phone .bk2-choice-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #bookkin-5a-review-v2 .bk2-tablet .bk2-books {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #bookkin-5a-review-v2 .bk2-annotations [data-note] {
+    position: relative;
+  }
+
+  #bookkin-5a-review-v2 .bk2-annotations [data-note]::after {
+    content: attr(data-note);
+    position: absolute;
+    z-index: 30;
+    top: -0.55rem;
+    right: -0.45rem;
+    display: grid;
+    place-items: center;
+    width: 1.45rem;
+    height: 1.45rem;
+    border-radius: 999px;
+    background: var(--bk2-focus);
+    color: light-dark(#ffffff, #10182d);
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    box-shadow: 0 2px 8px light-dark(rgb(36 57 55 / 0.25), rgb(0 0 0 / 0.4));
+  }
+
+  #bookkin-5a-review-v2 [data-note].bk2-highlight {
+    outline: 3px solid var(--bk2-focus);
+    outline-offset: 4px;
+  }
+
+  #bookkin-5a-review-v2 .bk2-notes {
+    position: sticky;
+    top: 0.5rem;
+  }
+
+  #bookkin-5a-review-v2 .bk2-note-button {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 0.35rem;
+    text-align: left;
+    white-space: normal;
+  }
+
+  #bookkin-5a-review-v2 .bk2-note-button[aria-pressed="true"] {
+    box-shadow: 0 0 0 2px var(--ring);
+  }
+
+  @media (max-width: 700px) {
+    #bookkin-5a-review-v2 .bk2-review-layout {
+      grid-template-columns: 1fr;
+    }
+
+    #bookkin-5a-review-v2 .bk2-notes {
+      position: static;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #bookkin-5a-review-v2 .bk2-device,
+    #bookkin-5a-review-v2 .bk2-cover {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('bookkin-5a-review-v2');
+    const prototype = root.querySelector('[data-prototype]');
+    const device = root.querySelector('[data-device]');
+    const notesRegion = root.querySelector('[data-notes]');
+    const notesToggle = root.querySelector('#bk2-show-notes');
+    let screen = 'shelf';
+    let viewport = 'desktop';
+    let overlay = null;
+    let shelfFilter = 'All';
+    let shelfQuery = '';
+    let activeNote = null;
+
+    const books = [
+      { title: 'The Snowy Day', author: 'Ezra Jack Keats', status: 'Owned', cover: true },
+      { title: 'More Pies!', author: 'Robert Munsch', status: 'Borrowed', cover: false },
+      { title: 'Last Stop on Market', author: 'Matt de la Peña', status: 'Wishlist', cover: true },
+      { title: 'Saturday', author: 'Oge Mora', status: 'Owned', cover: true },
+      { title: 'The Rabbit Listened', author: 'Cori Doerrfeld', status: 'Borrowed', cover: true },
+      { title: 'A Sick Day for Amos McGee', author: 'Philip C. Stead', status: 'Owned', cover: true },
+      { title: 'Jabari Jumps', author: 'Gaia Cornwall', status: 'Wishlist', cover: true },
+      { title: 'The Dot', author: 'Peter H. Reynolds', status: 'Owned', cover: true }
+    ];
+
+    const comments = {
+      shelf: [
+        ['1', 'Cool mineral surfaces and evergreen actions replace the beige-and-brown emphasis while keeping the editorial typography.'],
+        ['2', 'Title/author search and one-tap status filters keep a large shelf usable without turning it into a dense dashboard.'],
+        ['3', 'Add book and Quick log remain thumb-reachable in a persistent dock; neither requires scrolling on mobile.'],
+        ['4', 'The entire book card opens history. Per-card “Log reading” links are removed, leaving the status pill visually quiet.']
+      ],
+      'first-run': [
+        ['1', 'The cooler palette and same shell are present from the first visit.'],
+        ['2', 'First-run guidance stays brief; the persistent actions remain available without a setup checklist.'],
+        ['3', 'Add first book opens the same reusable add sheet used everywhere else.']
+      ],
+      history: [
+        ['1', 'Book identity and large editorial type remain prominent without returning to the beige palette.'],
+        ['2', 'Quick log is still persistent from book history, so a long timeline never blocks the common action.'],
+        ['3', 'The shelf-wide quick logger can target recent books or search by title/author without navigating first.']
+      ],
+      add: [
+        ['1', 'Add book is a focused sheet instead of a large permanent panel on every populated shelf.'],
+        ['2', 'ISBN, title, and author reuse the existing verified lookup paths.'],
+        ['3', 'Camera ISBN scanning joins this same sheet in Checkpoint 9; it is described but not exposed as a dead control now.']
+      ],
+      log: [
+        ['1', 'Recent books appear first for the fastest common path; search handles a large shelf.'],
+        ['2', 'Book, event, and reactions stay together in one compact sheet with one save action.'],
+        ['3', 'Child and parent reactions remain separate while still fitting within thumb reach.']
+      ]
+    };
+
+    const shell = (content, current) => `
+      <header class="bk2-shell" ${current === 'history' ? '' : 'data-note="1"'}>
+        <div class="bk2-brand">Bookkin</div>
+        <nav class="bk2-nav" aria-label="Current navigation">
+          <button type="button" data-go="shelf" ${current === 'shelf' ? 'aria-current="page"' : ''}>Shelf</button>
+        </nav>
+        <span class="bk2-alpha">Private alpha</span>
+      </header>
+      ${content}
+      <div class="bk2-action-dock" data-note="${current === 'history' ? '2' : '3'}">
+        <button class="bk2-dock-secondary" type="button" data-open="add">＋ Add book</button>
+        <button class="bk2-dock-primary" type="button" data-open="log">Quick log</button>
+      </div>
+    `;
+
+    const bookCard = (book, index) => `
+      <article data-book-card data-title="${book.title.toLowerCase()}" data-author="${book.author.toLowerCase()}" data-status="${book.status}" ${index === 1 ? 'data-note="4"' : ''}>
+        <button class="bk2-book-button" type="button" data-go="history" aria-label="Open ${book.title} history">
+          <span class="bk2-cover ${book.cover ? 'bk2-cover-provider' : ''}">
+            ${book.cover ? '<span>Verified provider cover</span>' : `<span>${book.title}<br><small>Cover unavailable</small></span>`}
+          </span>
+          <span class="bk2-book-name">${book.title}</span>
+          <span class="bk2-meta">${book.author}</span>
+          <span class="bk2-chip">${book.status}</span>
+        </button>
+      </article>
+    `;
+
+    const shelfScreen = () => shell(`
+      <main class="bk2-page">
+        <p class="bk2-kicker">Family shelf</p>
+        <h1 class="bk2-title">Books worth remembering.</h1>
+        <span class="bk2-count" data-count>${books.length} books</span>
+        <section class="bk2-library-tools" aria-label="Find and filter shelf books" data-note="2">
+          <input class="bk2-search" type="search" data-shelf-search placeholder="Search title or author" value="${shelfQuery}">
+          <div class="bk2-filters" aria-label="Shelf status">
+            ${['All', 'Owned', 'Borrowed', 'Wishlist'].map((value) => `<button class="bk2-filter" type="button" data-filter="${value}" aria-pressed="${shelfFilter === value}">${value}</button>`).join('')}
+          </div>
+        </section>
+        <section class="bk2-books" aria-label="Family books">
+          ${books.map(bookCard).join('')}
+          <p class="bk2-no-results" data-no-results hidden>No books match that search and filter.</p>
+        </section>
+      </main>
+    `, 'shelf');
+
+    const firstRunScreen = () => shell(`
+      <main class="bk2-page bk2-first-run">
+        <section data-note="2">
+          <p class="bk2-kicker">Start here</p>
+          <h1 class="bk2-title">Start with books you already know.</h1>
+          <p class="bk2-lede">Add a few books your family has tried, then record what happened. Those reactions and rereads will help Bookkin build better library bags later.</p>
+        </section>
+        <aside class="bk2-first-card" data-note="3">
+          <p class="bk2-kicker">First book</p>
+          <h2>Add one your family remembers.</h2>
+          <p class="bk2-meta">Search by ISBN, title, or author.</p>
+          <button class="bk2-primary" type="button" data-open="add">Add first book</button>
+        </aside>
+      </main>
+    `, 'first-run');
+
+    const historyScreen = () => shell(`
+      <main class="bk2-page bk2-history">
+        <button class="bk2-secondary" type="button" data-go="shelf">Back to shelf</button>
+        <p class="bk2-kicker">Reading history</p>
+        <h1 class="bk2-title">A small record of what happened.</h1>
+        <section class="bk2-history-grid" data-note="1">
+          <div class="bk2-cover"><span>More Pies!<br><small>Cover unavailable</small></span></div>
+          <div>
+            <p class="bk2-kicker">Family book</p>
+            <h2>More Pies!</h2>
+            <span class="bk2-meta">Robert Munsch</span>
+            <span class="bk2-chip">Borrowed</span>
+            <span class="bk2-chip">1 reread</span>
+          </div>
+        </section>
+        <section class="bk2-timeline">
+          <p class="bk2-kicker">Activity</p>
+          <h2>What your family remembers.</h2>
+          <article class="bk2-event">
+            <span class="bk2-meta">Aug 7, 2026</span>
+            <strong>Read again</strong>
+            <span class="bk2-meta">Child: Love · Parent: Love</span>
+          </article>
+        </section>
+      </main>
+    `, 'history');
+
+    const addSheet = () => `
+      <div class="bk2-backdrop" data-overlay-backdrop>
+        <section class="bk2-sheet" role="dialog" aria-modal="true" aria-labelledby="bk2-add-heading" data-note="1">
+          <div class="bk2-sheet-head">
+            <div>
+              <p class="bk2-kicker">Add a book</p>
+              <h2 id="bk2-add-heading">Find a verified record.</h2>
+            </div>
+            <button class="bk2-close" type="button" data-close aria-label="Close add book">Close</button>
+          </div>
+          <div class="bk2-tabs" role="tablist" aria-label="Discovery method" data-note="2">
+            <button class="bk2-tab" type="button" role="tab" data-tab="ISBN" aria-selected="true">ISBN</button>
+            <button class="bk2-tab" type="button" role="tab" data-tab="Title" aria-selected="false">Title</button>
+            <button class="bk2-tab" type="button" role="tab" data-tab="Author" aria-selected="false">Author</button>
+          </div>
+          <label class="bk2-field-label" for="bk2-add-query">ISBN-10 or ISBN-13</label>
+          <input class="bk2-search" id="bk2-add-query" placeholder="978-0-306-40615-7">
+          <button class="bk2-primary" type="button" data-save>Look up book</button>
+          <p class="bk2-scan-note" data-note="3">Camera barcode scanning will join this same add flow in Checkpoint 9 after the protected HTTPS preview is available.</p>
+          <p class="bk2-confirm" data-confirm hidden>Prototype: verified result would appear here.</p>
+        </section>
+      </div>
+    `;
+
+    const logSheet = () => `
+      <div class="bk2-backdrop" data-overlay-backdrop>
+        <section class="bk2-sheet" role="dialog" aria-modal="true" aria-labelledby="bk2-log-heading">
+          <div class="bk2-sheet-head">
+            <div>
+              <p class="bk2-kicker">Quick log</p>
+              <h2 id="bk2-log-heading">What happened?</h2>
+            </div>
+            <button class="bk2-close" type="button" data-close aria-label="Close quick log">Close</button>
+          </div>
+          <label class="bk2-field-label" for="bk2-log-search">Choose a recent book or search your shelf</label>
+          <input class="bk2-search" id="bk2-log-search" placeholder="Search title or author" data-note="1">
+          <div class="bk2-recent-grid" data-note="1">
+            <button class="bk2-recent" type="button" aria-pressed="true">More Pies!<span class="bk2-meta">Borrowed</span></button>
+            <button class="bk2-recent" type="button" aria-pressed="false">The Snowy Day<span class="bk2-meta">Owned</span></button>
+            <button class="bk2-recent" type="button" aria-pressed="false">Saturday<span class="bk2-meta">Owned</span></button>
+          </div>
+          <div data-note="2">
+            <p class="bk2-choice-label">Reading event</p>
+            <div class="bk2-choice-grid">
+              <button class="bk2-choice" type="button" aria-pressed="true">Finished</button>
+              <button class="bk2-choice" type="button" aria-pressed="false">Read again</button>
+              <button class="bk2-choice" type="button" aria-pressed="false">Stopped</button>
+              <button class="bk2-choice" type="button" aria-pressed="false">Rejected</button>
+            </div>
+          </div>
+          <div data-note="3">
+            <p class="bk2-choice-label">Child’s reaction <span class="bk2-meta">optional</span></p>
+            <div class="bk2-choice-grid">
+              <button class="bk2-choice" type="button" aria-pressed="false">Love</button>
+              <button class="bk2-choice" type="button" aria-pressed="false">Like</button>
+              <button class="bk2-choice" type="button" aria-pressed="false">Not for me</button>
+            </div>
+            <p class="bk2-choice-label">Parent’s reaction <span class="bk2-meta">optional</span></p>
+            <div class="bk2-choice-grid">
+              <button class="bk2-choice" type="button" aria-pressed="false">Love</button>
+              <button class="bk2-choice" type="button" aria-pressed="false">Like</button>
+              <button class="bk2-choice" type="button" aria-pressed="false">Dislike</button>
+            </div>
+          </div>
+          <button class="bk2-primary" type="button" data-save>Save reading moment</button>
+          <p class="bk2-confirm" data-confirm hidden>Prototype: reading moment saved.</p>
+        </section>
+      </div>
+    `;
+
+    function currentComments() {
+      return comments[overlay || screen];
+    }
+
+    function renderNotes() {
+      notesRegion.innerHTML = currentComments().map(([number, text]) => `
+        <button class="btn btn-ghost bk2-note-button" type="button" data-select-note="${number}" aria-pressed="${activeNote === number}">
+          <strong>${number}.</strong>&nbsp;${text}
+        </button>
+      `).join('');
+      root.querySelector('.bk2-notes').hidden = !notesToggle.checked;
+    }
+
+    function applyShelfFilters() {
+      if (screen !== 'shelf') return;
+      let visible = 0;
+      prototype.querySelectorAll('[data-book-card]').forEach((card) => {
+        const textMatches = !shelfQuery || card.dataset.title.includes(shelfQuery) || card.dataset.author.includes(shelfQuery);
+        const statusMatches = shelfFilter === 'All' || card.dataset.status === shelfFilter;
+        card.hidden = !(textMatches && statusMatches);
+        if (!card.hidden) visible += 1;
+      });
+      prototype.querySelector('[data-no-results]').hidden = visible !== 0;
+      prototype.querySelector('[data-count]').textContent = `${visible} ${visible === 1 ? 'book' : 'books'}`;
+    }
+
+    function render() {
+      prototype.innerHTML = screen === 'shelf' ? shelfScreen() : screen === 'first-run' ? firstRunScreen() : historyScreen();
+      if (overlay === 'add') prototype.insertAdjacentHTML('beforeend', addSheet());
+      if (overlay === 'log') prototype.insertAdjacentHTML('beforeend', logSheet());
+      prototype.classList.toggle('bk2-annotations', notesToggle.checked);
+      device.className = `bk2-device bk2-${viewport}`;
+      activeNote = null;
+      applyShelfFilters();
+      renderNotes();
+    }
+
+    function chooseScreen(next) {
+      screen = next;
+      overlay = null;
+      root.querySelectorAll('[data-screen]').forEach((button) => {
+        const selected = button.dataset.screen === next;
+        button.setAttribute('aria-pressed', String(selected));
+        button.classList.toggle('btn-primary', selected);
+      });
+      render();
+    }
+
+    root.addEventListener('input', (event) => {
+      if (event.target.matches('[data-shelf-search]')) {
+        shelfQuery = event.target.value.trim().toLowerCase();
+        applyShelfFilters();
+      }
+    });
+
+    root.addEventListener('click', (event) => {
+      const screenButton = event.target.closest('[data-screen]');
+      if (screenButton) {
+        chooseScreen(screenButton.dataset.screen);
+        return;
+      }
+
+      const viewportButton = event.target.closest('[data-viewport]');
+      if (viewportButton) {
+        viewport = viewportButton.dataset.viewport;
+        root.querySelectorAll('[data-viewport]').forEach((button) => {
+          const selected = button.dataset.viewport === viewport;
+          button.setAttribute('aria-pressed', String(selected));
+          button.classList.toggle('btn-primary', selected);
+        });
+        render();
+        return;
+      }
+
+      const filterButton = event.target.closest('[data-filter]');
+      if (filterButton) {
+        shelfFilter = filterButton.dataset.filter;
+        prototype.querySelectorAll('[data-filter]').forEach((button) => button.setAttribute('aria-pressed', String(button === filterButton)));
+        applyShelfFilters();
+        return;
+      }
+
+      const goButton = event.target.closest('[data-go]');
+      if (goButton) {
+        chooseScreen(goButton.dataset.go);
+        return;
+      }
+
+      const openButton = event.target.closest('[data-open]');
+      if (openButton) {
+        overlay = openButton.dataset.open;
+        render();
+        return;
+      }
+
+      if (event.target.closest('[data-close]') || event.target.matches('[data-overlay-backdrop]')) {
+        overlay = null;
+        render();
+        return;
+      }
+
+      const tabButton = event.target.closest('[data-tab]');
+      if (tabButton) {
+        const sheet = tabButton.closest('.bk2-sheet');
+        sheet.querySelectorAll('[data-tab]').forEach((button) => button.setAttribute('aria-selected', String(button === tabButton)));
+        const label = sheet.querySelector('.bk2-field-label');
+        const field = sheet.querySelector('.bk2-search');
+        const save = sheet.querySelector('[data-save]');
+        const values = {
+          ISBN: ['ISBN-10 or ISBN-13', '978-0-306-40615-7', 'Look up book'],
+          Title: ['Book title', 'The Snowy Day', 'Search by title'],
+          Author: ['Author name', 'Ezra Jack Keats', 'Search by author']
+        };
+        [label.textContent, field.placeholder, save.textContent] = values[tabButton.dataset.tab];
+        return;
+      }
+
+      const selectable = event.target.closest('.bk2-choice, .bk2-recent');
+      if (selectable) {
+        selectable.parentElement.querySelectorAll('.bk2-choice, .bk2-recent').forEach((button) => button.setAttribute('aria-pressed', String(button === selectable)));
+        return;
+      }
+
+      const saveButton = event.target.closest('[data-save]');
+      if (saveButton) {
+        saveButton.parentElement.querySelector('[data-confirm]').hidden = false;
+        return;
+      }
+
+      const noteButton = event.target.closest('[data-select-note]');
+      if (noteButton) {
+        activeNote = activeNote === noteButton.dataset.selectNote ? null : noteButton.dataset.selectNote;
+        prototype.querySelectorAll('[data-note]').forEach((element) => element.classList.toggle('bk2-highlight', element.dataset.note === activeNote));
+        renderNotes();
+      }
+    });
+
+    notesToggle.addEventListener('change', () => {
+      prototype.classList.toggle('bk2-annotations', notesToggle.checked);
+      activeNote = null;
+      prototype.querySelectorAll('[data-note]').forEach((element) => element.classList.remove('bk2-highlight'));
+      renderNotes();
+    });
+
+    render();
+  })();
+</script>

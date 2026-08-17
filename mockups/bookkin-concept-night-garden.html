@@ -1,0 +1,680 @@
+<div id="bookkin-concept-night-garden">
+  <div class="bkng-controls" aria-label="Prototype controls">
+    <span>Preview · system-responsive daytime by default</span>
+    <div role="group" aria-label="Device preview">
+      <button type="button" data-device="desktop" aria-pressed="true">Desktop</button>
+      <button type="button" data-device="tablet" aria-pressed="false">Tablet</button>
+      <button type="button" data-device="phone" aria-pressed="false">Phone</button>
+    </div>
+    <label>Atmosphere <select data-atmosphere><option value="day">System / daytime</option><option value="evening">Optional evening</option></select></label>
+    <label>Review state <select data-state><option value="populated">Populated</option><option value="first-run">First run / empty</option><option value="no-results">No results</option><option value="loading">Loading</option><option value="success">Success</option><option value="validation">Validation error</option><option value="provider">Provider error</option><option value="duplicate">Duplicate</option><option value="offline">Offline</option><option value="missing-cover">Missing cover</option><option value="failed-cover">Failed cover</option></select></label>
+  </div>
+
+  <div class="bkng-review-layout">
+    <div class="bkng-stage">
+      <div class="bkng-device is-desktop" data-device-frame>
+        <section class="bkng-product" aria-label="Bookkin Night Garden concept">
+          <header class="bkng-header" data-review="identity">
+            <button type="button" data-home class="bkng-brand"><span aria-hidden="true">✦</span> Bookkin</button>
+            <nav aria-label="Primary navigation"><button type="button" data-home aria-current="page">Shelf</button></nav>
+            <span class="bkng-private">Private alpha</span>
+          </header>
+
+          <main>
+            <section class="bkng-hero" data-review="mood">
+              <div class="bkng-hero-copy">
+                <p class="bkng-kicker">Family shelf · <span data-count role="status" aria-live="polite">6 of 6 shown</span></p>
+                <h1>Books for tonight—and every time of day.</h1>
+                <p>Find a book, log what happened, and keep separate reactions clear.</p>
+              </div>
+              <div class="bkng-moon" aria-hidden="true"><span></span><i></i><b></b></div>
+            </section>
+
+            <section class="bkng-discovery" aria-label="Search and filter shelf" data-review="discovery">
+              <label for="bkng-search">Search title or author</label>
+              <div class="bkng-search"><span aria-hidden="true">⌕</span><input id="bkng-search" data-search type="search" placeholder="Find a book" autocomplete="off"></div>
+              <div class="bkng-filters" role="group" aria-label="Filter shelf by status">
+                <button type="button" data-filter="all" aria-pressed="true">All</button>
+                <button type="button" data-filter="owned" aria-pressed="false">Owned</button>
+                <button type="button" data-filter="borrowed" aria-pressed="false">Borrowed</button>
+                <button type="button" data-filter="wishlist" aria-pressed="false">Wishlist</button>
+              </div>
+            </section>
+
+            <section class="bkng-garden" aria-label="Family books" data-review="covers">
+              <button class="bkng-book bkng-bloom" type="button" data-book data-title="the rabbit listened" data-author="cori doerrfeld" data-status="borrowed">
+                <span class="bkng-cover bkng-rabbit" aria-hidden="true"><i></i><b>The Rabbit<br>Listened</b></span>
+                <span class="bkng-copy"><span class="bkng-status">Borrowed</span><strong>The Rabbit Listened</strong><small>Cori Doerrfeld</small><em>Read again this week</em></span>
+              </button>
+              <button class="bkng-book" type="button" data-book data-title="the snowy day" data-author="ezra jack keats" data-status="owned">
+                <span class="bkng-cover bkng-snow" aria-hidden="true"><i></i><b>The<br>Snowy Day</b></span>
+                <span class="bkng-copy"><span class="bkng-status">Owned</span><strong>The Snowy Day</strong><small>Ezra Jack Keats</small></span>
+              </button>
+              <button class="bkng-book" type="button" data-book data-title="last stop on market" data-author="matt de la pena" data-status="borrowed">
+                <span class="bkng-cover bkng-market" aria-hidden="true"><i></i><b>Last Stop<br>on Market</b></span>
+                <span class="bkng-copy"><span class="bkng-status">Borrowed</span><strong>Last Stop on Market</strong><small>Matt de la Peña</small></span>
+              </button>
+              <button class="bkng-book" type="button" data-book data-title="saturday" data-author="oge mora" data-status="owned">
+                <span class="bkng-cover bkng-saturday" aria-hidden="true"><i></i><b>Saturday</b></span>
+                <span class="bkng-copy"><span class="bkng-status">Owned</span><strong>Saturday</strong><small>Oge Mora</small></span>
+              </button>
+              <button class="bkng-book" type="button" data-book data-title="jabari jumps" data-author="gaia cornwall" data-status="wishlist">
+                <span class="bkng-cover bkng-jabari" aria-hidden="true"><i></i><b>Jabari<br>Jumps</b></span>
+                <span class="bkng-copy"><span class="bkng-status">Wishlist</span><strong>Jabari Jumps</strong><small>Gaia Cornwall</small></span>
+              </button>
+              <button class="bkng-book" type="button" data-book data-title="a sick day for amos mcgee" data-author="philip c stead" data-status="owned">
+                <span class="bkng-cover bkng-amos" aria-hidden="true"><i></i><b>A Sick Day for<br>Amos McGee</b></span>
+                <span class="bkng-copy"><span class="bkng-status">Owned</span><strong>A Sick Day for Amos McGee</strong><small>Philip C. Stead</small></span>
+              </button>
+            </section>
+            <p class="bkng-empty" data-empty hidden>No stories match. Try a different search or shelf status.</p>
+            <section class="bkng-review-state" data-review-state role="status" aria-live="polite" hidden></section>
+            <section class="bkng-value-loop" data-review="loop"><strong>What improves future choices</strong><p>Separate events, optional child and caregiver reactions, and changing interests can support better future choices. No outcome is guaranteed.</p></section>
+          </main>
+
+          <div class="bkng-dock"><div class="bkng-actions" data-review="actions">
+            <div class="bkng-fan" data-fab-menu hidden>
+              <button type="button" data-open="log"><span>Log a read</span><b aria-hidden="true">✓</b></button>
+              <button type="button" data-open="add"><span>Add a book</span><b aria-hidden="true">＋</b></button>
+            </div>
+            <button class="bkng-fab" type="button" data-fab aria-expanded="false" aria-label="Open quick actions"><span aria-hidden="true">✣</span></button>
+          </div></div>
+
+          <div class="bkng-overlay" data-overlay hidden>
+            <section class="bkng-sheet" role="dialog" aria-modal="true" aria-labelledby="bkng-dialog-title" data-dialog data-review="flow">
+              <div class="bkng-sheet-head"><div><p class="bkng-kicker" data-dialog-kicker>Quick action</p><h2 id="bkng-dialog-title" data-dialog-title>Log a read</h2></div><button type="button" data-close>Close</button></div>
+
+              <form data-panel="log" novalidate>
+                <label for="bkng-log-search">Recent books or shelf search</label>
+                <input id="bkng-log-search" data-log-search type="search" placeholder="Type at least 2 characters"><div class="bkng-lookup" data-log-lookup role="status" aria-live="polite">No book selected.</div>
+                <fieldset><legend>Reading event <span>Required</span></legend><div class="bkng-choices" data-group="event"><button type="button" data-value="Finished" aria-pressed="false">Finished</button><button type="button" data-value="Read again" aria-pressed="false">Read again</button><button type="button" data-value="Stopped" aria-pressed="false">Stopped</button><button type="button" data-value="Rejected" aria-pressed="false">Rejected</button></div></fieldset>
+                <div class="bkng-reactions">
+                  <fieldset><legend>Child’s reaction <span>Optional · from child</span></legend><div class="bkng-choices" data-group="child"><button type="button" data-value="Love" aria-pressed="false">Love</button><button type="button" data-value="Like" aria-pressed="false">Like</button><button type="button" data-value="Not for me" aria-pressed="false">Not for me</button></div></fieldset>
+                  <fieldset><legend>Caregiver’s reaction <span>Optional · from caregiver</span></legend><div class="bkng-choices" data-group="caregiver"><button type="button" data-value="Love" aria-pressed="false">Love</button><button type="button" data-value="Like" aria-pressed="false">Like</button><button type="button" data-value="Dislike" aria-pressed="false">Dislike</button></div></fieldset>
+                </div>
+                <p class="bkng-message" data-log-message role="status"></p><div class="bkng-savebar"><button class="bkng-primary" type="button" data-save-log>Save reading moment</button></div>
+              </form>
+
+              <form data-panel="add" novalidate hidden>
+                <p>Search a verified fixture by title or author.</p>
+                <label for="bkng-add-search">Title or author</label><input id="bkng-add-search" data-add-search type="search" placeholder="Try “Mooncake”"><button class="bkng-secondary" type="button" data-find>Find verified book</button><div class="bkng-lookup" data-add-lookup role="status" aria-live="polite">No provider request has started.</div>
+                <p class="bkng-planned"><strong>Camera ISBN scan · proposed</strong><br>Reserved for the later camera checkpoint; no camera action is active here.</p>
+                <fieldset><legend>Shelf status <span>Required after selecting a result</span></legend><div class="bkng-choices" data-group="status"><button type="button" data-value="Owned" aria-pressed="false">Owned</button><button type="button" data-value="Borrowed" aria-pressed="false">Borrowed</button><button type="button" data-value="Wishlist" aria-pressed="false">Wishlist</button></div></fieldset>
+                <p class="bkng-message" data-add-message role="status"></p><div class="bkng-savebar"><button class="bkng-primary" type="button" data-save-add>Add selected book</button></div>
+              </form>
+
+              <div data-panel="detail" hidden>
+                <span class="bkng-status" data-detail-status>Owned</span><h3 data-detail-title>Book title</h3><p data-detail-author>Author</p>
+                <p class="bkng-detail-note">This compact concept detail shows book identity and shelf status only; it does not promise a history view.</p>
+                <button class="bkng-primary" type="button" data-close>Return to shelf</button>
+              </div>
+            </section>
+          </div>
+          <p class="bkng-toast" data-toast role="status" aria-live="polite" hidden>Prototype action complete.</p>
+        </section>
+      </div>
+    </div>
+
+    <details class="bkng-comments" open>
+      <summary>Design comments</summary>
+      <div>
+        <p><strong>Positioning:</strong> an evening reading ritual—magical enough to delight children, controlled enough to feel premium to adults.</p>
+        <button type="button" data-comment="identity" aria-pressed="false"><strong>Optional evening identity.</strong> The accessible daytime surface is the default; midnight ink, marigold, coral, and mint remain an opt-in reading-hour atmosphere.</button>
+        <button type="button" data-comment="mood" aria-pressed="false"><strong>Emotional opening.</strong> The garden metaphor makes the shelf feel cultivated over time. Critique whether it obscures the practical job.</button>
+        <button type="button" data-comment="discovery" aria-pressed="false"><strong>Utility stays obvious.</strong> Search and all status filters sit in a high-contrast luminous band under the hero.</button>
+        <button type="button" data-comment="covers" aria-pressed="false"><strong>Lantern-like covers.</strong> Cards float in a gentle arc and the latest reread receives scale. Critique whether the uneven emphasis feels truthful.</button>
+        <button type="button" data-comment="actions" aria-pressed="false"><strong>Flower action.</strong> The bespoke bloom fans into conventional labels. It is ornamental only at the entry point, not across every control.</button>
+        <button type="button" data-comment="flow" aria-pressed="false"><strong>Reading-hour sheet.</strong> Quick log stays calm and touchable; Add explicitly labels scanning as proposed.</button>
+        <button type="button" data-comment="measurement" aria-pressed="false"><strong>Privacy-safe measurement transitions.</strong> Review start, completion, cancel, error, duration, and later catalog handoff without titles, names, interests, reactions, ISBNs, or free text.</button>
+        <p><strong>Tradeoff:</strong> strongest emotional differentiation and child delight; the optional evening layer still demands careful cover contrast and sensory testing.</p>
+      </div>
+    </details>
+    <details class="bkng-comments"><summary>Future ideas discovered · not Checkpoint 5A scope</summary><div><p>Optional evening appearance can become a preference later; inspectable recommendation reasons may eventually connect separate reactions and current versus earlier interests.</p></div></details>
+  </div>
+</div>
+
+<style>
+  #bookkin-concept-night-garden {
+    --bkng-night: light-dark(#17203c, #0f1020);
+    --bkng-night-2: light-dark(#222c4d, #1a1b31);
+    --bkng-cream: light-dark(#fff8df, #fff3d0);
+    --bkng-muted: light-dark(#4f5b72, #bdc2d2);
+    --bkng-line: light-dark(#657092, #4f5777);
+    --bkng-yellow: light-dark(#ffcf4a, #e4b632);
+    --bkng-yellow-ink: light-dark(#18203a, #151a2f);
+    --bkng-coral: light-dark(#ff7567, #ff8b7e);
+    --bkng-coral-ink: light-dark(#281210, #2c1412);
+    --bkng-mint: light-dark(#8fe0c0, #79c9ab);
+    --bkng-pink: light-dark(#f1a5c9, #d88bb0);
+    --bkng-shadow: rgb(0 0 0 / .45);
+    --bkng-dim: rgb(4 6 16 / .76);
+    color: light-dark(#24213b, #f4efff);
+    color-scheme: light dark;
+    width: 100%;
+  }
+  #bookkin-concept-night-garden * { box-sizing: border-box; }
+  #bookkin-concept-night-garden button,
+  #bookkin-concept-night-garden input,
+  #bookkin-concept-night-garden select { font: inherit; }
+  #bookkin-concept-night-garden button:focus-visible,
+  #bookkin-concept-night-garden a:focus-visible,
+  #bookkin-concept-night-garden input:focus-visible,
+  #bookkin-concept-night-garden select:focus-visible,
+  #bookkin-concept-night-garden summary:focus-visible { outline: 3px solid var(--bkng-coral); outline-offset: 3px; }
+  #bookkin-concept-night-garden p,
+  #bookkin-concept-night-garden h1,
+  #bookkin-concept-night-garden h2,
+  #bookkin-concept-night-garden h3 { margin-top: 0; }
+  #bookkin-concept-night-garden .bkng-controls { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; margin-bottom: .75rem; }
+  #bookkin-concept-night-garden .bkng-controls > div { display: inline-flex; padding: .25rem; border: 1px solid light-dark(#afa7c6, #58546b); border-radius: 999px; background: light-dark(#ffffff, #211f2c); }
+  #bookkin-concept-night-garden .bkng-controls button { min-width:44px;min-height:44px;padding: .55rem .8rem; border: 0; border-radius: 999px; background: transparent; color: inherit; cursor: pointer; }
+  #bookkin-concept-night-garden .bkng-controls button[aria-pressed="true"] { background: light-dark(#302a4e, #f6efff); color: light-dark(#ffffff, #211b37); }
+  #bookkin-concept-night-garden .bkng-review-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(230px, 310px); gap: 1rem; align-items: start; }
+  #bookkin-concept-night-garden .bkng-stage { min-width: 0; display: flex; justify-content: center; }
+  #bookkin-concept-night-garden .bkng-device { width: 100%; transition: width 180ms ease; }
+  #bookkin-concept-night-garden .bkng-device.is-tablet { width: min(100%, 760px); }
+  #bookkin-concept-night-garden .bkng-device.is-phone { width: min(100%, 390px); }
+  #bookkin-concept-night-garden .bkng-product { position: relative; overflow: hidden; min-height: 730px; border: 1px solid var(--bkng-line); border-radius: 2rem; background: var(--bkng-night); color: var(--bkng-cream); box-shadow: 0 25px 70px var(--bkng-shadow); font-family: ui-sans-serif, system-ui, sans-serif; }
+  #bookkin-concept-night-garden .bkng-product::before { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(circle, rgb(255 255 255 / .28) 1px, transparent 1px); background-size: 57px 57px; opacity: .3; }
+  #bookkin-concept-night-garden .bkng-header { position: relative; z-index: 2; display: flex; align-items: center; gap: 1.2rem; padding: 1rem 1.4rem; border-bottom: 1px solid var(--bkng-line); background: color-mix(in srgb, var(--bkng-night) 94%, transparent); }
+  #bookkin-concept-night-garden .bkng-brand { margin-right: auto; color: var(--bkng-cream); font-family: Georgia, serif; font-weight: 500; text-decoration: none; }
+  #bookkin-concept-night-garden .bkng-brand span { color: var(--bkng-yellow); }
+  #bookkin-concept-night-garden .bkng-header nav { display: flex; gap: 1rem; }
+  #bookkin-concept-night-garden .bkng-header nav a { padding: .35rem .15rem; color: var(--bkng-muted); text-decoration: none; }
+  #bookkin-concept-night-garden .bkng-header nav a[aria-current="page"] { color: var(--bkng-cream); border-bottom: 2px solid var(--bkng-yellow); }
+  #bookkin-concept-night-garden .bkng-private,
+  #bookkin-concept-night-garden .bkng-kicker { color: var(--bkng-muted); letter-spacing: .12em; text-transform: uppercase; }
+  #bookkin-concept-night-garden main { position: relative; z-index: 1; padding: clamp(1rem, 3vw, 2.2rem) clamp(1rem, 3vw, 2.4rem) 6rem; }
+  #bookkin-concept-night-garden .bkng-hero { display: grid; grid-template-columns: minmax(0, 1fr) 180px; gap: 1.5rem; align-items: center; }
+  #bookkin-concept-night-garden .bkng-hero-copy { max-width: 680px; }
+  #bookkin-concept-night-garden h1,
+  #bookkin-concept-night-garden h2 { font-family: Georgia, serif; font-weight: 400; letter-spacing: -.035em; }
+  #bookkin-concept-night-garden .bkng-hero-copy > p:last-child { color: var(--bkng-muted); }
+  #bookkin-concept-night-garden .bkng-moon { position: relative; width: 150px; aspect-ratio: 1; border-radius: 50%; background: var(--bkng-yellow); box-shadow: 0 0 60px rgb(255 207 74 / .34); }
+  #bookkin-concept-night-garden .bkng-moon span,
+  #bookkin-concept-night-garden .bkng-moon i,
+  #bookkin-concept-night-garden .bkng-moon b { position: absolute; display: block; border-radius: 50%; background: color-mix(in srgb, var(--bkng-night) 22%, transparent); }
+  #bookkin-concept-night-garden .bkng-moon span { width: 24px; aspect-ratio: 1; left: 30%; top: 26%; }
+  #bookkin-concept-night-garden .bkng-moon i { width: 12px; aspect-ratio: 1; right: 24%; top: 45%; }
+  #bookkin-concept-night-garden .bkng-moon b { width: 18px; aspect-ratio: 1; left: 38%; bottom: 20%; }
+  #bookkin-concept-night-garden .bkng-discovery { display: grid; grid-template-columns: auto minmax(180px, 1fr) auto; gap: .8rem; align-items: center; margin: 1.5rem 0; padding: .75rem .9rem; border: 1px solid var(--bkng-line); border-radius: 1rem; background: var(--bkng-night-2); }
+  #bookkin-concept-night-garden .bkng-discovery > label { font-weight: 500; }
+  #bookkin-concept-night-garden .bkng-search { display: flex; align-items: center; gap: .45rem; padding: 0 .65rem; border: 1px solid var(--bkng-line); border-radius: 999px; background: var(--bkng-night); }
+  #bookkin-concept-night-garden .bkng-search input { min-width: 0; width: 100%; min-height: 44px; border: 0; background: transparent; color: var(--bkng-cream); }
+  #bookkin-concept-night-garden .bkng-search input::placeholder { color: var(--bkng-muted); }
+  #bookkin-concept-night-garden .bkng-filters { display: flex; gap: .3rem; flex-wrap: wrap; }
+  #bookkin-concept-night-garden .bkng-filters button { min-height: 42px; padding: .5rem .65rem; border: 1px solid var(--bkng-line); border-radius: 999px; background: transparent; color: var(--bkng-muted); cursor: pointer; }
+  #bookkin-concept-night-garden .bkng-filters button[aria-pressed="true"] { border-color: var(--bkng-yellow); background: var(--bkng-yellow); color: var(--bkng-yellow-ink); }
+  #bookkin-concept-night-garden .bkng-garden { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1rem; align-items: end; }
+  #bookkin-concept-night-garden .bkng-book { display: grid; gap: .6rem; min-width: 0; padding: 0; border: 0; background: transparent; color: var(--bkng-cream); text-align: left; cursor: pointer; }
+  #bookkin-concept-night-garden .bkng-book:nth-child(2n) { transform: translateY(1.2rem); }
+  #bookkin-concept-night-garden .bkng-bloom { grid-column: span 2; grid-template-columns: minmax(120px, .8fr) minmax(130px, 1fr); align-items: center; padding: 1rem; border: 1px solid var(--bkng-line); border-radius: 48% 52% 1.25rem 1.25rem / 18% 20% 1.25rem 1.25rem; background: var(--bkng-night-2); }
+  #bookkin-concept-night-garden .bkng-cover { position: relative; display: grid; place-items: center; aspect-ratio: 2 / 3; overflow: hidden; padding: .6rem; border: 1px solid rgb(255 255 255 / .32); border-radius: .35rem .8rem .8rem .35rem; background: var(--bkng-coral); color: var(--bkng-coral-ink); box-shadow: 0 15px 30px var(--bkng-shadow); text-align: center; font-family: Georgia, serif; transition: transform 160ms ease; }
+  #bookkin-concept-night-garden .bkng-book:hover .bkng-cover { transform: translateY(-5px) rotate(1deg); }
+  #bookkin-concept-night-garden .bkng-cover::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 7px; background: rgb(255 255 255 / .22); }
+  #bookkin-concept-night-garden .bkng-cover i { position: absolute; width: 58%; aspect-ratio: 1; border-radius: 50% 50% 45% 55%; background: var(--bkng-yellow); transform: translate(25%, 36%); }
+  #bookkin-concept-night-garden .bkng-cover b { position: relative; z-index: 1; font-weight: 500; }
+  #bookkin-concept-night-garden .bkng-rabbit { background: var(--bkng-pink); color: var(--bkng-yellow-ink); }
+  #bookkin-concept-night-garden .bkng-rabbit i { background: var(--bkng-mint); border-radius: 50% 50% 35% 35%; }
+  #bookkin-concept-night-garden .bkng-snow { background: #5079c9; color: #fff8df; }
+  #bookkin-concept-night-garden .bkng-market { background: var(--bkng-coral); }
+  #bookkin-concept-night-garden .bkng-market i { border-radius: 0; transform: rotate(18deg); }
+  #bookkin-concept-night-garden .bkng-saturday { background: var(--bkng-pink); color: var(--bkng-yellow-ink); }
+  #bookkin-concept-night-garden .bkng-saturday i { background: var(--bkng-coral); }
+  #bookkin-concept-night-garden .bkng-jabari { background: var(--bkng-mint); color: var(--bkng-yellow-ink); }
+  #bookkin-concept-night-garden .bkng-jabari i { border: 7px solid #31589f; background: transparent; }
+  #bookkin-concept-night-garden .bkng-amos { background: #654f91; color: #fff8df; }
+  #bookkin-concept-night-garden .bkng-amos i { background: var(--bkng-mint); border-radius: 0 65% 0 65%; }
+  #bookkin-concept-night-garden .bkng-copy { display: flex; flex-direction: column; align-items: flex-start; gap: .15rem; min-width: 0; }
+  #bookkin-concept-night-garden .bkng-copy small { color: var(--bkng-muted); }
+  #bookkin-concept-night-garden .bkng-copy em { margin-top: .35rem; color: var(--bkng-yellow); font-style: normal; }
+  #bookkin-concept-night-garden .bkng-status { width: fit-content; padding: .25rem .5rem; border: 1px solid var(--bkng-line); border-radius: 999px; color: var(--bkng-muted); }
+  #bookkin-concept-night-garden .bkng-empty { padding: 2rem; border: 1px dashed var(--bkng-line); text-align: center; color: var(--bkng-muted); }
+  #bookkin-concept-night-garden .bkng-actions { position: absolute; z-index: 8; right: 1.3rem; bottom: 1.2rem; display: flex; flex-direction: column; align-items: flex-end; gap: .55rem; }
+  #bookkin-concept-night-garden .bkng-fan { display: flex; flex-direction: column; align-items: flex-end; gap: .5rem; }
+  #bookkin-concept-night-garden .bkng-fan[hidden] { display: none; }
+  #bookkin-concept-night-garden .bkng-fan button { display: flex; align-items: center; gap: .6rem; min-height: 46px; padding: .45rem .45rem .45rem .8rem; border: 1px solid var(--bkng-line); border-radius: 999px; background: var(--bkng-night-2); color: var(--bkng-cream); box-shadow: 0 12px 26px var(--bkng-shadow); cursor: pointer; }
+  #bookkin-concept-night-garden .bkng-fan button:first-child { transform: translateX(-1rem); }
+  #bookkin-concept-night-garden .bkng-fan b { display: grid; place-items: center; width: 34px; aspect-ratio: 1; border-radius: 50%; background: var(--bkng-yellow); color: var(--bkng-yellow-ink); font-weight: 500; }
+  #bookkin-concept-night-garden .bkng-fab { display: grid; place-items: center; width: 60px; aspect-ratio: 1; border: 0; border-radius: 55% 45% 52% 48% / 45% 55% 42% 58%; background: var(--bkng-coral); color: var(--bkng-coral-ink); box-shadow: 0 0 0 7px rgb(255 207 74 / .18), 0 16px 34px var(--bkng-shadow); cursor: pointer; transition: transform 160ms ease; }
+  #bookkin-concept-night-garden .bkng-fab[aria-expanded="true"] { transform: rotate(45deg); }
+  #bookkin-concept-night-garden .bkng-overlay { position: absolute; z-index: 20; inset: 0; display: flex; justify-content: center; align-items: flex-end; padding: 1rem; background: var(--bkng-dim); }
+  #bookkin-concept-night-garden .bkng-overlay[hidden] { display: none; }
+  #bookkin-concept-night-garden .bkng-sheet { width: min(100%, 690px); padding: 1.2rem; border: 1px solid var(--bkng-line); border-radius: 1.5rem 1.5rem .5rem .5rem; background: var(--bkng-night-2); color: var(--bkng-cream); box-shadow: 0 -20px 60px var(--bkng-shadow); }
+  #bookkin-concept-night-garden .bkng-sheet-head { display: flex; justify-content: space-between; gap: 1rem; align-items: start; }
+  #bookkin-concept-night-garden .bkng-sheet-head h2 { margin-bottom: .8rem; }
+  #bookkin-concept-night-garden .bkng-sheet-head button { border: 0; background: transparent; color: var(--bkng-muted); cursor: pointer; }
+  #bookkin-concept-night-garden .bkng-sheet label { display: block; margin: .8rem 0 .35rem; font-weight: 500; }
+  #bookkin-concept-night-garden .bkng-sheet input,
+  #bookkin-concept-night-garden .bkng-sheet select { width: 100%; min-height: 46px; padding: .7rem .8rem; border: 1px solid var(--bkng-line); border-radius: .65rem; background: var(--bkng-night); color: var(--bkng-cream); }
+  #bookkin-concept-night-garden .bkng-picks,
+  #bookkin-concept-night-garden .bkng-choices { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .55rem; }
+  #bookkin-concept-night-garden .bkng-picks button,
+  #bookkin-concept-night-garden .bkng-choices button { min-height: 42px; padding: .5rem .65rem; border: 1px solid var(--bkng-line); border-radius: 999px; background: var(--bkng-night); color: var(--bkng-cream); cursor: pointer; }
+  #bookkin-concept-night-garden .bkng-picks button[aria-pressed="true"],
+  #bookkin-concept-night-garden .bkng-choices button[aria-pressed="true"] { border-color: var(--bkng-yellow); background: var(--bkng-yellow); color: var(--bkng-yellow-ink); }
+  #bookkin-concept-night-garden fieldset { margin: 1rem 0 0; padding: 0; border: 0; }
+  #bookkin-concept-night-garden legend { font-weight: 500; }
+  #bookkin-concept-night-garden .bkng-reactions { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  #bookkin-concept-night-garden .bkng-planned,
+  #bookkin-concept-night-garden .bkng-detail-note { padding: .8rem; border: 1px dashed var(--bkng-line); border-radius: .7rem; color: var(--bkng-muted); }
+  #bookkin-concept-night-garden .bkng-primary { width: 100%; min-height: 48px; margin-top: 1rem; padding: .75rem 1rem; border: 0; border-radius: 999px; background: var(--bkng-coral); color: var(--bkng-coral-ink); font-weight: 500; cursor: pointer; }
+  #bookkin-concept-night-garden .bkng-toast { position: absolute; z-index: 30; left: 50%; bottom: 1rem; transform: translateX(-50%); margin: 0; padding: .7rem 1rem; border-radius: 999px; background: var(--bkng-yellow); color: var(--bkng-yellow-ink); box-shadow: 0 12px 28px var(--bkng-shadow); }
+  #bookkin-concept-night-garden .bkng-comments { border: 1px solid light-dark(#aaa3be, #565166); border-radius: 1rem; background: light-dark(#ffffff, #211f2c); color: light-dark(#29243e, #f4efff); overflow: hidden; }
+  #bookkin-concept-night-garden .bkng-comments summary { padding: .9rem 1rem; cursor: pointer; font-weight: 500; }
+  #bookkin-concept-night-garden .bkng-comments > div { display: grid; gap: .55rem; padding: 0 1rem 1rem; }
+  #bookkin-concept-night-garden .bkng-comments p { margin: 0; color: light-dark(#514b63, #c8c2d4); }
+  #bookkin-concept-night-garden .bkng-comments button { padding: .7rem; border: 1px solid light-dark(#ccc6d8, #4f4b5e); border-radius: .7rem; background: transparent; color: inherit; text-align: left; cursor: pointer; }
+  #bookkin-concept-night-garden .bkng-comments button[aria-pressed="true"] { border-color: light-dark(#d04755, #ff8b7e); background: light-dark(#ffedf0, #432d39); }
+  #bookkin-concept-night-garden .bkng-highlight { outline: 4px solid var(--bkng-coral); outline-offset: 4px; }
+  #bookkin-concept-night-garden .is-tablet .bkng-garden { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  #bookkin-concept-night-garden .is-tablet .bkng-bloom { grid-column: span 2; }
+  #bookkin-concept-night-garden .is-tablet .bkng-discovery,
+  #bookkin-concept-night-garden .is-phone .bkng-discovery { grid-template-columns: 1fr; }
+  #bookkin-concept-night-garden .is-phone .bkng-header { flex-wrap: wrap; }
+  #bookkin-concept-night-garden .is-phone .bkng-header nav { order: 3; width: 100%; }
+  #bookkin-concept-night-garden .is-phone .bkng-private { display: none; }
+  #bookkin-concept-night-garden .is-phone .bkng-hero { grid-template-columns: 1fr 76px; gap: .7rem; }
+  #bookkin-concept-night-garden .is-phone .bkng-moon { width: 72px; }
+  #bookkin-concept-night-garden .is-phone main { padding: 1rem 1rem 6rem; }
+  #bookkin-concept-night-garden .is-phone .bkng-garden { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #bookkin-concept-night-garden .is-phone .bkng-bloom { grid-column: span 2; }
+  #bookkin-concept-night-garden .is-phone .bkng-book:nth-child(2n) { transform: none; }
+  #bookkin-concept-night-garden .is-phone .bkng-reactions { grid-template-columns: 1fr; gap: 0; }
+  #bookkin-concept-night-garden .is-phone .bkng-overlay { padding: 0; }
+  #bookkin-concept-night-garden .is-phone .bkng-sheet { border-radius: 1.5rem 1.5rem 0 0; }
+  @media (max-width: 850px) { #bookkin-concept-night-garden .bkng-review-layout { grid-template-columns: 1fr; } }
+  @media (max-width: 420px) {
+    #bookkin-concept-night-garden .bkng-controls > div { width: 100%; }
+    #bookkin-concept-night-garden .bkng-controls button { flex: 1; padding-inline: .3rem; }
+    #bookkin-concept-night-garden .bkng-device { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #bookkin-concept-night-garden .bkng-device,
+    #bookkin-concept-night-garden .bkng-cover,
+    #bookkin-concept-night-garden .bkng-fab { transition: none; }
+  }
+  #bookkin-concept-night-garden .bkng-controls label { display:flex;align-items:center;gap:.4rem; }
+  #bookkin-concept-night-garden .bkng-controls select { min-height:44px;padding:.5rem .65rem;border:1px solid light-dark(#aaa7bd,#5a5668);border-radius:999px;background:light-dark(#fff,#22212d);color:inherit; }
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) { background:light-dark(#f8fbff,#1c1d2d);color:light-dark(#17213b,#fff8e8); }
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-header,
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-discovery,
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-sheet { background:light-dark(#fffef8,#24253a); }
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-header,
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-header button,
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-search input,
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-book { color:light-dark(#17213b,#fff8e8); }
+  #bookkin-concept-night-garden .bkng-brand,#bookkin-concept-night-garden .bkng-header nav button { min-width:44px;min-height:44px;border:0;background:transparent;color:inherit; }
+  #bookkin-concept-night-garden .bkng-header nav button[aria-current=page] { border-bottom:2px solid var(--bkng-yellow); }
+  #bookkin-concept-night-garden .bkng-book:nth-child(2n) { transform:none; }
+  #bookkin-concept-night-garden .bkng-value-loop { margin-top:1rem;padding:.85rem;border-left:4px solid var(--bkng-coral);background:light-dark(#fff2e8,#3a2e36);color:light-dark(#17213b,#fff8e8); }
+  #bookkin-concept-night-garden .bkng-value-loop p { margin:.2rem 0 0; }
+  #bookkin-concept-night-garden .bkng-review-state { margin-top:1rem;padding:1.2rem;border:1px dashed var(--bkng-line);border-radius:.8rem;background:var(--bkng-night-2); }
+  #bookkin-concept-night-garden .bkng-review-state button,#bookkin-concept-night-garden .bkng-secondary { min-height:44px;margin-top:.45rem;padding:.55rem .7rem;border:1px solid var(--bkng-line);border-radius:.6rem;background:var(--bkng-night);color:var(--bkng-cream); }
+  #bookkin-concept-night-garden .bkng-dock { position:sticky;z-index:8;right:0;bottom:0;left:0;height:94px;margin-top:-94px;pointer-events:none;background:linear-gradient(transparent,var(--bkng-night) 62%); }
+  #bookkin-concept-night-garden .bkng-actions { right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));pointer-events:auto; }
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-dock { background:linear-gradient(transparent,light-dark(#f8fbff,#1c1d2d) 62%); }
+  #bookkin-concept-night-garden .bkng-filters button,#bookkin-concept-night-garden .bkng-picks button,#bookkin-concept-night-garden .bkng-choices button,#bookkin-concept-night-garden .bkng-sheet-head button { min-width:44px;min-height:44px; }
+  #bookkin-concept-night-garden .bkng-sheet { display:flex;flex-direction:column;max-height:min(84vh,690px);overflow:hidden; }
+  #bookkin-concept-night-garden .bkng-sheet > form,#bookkin-concept-night-garden .bkng-sheet > div[data-panel] { overflow:auto;overscroll-behavior:contain;padding-right:.15rem; }
+  #bookkin-concept-night-garden .bkng-lookup { margin-top:.6rem;padding:.7rem;border:1px dashed var(--bkng-line);border-radius:.6rem;background:var(--bkng-night); }
+  #bookkin-concept-night-garden .bkng-lookup button { display:grid;width:100%;min-height:56px;margin-top:.45rem;padding:.6rem;border:1px solid var(--bkng-line);border-radius:.5rem;background:var(--bkng-night-2);color:var(--bkng-cream);text-align:left; }
+  #bookkin-concept-night-garden .bkng-lookup button[aria-pressed=true] { box-shadow:inset 4px 0 var(--bkng-yellow); }
+  #bookkin-concept-night-garden .bkng-sheet legend span { color:var(--bkng-muted);font-weight:400; }
+  #bookkin-concept-night-garden .bkng-message { min-height:1.5rem;margin:.6rem 0 0;color:var(--bkng-coral); }
+  #bookkin-concept-night-garden .bkng-savebar { position:sticky;bottom:0;margin:1rem 0 0;padding:.7rem 0 calc(.4rem + env(safe-area-inset-bottom));background:var(--bkng-night-2); }
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-savebar { background:light-dark(#fffef8,#24253a); }
+  #bookkin-concept-night-garden .bkng-comments+.bkng-comments { margin-top:.75rem; }
+  #bookkin-concept-night-garden .is-phone .bkng-sheet { max-height:min(78vh,620px); }
+  @media(max-width:420px){#bookkin-concept-night-garden .bkng-controls label,#bookkin-concept-night-garden .bkng-controls select{width:100%}}
+  #bookkin-concept-night-garden .bkng-product { overflow:clip; }
+  #bookkin-concept-night-garden .bkng-product.is-evening { --bkng-muted:light-dark(#cad0dc,#bdc2d2); }
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-search,
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-sheet input,
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-lookup { background:light-dark(#ffffff,#202238);color:light-dark(#17213b,#fff8e8); }
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-search input,
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-sheet,
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-sheet-head button,
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-detail-note { color:light-dark(#17213b,#fff8e8); }
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-search input::placeholder { color:light-dark(#59647a,#c5cad7); }
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-bloom { background:light-dark(#eef2ff,#292b43);color:light-dark(#17213b,#fff8e8); }
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-review-state { background:light-dark(#fffef8,#24253a);color:light-dark(#17213b,#fff8e8); }
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-review-state button,
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-secondary { background:light-dark(#ffffff,#1c1d2d);color:light-dark(#17213b,#fff8e8); }
+  #bookkin-concept-night-garden .bkng-product:not(.is-evening) .bkng-lookup button { background:light-dark(#f5f7ff,#292b43);color:light-dark(#17213b,#fff8e8); }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('bookkin-concept-night-garden');
+    const frame = root.querySelector('[data-device-frame]');
+    const product = root.querySelector('.bkng-product');
+    const search = root.querySelector('[data-search]');
+    const empty = root.querySelector('[data-empty]');
+    const fab = root.querySelector('[data-fab]');
+    const menu = root.querySelector('[data-fab-menu]');
+    const overlay = root.querySelector('[data-overlay]');
+    const dialog = root.querySelector('[data-dialog]');
+    const toast = root.querySelector('[data-toast]');
+    const stateSelect = root.querySelector('[data-state]');
+    const atmosphere = root.querySelector('[data-atmosphere]');
+    const reviewState = root.querySelector('[data-review-state]');
+    const garden = root.querySelector('.bkng-garden');
+    const firstCover = root.querySelector('.bkng-cover');
+    const originalCoverClass = firstCover.className;
+    const originalCoverMarkup = firstCover.innerHTML;
+    let filter = 'all';
+    let currentState = 'populated';
+    let returnFocus = null;
+    let logBook = null;
+    let addResult = null;
+    let addChosen = false;
+    let searchTimer = null;
+
+    const stateCopy = {
+      'first-run': ['Your shelf is ready for its first book.', 'Add a verified book; no reading history starts automatically.'],
+      'no-results': ['No books match.', 'Change the search or shelf status. Nothing changed.'],
+      loading: ['Loading books and covers…', 'No history is being created.'],
+      success: ['Reading moment saved.', 'Only the selected event and explicitly chosen reactions were recorded.'],
+      validation: ['Nothing was saved.', 'Select a book and reading event. Reactions may stay blank.'],
+      provider: ['Book search is unavailable.', 'Try another title or author. Nothing was added.'],
+      duplicate: ['Already on the shelf.', 'No duplicate was created and status was not changed.'],
+      offline: ['You’re offline.', 'Browse the shelf now; reconnect before adding or saving.'],
+      'missing-cover': ['Missing-cover treatment.', 'Verified title and author remain readable.'],
+      'failed-cover': ['Failed-cover treatment.', 'The book stays tappable; no metadata was invented.']
+    };
+
+    function shelfBooks() { return Array.from(root.querySelectorAll('[data-book]')); }
+
+    function showToast(message, duration = 2800) {
+      toast.textContent = message;
+      toast.hidden = false;
+      window.setTimeout(() => { toast.hidden = true; }, duration);
+    }
+
+    function applyFilters() {
+      const query = search.value.trim().toLowerCase();
+      let visible = 0;
+      shelfBooks().forEach((book) => {
+        const matchesText = !query || book.dataset.title.includes(query) || book.dataset.author.includes(query);
+        const matchesStatus = filter === 'all' || book.dataset.status === filter;
+        book.hidden = !(matchesText && matchesStatus);
+        if (!book.hidden) visible += 1;
+      });
+      root.querySelector('[data-count]').textContent = `${visible} of ${shelfBooks().length} shown`;
+      empty.hidden = visible !== 0;
+    }
+
+    function showState(name) {
+      currentState = name;
+      stateSelect.value = name;
+      firstCover.className = originalCoverClass;
+      firstCover.innerHTML = originalCoverMarkup;
+      if (name === 'offline') {
+        reviewState.hidden = false;
+        garden.hidden = false;
+        applyFilters();
+        reviewState.innerHTML = '<h2>You’re offline.</h2><p>Your saved shelf remains browsable. Search, filters, and book details still work; lookup, adding, and logging are blocked until you reconnect.</p>';
+        return;
+      }
+      if (name === 'populated' || name === 'missing-cover' || name === 'failed-cover') {
+        reviewState.hidden = true;
+        garden.hidden = false;
+        if (name !== 'populated') {
+          firstCover.className = 'bkng-cover';
+          firstCover.innerHTML = `<b>${name === 'missing-cover' ? 'Cover unavailable' : 'Cover failed to load'}</b>`;
+        }
+        applyFilters();
+        return;
+      }
+      garden.hidden = true;
+      empty.hidden = true;
+      reviewState.hidden = false;
+      const copy = stateCopy[name];
+      const action = name === 'first-run' || name === 'provider' ? 'Open Add a book' : name === 'validation' ? 'Open Log a read' : 'Return to shelf';
+      reviewState.innerHTML = `<h2>${copy[0]}</h2><p>${copy[1]}</p><button type="button" data-review-recover>${action}</button>`;
+    }
+
+    function setFab(open) {
+      fab.setAttribute('aria-expanded', String(open));
+      fab.setAttribute('aria-label', open ? 'Close quick actions' : 'Open quick actions');
+      menu.hidden = !open;
+      if (open) window.requestAnimationFrame(() => menu.querySelector('[data-open="log"]').focus());
+    }
+
+    function resetPanel(panel) {
+      panel.querySelectorAll('[data-group] button').forEach((button) => button.setAttribute('aria-pressed', 'false'));
+      panel.querySelectorAll('input').forEach((input) => { input.value = ''; });
+      panel.querySelectorAll('.bkng-message').forEach((message) => { message.textContent = ''; });
+      root.querySelector('[data-log-lookup]').textContent = 'No book selected.';
+      root.querySelector('[data-add-lookup]').textContent = 'No provider request has started.';
+      logBook = null;
+      addResult = null;
+      addChosen = false;
+    }
+
+    function setProductInert(inert) {
+      root.querySelector('.bkng-header').toggleAttribute('inert', inert);
+      root.querySelector('main').toggleAttribute('inert', inert);
+      root.querySelector('.bkng-dock').toggleAttribute('inert', inert);
+    }
+
+    function openPanel(name, source) {
+      returnFocus = source || document.activeElement || fab;
+      setFab(false);
+      if (name !== 'detail') resetPanel(root.querySelector(`[data-panel="${name}"]`));
+      root.querySelectorAll('[data-panel]').forEach((panel) => { panel.hidden = panel.dataset.panel !== name; });
+      const titles = { log: ['Quick action', 'Log a read'], add: ['Verified fixture search', 'Add a book'], detail: ['Shelf book', 'Book details'] };
+      root.querySelector('[data-dialog-kicker]').textContent = titles[name][0];
+      root.querySelector('[data-dialog-title]').textContent = titles[name][1];
+      setProductInert(true);
+      overlay.hidden = false;
+      const target = name === 'detail' ? root.querySelector('[data-panel="detail"] [data-close]') : root.querySelector(`[data-panel="${name}"] input`);
+      window.requestAnimationFrame(() => target.focus());
+    }
+
+    function closePanel(cancelled = true) {
+      overlay.hidden = true;
+      setProductInert(false);
+      if (cancelled) showToast('Action cancelled. Nothing was saved.', 1800);
+      const target = returnFocus && returnFocus.isConnected ? returnFocus : fab;
+      returnFocus = null;
+      target.focus();
+    }
+
+    function renderLookup(kind, value) {
+      const box = root.querySelector(`[data-${kind}-lookup]`);
+      window.clearTimeout(searchTimer);
+      if (currentState === 'offline') {
+        box.textContent = 'Offline: no lookup was started.';
+        return;
+      }
+      const query = value.trim().toLowerCase();
+      if (query.length < 2) {
+        box.textContent = kind === 'log' ? 'Type at least 2 characters. No book selected.' : 'Type at least 2 characters. No provider request was started.';
+        return;
+      }
+      box.textContent = 'Loading verified fixture results…';
+      searchTimer = window.setTimeout(() => {
+        if (query.includes('error')) {
+          box.innerHTML = '<strong>Provider error.</strong><br>Try “Mooncake” or another title or author.';
+          return;
+        }
+        if (query.includes('none')) {
+          box.innerHTML = '<strong>No verified result.</strong><br>Try a more complete title or author.';
+          return;
+        }
+        let result = null;
+        if (kind === 'log') {
+          const match = shelfBooks().find((book) => book.dataset.title.includes(query) || book.dataset.author.includes(query));
+          if (match) result = { t: match.querySelector('.bkng-copy strong').textContent, a: match.querySelector('.bkng-copy small').textContent };
+        } else if (query.includes('snow') || query.includes('ezra')) {
+          result = { t: 'The Snowy Day', a: 'Ezra Jack Keats', duplicate: true };
+        } else if (query.includes('moon') || query.includes('grace')) {
+          result = { t: 'A Big Mooncake for Little Star', a: 'Grace Lin', duplicate: false };
+        }
+        if (!result) {
+          box.innerHTML = `<strong>No ${kind === 'log' ? 'shelf' : 'verified fixture'} result.</strong><br>Try another title or author.`;
+          return;
+        }
+        box.innerHTML = `<button type="button" data-ng-result="${kind}" aria-pressed="false"><strong>${result.t}</strong><span>${result.a}</span></button>`;
+        if (kind === 'add') addResult = result;
+      }, 380);
+    }
+
+    function trapFocus(event) {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closePanel(true);
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const focusable = Array.from(dialog.querySelectorAll('button:not(:disabled), input:not(:disabled), select:not(:disabled)')).filter((element) => element.offsetParent !== null);
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
+
+    root.addEventListener('input', (event) => {
+      setFab(false);
+      if (event.target === search) {
+        if (currentState !== 'offline') {
+          currentState = 'populated';
+          stateSelect.value = 'populated';
+        }
+        applyFilters();
+        if (currentState === 'offline') showState('offline');
+      }
+      if (event.target.matches('[data-log-search]')) renderLookup('log', event.target.value);
+      if (event.target.matches('[data-add-search]')) renderLookup('add', event.target.value);
+    });
+
+    root.addEventListener('change', (event) => {
+      setFab(false);
+      if (event.target === stateSelect) showState(event.target.value);
+      if (event.target === atmosphere) product.classList.toggle('is-evening', event.target.value === 'evening');
+    });
+
+    root.addEventListener('click', (event) => {
+      if (!event.target.closest('[data-fab]')) setFab(false);
+      const device = event.target.closest('[data-device]');
+      if (device) {
+        root.querySelectorAll('[data-device]').forEach((button) => button.setAttribute('aria-pressed', String(button === device)));
+        frame.className = `bkng-device is-${device.dataset.device}`;
+        return;
+      }
+      const status = event.target.closest('[data-filter]');
+      if (status) {
+        filter = status.dataset.filter;
+        root.querySelectorAll('[data-filter]').forEach((button) => button.setAttribute('aria-pressed', String(button === status)));
+        showState(currentState === 'offline' ? 'offline' : 'populated');
+        return;
+      }
+      if (event.target.closest('[data-fab]')) { setFab(fab.getAttribute('aria-expanded') !== 'true'); return; }
+      const opener = event.target.closest('[data-open]');
+      if (opener) { openPanel(opener.dataset.open, fab); return; }
+      const book = event.target.closest('[data-book]');
+      if (book) {
+        root.querySelector('[data-detail-title]').textContent = book.querySelector('.bkng-copy strong').textContent;
+        root.querySelector('[data-detail-author]').textContent = book.querySelector('.bkng-copy small').textContent;
+        root.querySelector('[data-detail-status]').textContent = book.querySelector('.bkng-status').textContent;
+        openPanel('detail', book);
+        return;
+      }
+      if (event.target.closest('[data-close]')) { closePanel(false); return; }
+      if (event.target === overlay) { closePanel(true); return; }
+      const result = event.target.closest('[data-ng-result]');
+      if (result) {
+        result.setAttribute('aria-pressed', 'true');
+        if (result.dataset.ngResult === 'log') logBook = result.querySelector('strong').textContent;
+        else addChosen = true;
+        return;
+      }
+      const choice = event.target.closest('[data-group] button');
+      if (choice) {
+        const next = choice.getAttribute('aria-pressed') !== 'true';
+        choice.parentElement.querySelectorAll('button').forEach((button) => button.setAttribute('aria-pressed', 'false'));
+        choice.setAttribute('aria-pressed', String(next));
+        return;
+      }
+      if (event.target.closest('[data-find]')) { renderLookup('add', root.querySelector('[data-add-search]').value); return; }
+      if (event.target.closest('[data-review-recover]')) {
+        if (currentState === 'first-run' || currentState === 'provider') openPanel('add', fab);
+        else if (currentState === 'validation') openPanel('log', fab);
+        else showState('populated');
+        return;
+      }
+      if (event.target.closest('[data-home]')) {
+        search.value = '';
+        filter = 'all';
+        root.querySelectorAll('[data-filter]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.filter === 'all')));
+        showState(currentState === 'offline' ? 'offline' : 'populated');
+        return;
+      }
+      const comment = event.target.closest('[data-comment]');
+      if (comment) {
+        const activate = comment.getAttribute('aria-pressed') !== 'true';
+        root.querySelectorAll('[data-comment]').forEach((button) => button.setAttribute('aria-pressed', 'false'));
+        root.querySelectorAll('[data-review]').forEach((target) => target.classList.remove('bkng-highlight'));
+        if (activate) {
+          comment.setAttribute('aria-pressed', 'true');
+          root.querySelectorAll(`[data-review="${comment.dataset.comment}"]`).forEach((target) => target.classList.add('bkng-highlight'));
+        }
+        return;
+      }
+    });
+
+    root.querySelector('[data-panel="log"]').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const readingEvent = root.querySelector('[data-group="event"] button[aria-pressed="true"]');
+      const message = root.querySelector('[data-log-message]');
+      if (currentState === 'offline') { message.textContent = 'Offline: nothing was saved. Reconnect and try again.'; return; }
+      if (!logBook || !readingEvent) { message.textContent = 'Nothing was saved. Select a shelf book and reading event; reactions may stay blank.'; return; }
+      const child = root.querySelector('[data-group="child"] button[aria-pressed="true"]');
+      const caregiver = root.querySelector('[data-group="caregiver"] button[aria-pressed="true"]');
+      closePanel(false);
+      showToast(`Saved ${readingEvent.dataset.value} for ${logBook}.${child ? ` Child: ${child.dataset.value}.` : ''}${caregiver ? ` Caregiver: ${caregiver.dataset.value}.` : ''}${!child && !caregiver ? ' No reactions recorded.' : ''}`, 3200);
+    });
+
+    root.querySelector('[data-panel="add"]').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const status = root.querySelector('[data-group="status"] button[aria-pressed="true"]');
+      const message = root.querySelector('[data-add-message]');
+      if (currentState === 'offline') { message.textContent = 'Offline: nothing was added. Reconnect and try again.'; return; }
+      if (!addChosen || !addResult || !status) { message.textContent = 'Nothing was added. Select a verified result and shelf status.'; return; }
+      if (addResult.duplicate) { message.textContent = 'Already on the shelf. No duplicate was created and status did not change.'; return; }
+      closePanel(false);
+      showToast(`Added ${addResult.t} as ${status.dataset.value}. No history or reactions were created.`, 3300);
+    });
+
+    dialog.addEventListener('keydown', trapFocus);
+    product.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && overlay.hidden && fab.getAttribute('aria-expanded') === 'true') {
+        setFab(false);
+        fab.focus();
+      }
+    });
+    showState('populated');
+  })();
+</script>
+<script>
+  (() => {
+    const root = document.getElementById('bookkin-concept-night-garden');
+    const fab = root.querySelector('[data-fab]');
+    const fan = root.querySelector('[data-fab-menu]');
+    const state = root.querySelector('[data-state]');
+    const toast = root.querySelector('[data-toast]');
+    const logForm = root.querySelector('[data-panel="log"]');
+    const addForm = root.querySelector('[data-panel="add"]');
+    function collapseFan(returnFocus = false) { if (fab.getAttribute('aria-expanded') !== 'true') return false; fab.setAttribute('aria-expanded', 'false'); fab.setAttribute('aria-label', 'Open quick actions'); fan.hidden = true; if (returnFocus) requestAnimationFrame(() => fab.focus()); return true; }
+    function finish(message) { root.querySelector('.bkng-sheet-head [data-close]').click(); toast.textContent = message; toast.hidden = false; setTimeout(() => { toast.hidden = true; }, 3300); }
+    function saveLog() { const message = root.querySelector('[data-log-message]'); const book = root.querySelector('[data-ng-result="log"][aria-pressed="true"]'); const reading = root.querySelector('[data-group="event"] button[aria-pressed="true"]'); if (state.value === 'offline') { message.textContent = 'Offline: nothing was saved. Reconnect and try again.'; return; } if (!book || !reading) { message.textContent = 'Nothing was saved. Select a shelf book and reading event; reactions may stay blank.'; return; } const child = root.querySelector('[data-group="child"] button[aria-pressed="true"]'); const caregiver = root.querySelector('[data-group="caregiver"] button[aria-pressed="true"]'); finish(`Saved ${reading.dataset.value} for ${book.querySelector('strong').textContent}.${child ? ` Child: ${child.dataset.value}.` : ''}${caregiver ? ` Caregiver: ${caregiver.dataset.value}.` : ''}${!child && !caregiver ? ' No reactions recorded.' : ''}`); }
+    function saveAdd() { const message = root.querySelector('[data-add-message]'); const result = root.querySelector('[data-ng-result="add"][aria-pressed="true"]'); const status = root.querySelector('[data-group="status"] button[aria-pressed="true"]'); if (state.value === 'offline') { message.textContent = 'Offline: nothing was added. Reconnect and try again.'; return; } if (!result || !status) { message.textContent = 'Nothing was added. Select a verified result and shelf status.'; return; } const title = result.querySelector('strong').textContent; if (title === 'The Snowy Day') { message.textContent = 'Already on the shelf. No duplicate was created and status did not change.'; return; } finish(`Added ${title} as ${status.dataset.value}. No history or reactions were created.`); }
+    root.querySelector('[data-save-log]').addEventListener('click', saveLog);
+    root.querySelector('[data-save-add]').addEventListener('click', saveAdd);
+    logForm.addEventListener('submit', (event) => { event.preventDefault(); event.stopImmediatePropagation(); saveLog(); }, true);
+    addForm.addEventListener('submit', (event) => { event.preventDefault(); event.stopImmediatePropagation(); saveAdd(); }, true);
+    root.addEventListener('click', (event) => { if (fab.getAttribute('aria-expanded') !== 'true' || event.target.closest('[data-fab]')) return; collapseFan(!event.target.closest('[data-open],[data-book],[data-review-recover]')); }, true);
+  })();
+</script>

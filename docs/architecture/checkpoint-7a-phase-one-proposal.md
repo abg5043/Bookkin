@@ -1,6 +1,6 @@
 # Checkpoint 7A phase-one proposal
 
-Status: awaiting human product-owner review. This document does not authorize schema changes, implementation, provider expansion, deployment, provisioning, external actions, Checkpoint 7P, or Checkpoint 7B.
+Status: approved by the human product owner on 2026-08-16, including the interactive design gate in `mockups/bookkin-checkpoint-7a-context-gate.html`. All 12 owner decisions below are approved as written. This approval authorizes bounded Checkpoint 7A implementation per the "Implementation sequence after approval" section. It does not authorize deployment, provisioning, external actions, Checkpoint 7P, or Checkpoint 7B; those remain separately gated. Final Checkpoint 7A approval (commit/push) still requires the completed implementation, independent review, and a separate explicit approval per `AGENTS.md`.
 
 ## Decision requested
 
