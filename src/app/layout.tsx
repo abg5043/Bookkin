@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { BookkinShell } from "@/components/bookkin-shell";
+import { DirectionToggle } from "@/components/direction-toggle";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
-      <body><BookkinShell>{children}</BookkinShell></body>
+      <body><BookkinShell>{children}</BookkinShell><DirectionToggle /></body>
     </html>
   );
 }

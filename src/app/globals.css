@@ -27,6 +27,72 @@
   --font-sans: Arial, Helvetica, sans-serif;
 }
 
+/* Original Bright Snap — the second approved design direction, carried over from the Checkpoint
+   7A design gate. Refined Brighter remains the default; this variant applies only when a viewer
+   explicitly selects it in the protected preview. It is a presentation layer only: no copy,
+   control, focus order, or behavior changes between directions, so the comparison stays honest. */
+[data-direction="snap"] {
+  --canvas: #ededeb;
+  --paper-deep: #e6e6e3;
+  --shadow-soft: 4px 4px 0 var(--ink);
+  --shadow-lift: 7px 7px 0 var(--ink);
+}
+[data-direction="snap"] body { background: var(--canvas); }
+[data-direction="snap"] h1,
+[data-direction="snap"] h2,
+[data-direction="snap"] .bk-brand,
+[data-direction="snap"] .bk-page-title { font-family: "Arial Black", Arial, sans-serif; letter-spacing: -0.04em; }
+[data-direction="snap"] .bk-app-header { background: var(--flash); border-bottom: 3px solid var(--ink); }
+[data-direction="snap"] .bk-profile-card,
+[data-direction="snap"] .bk-shelf-book,
+[data-direction="snap"] .bk-modal { border: 3px solid var(--ink); border-radius: 0; box-shadow: 4px 4px 0 var(--ink); }
+[data-direction="snap"] .bk-reading-profile[data-view="settings"] .bk-profile-card { border-top: 3px solid var(--ink); }
+[data-direction="snap"] .bk-choice,
+[data-direction="snap"] .bk-check-card,
+[data-direction="snap"] .bk-chip,
+[data-direction="snap"] .bk-interest-form input,
+[data-direction="snap"] .bk-topic-confirm,
+[data-direction="snap"] .bk-button-primary,
+[data-direction="snap"] .bk-button-secondary,
+[data-direction="snap"] .bk-reader-select select,
+[data-direction="snap"] .bk-reader-add { border-radius: 0; border-width: 2px; }
+[data-direction="snap"] .bk-cover { border: 2px solid var(--ink); border-radius: 0; box-shadow: 4px 4px 0 var(--flash); }
+[data-direction="snap"] .bk-fab { border-radius: 0; box-shadow: 4px 4px 0 var(--ink); }
+
+/* Preview-only review instrument. Fixed to the bottom-left so it never overlaps the primary
+   action, and visually distinct from product chrome so it is not mistaken for a real setting. */
+.bk-direction-toggle {
+  position: fixed;
+  z-index: 60;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+  max-width: calc(100vw - 1.5rem);
+  padding: 0.45rem 0.6rem;
+  border: 2px dashed var(--line-strong);
+  border-radius: 0.75rem;
+  background: var(--paper);
+  box-shadow: 0 6px 18px rgba(27, 45, 55, 0.18);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.72rem;
+}
+.bk-direction-toggle > span { color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+.bk-direction-toggle > div { display: flex; gap: 0.25rem; }
+.bk-direction-toggle button {
+  min-height: 2.25rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 0.5rem;
+  background: var(--paper);
+  color: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+.bk-direction-toggle button[aria-pressed="true"] { border-color: var(--ink); background: var(--flash); font-weight: 700; }
+
 * { box-sizing: border-box; }
 html { background: var(--canvas); }
 body {

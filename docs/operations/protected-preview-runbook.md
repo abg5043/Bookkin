@@ -42,6 +42,9 @@ Free tier gives 0.5 GB storage and 100 CU-hours/month, and scales to zero after 
    | --- | --- |
    | `DATABASE_URL` | the Neon connection string from step 1 |
    | `BOOKKIN_PREVIEW_PASSPHRASE` | a passphrase you choose — see below |
+   | `NEXT_PUBLIC_BOOKKIN_SHOW_DIRECTION_TOGGLE` | `true` |
+
+The third variable shows the preview-only design-direction toggle, which exists so you can compare Refined Brighter against Original Bright Snap on a real phone and lock a direction. Set it only on this preview. Omit it anywhere else and the control does not render at all. Remove it once a direction is chosen.
 
 **Choose a real passphrase.** Four or five unrelated words is both stronger and easier to text to someone than a short complex string. Do not reuse a password you use anywhere else. Store it in your password manager.
 
@@ -93,6 +96,8 @@ Do all four, in this order. If any fails, stop and fix it before giving anyone t
 4. In the same private window, visit `<your-url>/api/children` **before** entering the passphrase in a fresh session. You must be refused, not shown data.
 
 Then open it on your phone and walk through the Reading profile at real thumb size. That real-device pass is the point of this checkpoint.
+
+While you are there, use the **Preview style** control in the bottom-left corner to compare both design directions on the actual device. Copy, controls, and focus order are identical between them by construction, so the only thing you are judging is the visual language. Locking a direction here means every later prototype is built once instead of twice.
 
 ## Recovering the preview
 
