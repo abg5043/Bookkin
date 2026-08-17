@@ -925,6 +925,7 @@ Goal: deliver the outcome-first recommendation workflow.
 
 Included:
 
+- Shelf-level canonical-work deduplication, found during Checkpoint 7P preview review. Adding a book resolves provider records through `(metadataProvider, metadataRecordId)`, so two provider work records for the same real title — routine for reissues and anniversary editions — become two `BookWork` rows and therefore two shelf cards, each with its own independent shelf status. A caregiver can end up seeing one book listed as both owned and borrowed, which contradicts the single-current-status rule in section 4. Checkpoint 7A already implements exact normalized ISBN identity evidence for candidates; the same evidence should guard shelf additions, offering to merge rather than silently creating a second canonical work. This matters here specifically because this checkpoint must decide whether a recommended book is already on the shelf, and a duplicated shelf makes that decision wrong.
 - Minimum cold-start context enforcement.
 - No mandatory bag-setup form or shelf construction.
 - Persisted normal and limited-pool results.

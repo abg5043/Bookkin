@@ -125,6 +125,23 @@ async function main() {
     },
   });
 
+  // Deterministic reset: remove showcase records this seed no longer defines, so changing the
+  // book list leaves no orphans behind. Scoped strictly to the showcase provider — records a
+  // caregiver added themselves are never touched.
+  const showcaseIds = showcaseWorks.map((work) => work.id);
+  const staleWorks = await prisma.bookWork.findMany({
+    where: { metadataProvider: "bookkin-showcase-seed", id: { notIn: showcaseIds } },
+    select: { id: true },
+  });
+  if (staleWorks.length > 0) {
+    const staleIds = staleWorks.map((work) => work.id);
+    await prisma.familyBookEdition.deleteMany({ where: { edition: { workId: { in: staleIds } } } });
+    await prisma.familyBook.deleteMany({ where: { workId: { in: staleIds } } });
+    await prisma.bookEdition.deleteMany({ where: { workId: { in: staleIds } } });
+    await prisma.bookWork.deleteMany({ where: { id: { in: staleIds } } });
+    console.log(`Removed ${staleWorks.length} showcase book(s) no longer in the seed.`);
+  }
+
   for (const work of showcaseWorks) {
     await prisma.bookWork.upsert({
       where: { id: work.id },
