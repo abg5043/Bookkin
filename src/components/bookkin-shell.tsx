@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
 import type { FamilyShelfItem } from "@/application/family-books/family-shelf";
 import { AddBookDialog } from "@/components/add-book-dialog";
 import { QuickLogDialog } from "@/components/quick-log-dialog";
 
 type CaptureView = "add" | "log";
+
+export type ReaderOption = { id: string; nickname?: string; label: string };
 
 type BookkinShellContextValue = {
   shelf: FamilyShelfItem[];
@@ -16,6 +18,10 @@ type BookkinShellContextValue = {
   refreshShelf: () => Promise<void>;
   openAdd: () => void;
   openLog: () => void;
+  readers: ReaderOption[];
+  activeReaderId?: string;
+  setActiveReaderId: (childId: string) => void;
+  refreshReaders: () => Promise<void>;
 };
 
 const BookkinShellContext = createContext<BookkinShellContextValue | undefined>(undefined);
@@ -26,8 +32,11 @@ export function useBookkinShell() {
   return context;
 }
 
+const activeReaderStorageKey = "bookkin:active-reader";
+
 export function BookkinShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [shelf, setShelf] = useState<FamilyShelfItem[]>([]);
   const [isShelfLoading, setIsShelfLoading] = useState(true);
   const [shelfError, setShelfError] = useState<string>();
@@ -36,6 +45,8 @@ export function BookkinShell({ children }: { children: ReactNode }) {
   const [isOnline, setIsOnline] = useState(true);
   const [offlineNotice, setOfflineNotice] = useState(false);
   const [toast, setToast] = useState<{ message: string; canLogAnother: boolean }>();
+  const [readers, setReaders] = useState<ReaderOption[]>([]);
+  const [activeReaderId, setActiveReaderIdState] = useState<string>();
   const fabRef = useRef<HTMLButtonElement>(null);
 
   const refreshShelf = useCallback(async () => {
@@ -56,6 +67,50 @@ export function BookkinShell({ children }: { children: ReactNode }) {
     const timeoutId = window.setTimeout(() => { void refreshShelf(); }, 0);
     return () => window.clearTimeout(timeoutId);
   }, [refreshShelf]);
+
+  const setActiveReaderId = useCallback((childId: string) => {
+    setActiveReaderIdState(childId);
+    window.localStorage.setItem(activeReaderStorageKey, childId);
+  }, []);
+
+  const refreshReaders = useCallback(async () => {
+    const response = await fetch("/api/children");
+    if (!response.ok) return;
+    const { children: fetched } = await response.json() as {
+      children: Array<{ id: string; nickname?: string | null }>;
+    };
+    const options = fetched.map((child, index) => ({
+      id: child.id,
+      nickname: child.nickname ?? undefined,
+      label: child.nickname ?? `Child ${index + 1}`,
+    }));
+    setReaders(options);
+    setActiveReaderIdState((current) => {
+      if (current !== undefined && options.some((option) => option.id === current)) return current;
+      const stored = window.localStorage.getItem(activeReaderStorageKey);
+      const restored = stored !== null && options.some((option) => option.id === stored) ? stored : options[0]?.id;
+      if (restored !== undefined) window.localStorage.setItem(activeReaderStorageKey, restored);
+      return restored;
+    });
+  }, []);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => { void refreshReaders(); }, 0);
+    return () => window.clearTimeout(timeoutId);
+  }, [refreshReaders]);
+
+  async function handleReaderSelect(value: string) {
+    if (value === "__add_reader__") {
+      const response = await fetch("/api/children", { method: "POST", body: "{}" });
+      if (!response.ok) return;
+      const { child } = await response.json() as { child: { id: string } };
+      await refreshReaders();
+      setActiveReaderId(child.id);
+      router.push("/reading-profile");
+      return;
+    }
+    setActiveReaderId(value);
+  }
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => setIsOnline(window.navigator.onLine), 0);
@@ -113,6 +168,7 @@ export function BookkinShell({ children }: { children: ReactNode }) {
 
   const onShelf = pathname === "/";
   const onHistory = pathname === "/history" || pathname.startsWith("/books/");
+  const onReadingProfile = pathname === "/reading-profile";
   const contextValue: BookkinShellContextValue = {
     shelf,
     isShelfLoading,
@@ -120,6 +176,10 @@ export function BookkinShell({ children }: { children: ReactNode }) {
     refreshShelf,
     openAdd: () => openCapture("add"),
     openLog: () => openCapture("log"),
+    readers,
+    activeReaderId,
+    setActiveReaderId,
+    refreshReaders,
   };
 
   return (
@@ -134,7 +194,21 @@ export function BookkinShell({ children }: { children: ReactNode }) {
             <nav aria-label="Primary" className="bk-primary-nav">
               <Link aria-current={onShelf ? "page" : undefined} href="/" onClick={clearContextualReturn}>Shelf</Link>
               <Link aria-current={onHistory ? "page" : undefined} href="/history" onClick={clearContextualReturn}>History</Link>
+              <Link aria-current={onReadingProfile ? "page" : undefined} href="/reading-profile" onClick={clearContextualReturn}>Reading profile</Link>
             </nav>
+            {readers.length > 0 ? (
+              <label className="bk-reader-select">
+                <span className="sr-only">Active reader</span>
+                <select onChange={(event) => { void handleReaderSelect(event.target.value); }} value={activeReaderId ?? ""}>
+                  {readers.map((reader) => <option key={reader.id} value={reader.id}>{reader.label}</option>)}
+                  <option value="__add_reader__">Add reader…</option>
+                </select>
+              </label>
+            ) : (
+              <button className="bk-reader-add" onClick={() => { void handleReaderSelect("__add_reader__"); }} type="button">
+                Add a reader
+              </button>
+            )}
           </header>
           {children}
 

@@ -2,9 +2,9 @@
 
 Status: canonical planning document; Checkpoint 6 delivered; Checkpoint 7A in progress
 
-Last revised: 2026-08-15
+Last revised: 2026-08-16
 
-The human product owner approved this SDD on 2026-08-14 and approved and delivered Checkpoints 4R, 5A, 5B, and 6. On 2026-08-15, the owner explicitly authorized Checkpoint 7 to begin; under the approved split sequence, this authorizes Checkpoint 7A only. On 2026-08-16, the owner approved adding a separately gated protected-preview foundation after 7A so real-phone review can begin earlier. This sequencing decision does not authorize deployment, accounts, hosted resources, Checkpoint 7P, Checkpoint 7B, later-checkpoint implementation, or public actions.
+The human product owner approved this SDD on 2026-08-14 and approved and delivered Checkpoints 4R, 5A, 5B, and 6. On 2026-08-15, the owner explicitly authorized Checkpoint 7 to begin; under the approved split sequence, this authorizes Checkpoint 7A only. On 2026-08-16, the owner approved adding a separately gated protected-preview foundation after 7A so real-phone review can begin earlier, approved the Checkpoint 7A phase-one proposal and interactive design gate (see `docs/architecture/checkpoint-7a-phase-one-proposal.md`), and approved the token-frugality, design-direction-lock, copy-discipline, recommendation-intelligence-review, and cost-structure additions recorded throughout this document. Phase-one approval authorizes bounded Checkpoint 7A implementation only. It does not authorize deployment, accounts, hosted resources, Checkpoint 7P, Checkpoint 7B, later-checkpoint implementation, or public actions. Final Checkpoint 7A approval for commit/push still requires completed implementation, independent review, and a separate explicit approval.
 
 ## 1. Purpose
 
@@ -114,12 +114,25 @@ Before implementation, the lead presents an interactive, marked-up HTML prototyp
 
 The product frame must use polished end-user language throughout. Prototype labels, sample-data notices, implementation explanations, reviewer guidance, and placeholder narration belong only in the separate design-comments area and must never appear as product copy.
 
+This rule is absolute and is checked before the owner sees any prototype. Every visible string inside the product frame is proposed final product copy written for a caregiver. Specifically forbidden inside the product frame:
+
+- Lorem ipsum, `TBD`, `TODO`, dummy strings, and unwritten or approximate copy.
+- Schema, field, contract, or checkpoint vocabulary used as a user-visible heading or label, such as `About and reading relationship`, `evidence`, `phase`, `observation`, `snapshot`, or `provenance`.
+- Design-rationale, product-philosophy, or reviewer-directed sentences used as helper text, such as a section subtitle explaining that its contents are "explicit profile details," "not profile settings," or "only what you explicitly saved."
+- Copy that defends or narrates the system's own design decisions rather than helping the caregiver do the task.
+
+The test is whether the string helps a caregiver complete or understand their own task. Reassurance that answers a real parent worry is good product copy and is allowed; telling the caregiver how Bookkin models its data is not. For example, "Choose all that fit. These can overlap and aren't a reading assessment" reassures a parent who fears their child is being judged, and belongs in the product. "Explicit profile details, not an assessment" as a section subtitle describes the data model to a reviewer, and belongs in the design-comments panel or nowhere.
+
+The owner must never have to ask whether a string is real copy or a placeholder; if that question arises, the review has failed and the lead corrects the copy before re-presenting. Every design comment that explains a design decision belongs in the separate review panel, and the corresponding product string is rewritten in plain caregiver language. Copy review is an explicit acceptance item for every user-facing checkpoint, not an implementation detail deferred to build time.
+
 Until the owner selects a final system, every user-facing design review develops these two directions in parallel against the same content, states, and interactions:
 
 - **Original Bright Snap:** the high-contrast graphic camera language established in `bookkin-concept-bright-snap.html` - yellow, ink, white, cyan, rose, geometric display type, crisp borders, and restrained offset shadows.
 - **Refined Brighter:** the default review direction - the same bright Snap identity with editorial warmth, luminous cool neutrals, softer geometry, and parent-facing restraint. Do not regress to beige, brown, or a lower-energy default.
 
 A designer may propose a third direction only when it tests a genuinely distinct product hypothesis; it must not blur or replace the two required comparison tracks.
+
+The owner selects a final direction no later than the Checkpoint 7P protected-preview review, using the preview-only styling toggle (see Checkpoint 7P) so real feedback replaces the lead building and reviewing both directions in every subsequent prototype. Checkpoint 8 and later user-facing design reviews present the selected direction only.
 
 Owner corrections made during design review are durable product decisions, not conversational memory. In the same review cycle, the lead records each accepted correction in this SDD or the owning document under `docs/design/`, keeps the interactive review aligned, and reports the changed decision record. Future agents must read those files instead of relying on chat history.
 
@@ -273,6 +286,75 @@ V0.1 ranking, composition, and explanations are deterministic and inspectable. F
 
 A local LLM is deferred. It may later be evaluated only behind `AIProvider` after a separate human privacy, cost, latency, and operational gate. It may reword approved explanation clauses using verified structured facts. It cannot change candidate inclusion, score, rank, composition, or facts. Deterministic wording remains available and LLM failure cannot block a bag.
 
+### 6.3 Why the V0.1 baseline is deterministic, and what would change that
+
+This section records the reasoning behind the deterministic decision so future agents and the owner can revisit it against evidence instead of re-arguing it from intuition. The owner has registered standing skepticism that a deterministic baseline can feel smart enough; Checkpoint 11A exists to settle that question with observed evidence rather than assertion.
+
+`Deterministic` here means no model computes the score; a human sets and reviews the weights, and the same input always produces the same output. It does not mean simple, static, or unpersonalized. Bookkin's advantage is that the signals feeding that scorer are unusually good and unusually honest:
+
+- Declared structure: coarse age range, overlapping reading relationships, current topic interests, controlled kinds-of-books preferences.
+- Observed outcome evidence that accumulates with use: finishes, rereads, stopped reads, `Decided not to read`, separate child and caregiver reactions, and recommendation-level `Not for us`.
+- Verified work metadata with explicit provenance and explicit missingness.
+
+Personalization and improvement over time come from those feedback loops, not from the scoring mechanism. A reread is a strong positive signal and a `Not for us` is a strong negative signal regardless of whether a neural network or a weighted sum consumes it.
+
+**Recommendation approaches actually fall into three tiers, not two, and it matters which one a system like Netflix uses.** The owner asked directly how Netflix and Amazon do this if not with an LLM; the honest answer is that they use machine learning heavily, just not the deterministic tier Bookkin starts on and not the LLM tier either:
+
+1. **Deterministic / rule-based** (Bookkin's V0.1 baseline): a human authors the scoring formula and its weights. Nothing is fit from data. This is the tier described throughout this section.
+2. **Statistical / classical machine learning** (what Netflix, Amazon, and YouTube actually run): techniques such as collaborative filtering and matrix factorization *learn* latent parameters from historical interaction data, then later systems layered deep neural networks on top for candidate generation and ranking. This is genuinely machine learning, just not language models. Amazon's original item-to-item collaborative filtering and Netflix's factorization-based approach are the canonical examples.
+3. **Language-model-based**: an LLM generates, ranks, or explains recommendations directly from text, an active and still-maturing research area rather than a settled production default even at large companies.
+
+The reason Bookkin does not start on tier 2 is not that tier 2 is bad, it is that **tier 2 needs data volume Bookkin does not have yet.** Matrix factorization and deep ranking models learn their parameters by finding patterns across millions of users and billions of interactions; Netflix's own paper on the topic is explicit that the system is an ensemble built for that scale. A single household, or even a 100-household beta, produces a few dozen to a few hundred logged reading events per child — nowhere near enough for a learned model to estimate reliable latent factors, and the academic literature on the "cold-start problem" (see Further reading) is specifically about this failure mode: learned models degrade to guessing, or worse, when interaction history is thin. A hand-authored deterministic scorer does not have that floor, which is why it is the right *starting* tier for Bookkin's actual data scale, not a permanently lower-ambition choice. Checkpoint 11A is exactly the point where accumulated household data might finally be enough to responsibly evaluate tier 2 for a bounded piece of the problem (see direction 3 below), and tier 3 for others (see directions 1 and 2 below).
+
+The deterministic baseline is also doing product work that a model would actively undermine at this stage:
+
+- It is inspectable. When a bag is wrong, the owner can see which signal caused it and correct the weight. A model failure is far harder to diagnose against a household of roughly a dozen data points.
+- It is repeatable. Fixed inputs produce fixed output, which is what makes the Checkpoint 7B fixture review and the Checkpoint 11 alpha correction pass meaningful.
+- It cannot fabricate. Invented books, invented availability, and invented reading history are the highest-severity failures in this product, and the deterministic path makes them structurally impossible rather than merely unlikely.
+- It has no per-request cost, no latency floor, and no external dependency, which matters directly to the cost structure in section 9.2.
+
+The honest limitations of the deterministic baseline, which Checkpoint 11A must evaluate:
+
+- Cold-start quality is bounded by declared context. A household with one interest and no history gets a broad bag.
+- Free-text interests only reach a topical candidate source through exact alias matching, so real caregiver phrasing frequently falls back to the generic corpus. This is the single most likely source of "these picks feel generic" feedback.
+- Candidate pool quality is bounded by the provider. Weak or inconsistent subject metadata limits ranking quality no matter how good the ranker is, and no model fixes missing source data.
+- Deterministic explanation wording may read stiff or repetitive across many bags.
+
+Three separable directions could add intelligence later. They are deliberately separable because they carry very different risk and sit on different tiers above, and the owner should be able to approve one without accepting the others:
+
+1. Bounded closed-vocabulary classification (tier 2 or tier 3 technique, tier-1-safe output). Map free-text interests into the existing fixed `TopicCodeV1` set, using either a small learned classifier or an LLM constrained to that same closed set. The output space is a handful of known codes, so the model cannot invent a book, a fact, an age claim, or a ranking, regardless of which tier implements it. This is the highest expected value per unit of risk and is the first thing to consider if Checkpoint 11A finds generic-feeling bags.
+2. Explanation rewording behind `AIProvider` (tier 3). A model rephrases already-verified structured facts into warmer sentences. It never selects, scores, or asserts. Deterministic wording remains the fallback.
+3. Learned ranking (tier 2). A statistical model computes or adjusts the score itself. This is the only direction that would displace the deterministic contract, and it is also the only one with a real fabrication and opacity cost. As explained above, it needs substantially more outcome data than a single household or a five-family beta produces, so it cannot be responsibly evaluated before controlled beta scale at the earliest, and even then only as an ensemble alongside the deterministic scorer, not a wholesale replacement of it.
+
+Signals that would justify moving on any of these, all of which Checkpoint 11A collects:
+
+- Repeated owner or caregiver judgment that bags are plausible but generic, with unmatched free-text interests as the traced cause, points at direction one.
+- Comprehension or tone complaints about explanations, with the underlying picks judged good, point at direction two.
+- Picks that are wrong in ways no weight adjustment fixes, across many households, point at direction three and at candidate sourcing.
+- Picks that are wrong because the pool lacked good books point at provider work, not at any model.
+
+Until Checkpoint 11A produces that evidence, ranking, composition, eligibility, and explanation content remain deterministic, and no direction above is scoped, scaffolded, or implemented.
+
+#### Further reading
+
+For understanding the field well enough to evaluate Checkpoint 11A's options, not as required reading to approve anything:
+
+Tier 1, and why an inspectable/explainable baseline is worth choosing on purpose, not just by default:
+- Zhang & Chen, ["Explainable Recommendation: A Survey and New Perspectives"](https://arxiv.org/pdf/1804.11192) (2020) — the case for why inspectability is a first-class design goal, not a consolation prize.
+
+Tier 2, statistical/classical machine learning — what Netflix, Amazon, and YouTube actually run, and the data-volume argument for why Bookkin doesn't start here:
+- Linden, Smith & York, ["Amazon.com Recommendations: Item-to-Item Collaborative Filtering"](https://dl.acm.org/doi/10.1109/MIC.2003.1167344) (2003) — the original, still-cited Amazon algorithm; an accessible retrospective is on [Amazon Science](https://www.amazon.science/the-history-of-amazons-recommendation-algorithm).
+- Koren, Bell & Volinsky, ["Matrix Factorization Techniques for Recommender Systems"](https://dl.acm.org/doi/10.1109/MC.2009.263) (2009) — the Netflix-Prize-era technique behind most learned recommenders since; the standard first paper to read on tier 2.
+- Gomez-Uribe & Hunt, ["The Netflix Recommender System: Algorithms, Business Value, and Innovation"](https://dl.acm.org/doi/10.1145/2843948) (2016) — Netflix's own account of their system as an ensemble of many models plus substantial human curation, not one big model; directly answers "how does Netflix actually do it."
+- Covington, Adams & Sargin, ["Deep Neural Networks for YouTube Recommendations"](https://research.google/pubs/deep-neural-networks-for-youtube-recommendations/) (2016) — where deep learning entered production recommenders, and how much interaction volume it assumes.
+- Schein, Popescul, Ungar & Pennock, ["Methods and Metrics for Cold-Start Recommendations"](https://dl.acm.org/doi/10.1145/564376.564421) (2002) — the classic paper on exactly the failure mode that keeps Bookkin off tier 2 for now: learned models degrade when interaction history is thin. Open-access copy at the [UPenn repository](https://repository.upenn.edu/cis_papers/135/).
+
+Tier 3, language-model-based recommendation — the newest and least settled direction, most relevant to direction 1 (bounded classification) and direction 2 (explanation wording) above:
+- Fan et al., ["A Survey on Large Language Models for Recommendation"](https://arxiv.org/abs/2305.19860) (2023) — broad map of the LLM-for-recommendation research area and its open problems.
+- Geng, Liu, Fu, Ge & Zhang, ["Recommendation as Language Processing (P5)"](https://arxiv.org/abs/2203.13366) (2022) — a concrete architecture for framing recommendation tasks as text-to-text, useful background if direction 1 or 2 is ever prototyped.
+
+A friendlier starting point than any of the above if it's been a while since a stats or ML course: Google's free [Recommendation Systems course](https://developers.google.com/machine-learning/recommendation), which walks through candidate generation, scoring, and re-ranking at a practitioner level.
+
 ## 7. Library contract
 
 V0.1 library behavior is deliberately narrow:
@@ -338,7 +420,7 @@ Core activation is a household generating a normal bag and opening at least one 
 
 The provisional north-star hypothesis is the share of verified recommendations that are pursued, explicitly obtained, read, and positively received. Checkpoint 10A must approve the exact outcome conditions, maturity window, reaction subject, and denominator before implementation. Caregiver reaction quality remains separate.
 
-Growth remains free through controlled beta. Bookkin has no ads, affiliates, sponsored placement, commercial ranking influence, or child-data monetization. Monetization begins only as research at Checkpoint 13 after traction, privacy, reliability, support, and cost evidence.
+Growth remains free through controlled beta, and is described to families as free during beta rather than permanently free; see section 9.2. Bookkin has no ads, affiliates, sponsored placement, commercial ranking influence, or child-data monetization. Monetization begins only as research at Checkpoint 13 after traction, privacy, reliability, support, and cost evidence.
 
 ### 9.1 Family experience research cadence
 
@@ -351,6 +433,31 @@ Major end-to-end experience reviews include a family perspective without turning
 - Parent-only group discussion may supplement Checkpoint 12B positioning and invitation-language review, but it does not replace task observation and cannot validate recommendation quality.
 
 Individual caregiver-child sessions are preferred over placing children together in a conventional focus group, reducing peer influence and protecting privacy. Before any external recruitment, contact, incentive, recording, or child participation, the checkpoint's phase-one gate presents exact participants or criteria, consent and age-appropriate assent, caregiver presence, tasks, data collected, recording behavior, retention/deletion, compensation, moderator, and stop conditions for owner approval. No school, exact birthdate, child photo, location history, or unnecessary child identifier is collected.
+
+### 9.2 Cost structure and monetization sustainability
+
+The owner's stated requirement is that any future monetization must first cover the cost of running Bookkin as it scales, with owner profit secondary. The failure mode to avoid is discovering after launch that per-household cost exceeds what the product can charge, or that families were told the product is free in a way that makes later cost recovery dishonest. Both failures are cheap to prevent now and expensive to fix later, so cost modeling starts at Checkpoint 7P rather than at Checkpoint 13.
+
+**Track unit cost from the first hosted checkpoint.** Checkpoint 7P records a per-household monthly cost estimate at the selected vendor tier. Checkpoint 8A updates it with real household-alpha usage. Checkpoint 12A updates it with five households, and Checkpoint 12C updates it at each enrollment ceiling. Each update is a small explicit number in the checkpoint report, not a reconstruction from memory later.
+
+**Known cost drivers, in expected order of eventual significance:**
+
+- Human support and incident handling. At small scale this is the dominant real cost and it is paid in owner time rather than vendor invoices. Section 15 already gates expansion on support burden being manageable; that gate is also a cost gate.
+- Managed PostgreSQL. The first line item to leave a free tier as household count and retained history grow.
+- Application hosting compute and bandwidth, including book cover images served or proxied.
+- Book metadata provider usage. Free today; a provider that later meters requests, or a fallback provider with paid tiers, converts this into a per-request marginal cost.
+- Backups, monitoring, logging, and any custom domain.
+- Any future AI inference. See below.
+
+**The deterministic recommendation baseline is a cost decision as well as a truth decision.** Deterministic scoring has no per-request marginal cost, so recommendation volume does not move the bill. Hosted LLM inference would introduce a cost that scales linearly with the product's core action, which is precisely the shape that turns growth into loss and forces pricing before the product has earned it. A local model converts that into a fixed but materially larger compute floor. Any Checkpoint 11A decision to add intelligence must therefore present its cost per bag and its effect on the per-household unit cost alongside its quality argument; a quality improvement that breaks unit economics is not automatically worth taking.
+
+**Identify the tier cliffs before hitting them.** At each of roughly 1, 5, 25, 100, and 1000 households, the owner should know which vendor free tiers have been exhausted and what the resulting monthly cost is. Expansion decisions at Checkpoint 12C are made against those numbers. The owner also sets an explicit monthly spend ceiling they are willing to absorb before revenue exists; when projected cost approaches that ceiling, enrollment pauses. Enrollment pause already exists as a Checkpoint 12C control and is the correct lever here.
+
+**Protect the ability to charge later.** A product described as free without qualification cannot be converted to paid without breaking a promise, and families reasonably remember the promise rather than the qualifier. Therefore, from Checkpoint 12A onward, every invitation, public claim, in-product statement, and support reply describes Bookkin as free during beta, or free for beta families, and never as free permanently, free forever, or always free. No copy anywhere may imply permanent free access or a guaranteed price. This constraint is an acceptance item for Checkpoint 12A invitation wording and for any Checkpoint 12B public surface. If the owner later chooses to grandfather early families, that is a deliberate decision made with cost evidence in hand, not an obligation created accidentally by early copy.
+
+**Pressure-test the economics with an outside lens.** The per-household cost baselines recorded at Checkpoints 7P, 8A, and 12C, and the Checkpoint 13 monetization research, are reviewed by the venture-investor persona defined in `AGENTS.md`. Its job is pricing realism and cost-structure scrutiny: whether the recorded unit cost is complete or is quietly excluding owner support time, whether the projected price is one a caregiver would actually pay, where the cost curve breaks as households grow, and whether the product can sustain itself without violating its own constraints. That reviewer advises within the fixed constraints below and cannot trade them away; a growth recommendation that requires weakening product truth, child privacy, or the prohibitions in this section is rejected rather than escalated.
+
+**Shape the eventual model around covering cost.** Checkpoint 13 remains research-only and no billing is implemented without a new checkpoint, but the research should be framed by the cost model built above: what does a household actually cost per month, what would cover that plus modest margin, and does the observed unmet job support that price. The existing prohibitions remain absolute regardless of cost pressure. Advertising, affiliates, sponsored placement, commercial ranking influence, and child-data monetization are never available as cost-recovery options, because they would compromise the recommendation truth guarantees that make the product worth paying for at all. Acceptable directions to research are direct family payment, an optional supporter model, and institutional licensing subject to privacy review.
 
 ## 10. Architecture
 
@@ -428,6 +535,8 @@ Every specialist supplies:
 - Confirmation that later features and prohibited actions were not performed.
 
 An independent reviewer who did not implement the material scope verifies it read-only. The lead resolves findings, integrates the work, and runs the complete relevant validation suite.
+
+Reviewer personas are selected per checkpoint from the table in `AGENTS.md`, choosing only the lenses the checkpoint's actual changes require — typically one or two. The per-checkpoint `Specialists:` lines below name the expected reviewers for that checkpoint; they are the selection, not a minimum to be exceeded. Reviewers run read-only on a mid-tier model to control cost, and the lead states in the checkpoint report which personas were used and why.
 
 After two bounded failures with the same cause, the work is handed back as blocked. Agents may not widen scope, add dependencies, disable tests, invent facts, or perform a broad rewrite as recovery.
 
@@ -711,7 +820,7 @@ Excluded: scoring, composition, user-facing bags, AI, and library availability.
 
 Acceptance evidence: cold-start context can be completed without shelf construction; switching children never mixes evidence, requests, pools, or results; topic interests and kinds-of-books preferences remain distinct; all candidate facts retain provenance; missing fields remain missing; observations retain subject and reporter; references have no implicit side effects.
 
-Specialists: product/domain and provider implementers; privacy and product-truth reviewers.
+Specialists: product/domain and provider implementers. Reviewers: child-privacy reviewer (outbound query contents and child-data minimization), staff engineer (schema, ownership scoping, idempotency), and product designer (the new caregiver-facing Reading profile screen). Product-truth is carried by the lead against section 2.3 and re-checked at the owner gate.
 
 Owner decisions: candidate coverage threshold and any fallback metadata provider.
 
@@ -732,6 +841,8 @@ Included:
 - Real-phone smoke review at representative narrow widths.
 - Basic logs, secret ownership, cost ownership, rollback, and complete teardown instructions.
 - A deployment runbook sufficiently explicit for the owner to reproduce or recover the preview.
+- A preview-only styling toggle between Refined Brighter and Original Bright Snap, gated out of anything that could become production, so the owner and reviewers can compare both directions on real devices before the final direction decision.
+- A recorded per-household hosting-cost estimate at the selected vendor tier, carried forward as a baseline input to the Checkpoint 8A and Checkpoint 13 cost reviews.
 
 Excluded: public registration, public indexing, unrestricted sharing, application authentication, production family-data migration, custom domain or DNS, PWA/offline cache, external focus-group invitations, and zero-setup local demo implementation.
 
@@ -739,7 +850,7 @@ Acceptance evidence: exact authorized vendor/cost record; protected phone access
 
 Specialists: deployment/operations implementer; independent security, privacy, database, and responsive-device reviewers.
 
-Owner decisions: vendors, accounts, expected costs, exact protection configuration, authorized branch/commit, permitted reviewers, and whether the protected preview is ready to support continued checkpoint review.
+Owner decisions: vendors, accounts, expected costs, exact protection configuration, authorized branch/commit, permitted reviewers, whether the protected preview is ready to support continued checkpoint review, and the final Bright Snap direction informed by that review.
 
 ```mermaid
 flowchart LR
@@ -786,6 +897,15 @@ Included:
 - Independent recommendation-quality verification.
 
 Excluded: user-facing bag, LLM implementation, library availability, and endless-feed behavior.
+
+Carried forward from Checkpoint 7A, accepted by the owner as deferred rather than blocking, and required here because this checkpoint is the first consumer that depends on candidate pools being trustworthy:
+
+- **Stale candidate-attempt recovery.** `runCandidateDiscovery` writes its rows outside a transaction, because a database transaction cannot be held across the provider HTTP calls it makes. An ordinary thrown error is handled and marks the attempt failed, but a process crash, restart, or timeout leaves an attempt at `started` with a partial set of rows. Implement a sweep that marks abandoned attempts failed with a sanitized code so no partially-written attempt can be read as a real pool. The Checkpoint 7A mitigation — the development preview refusing to report any non-completed attempt — stays in place and is not a substitute.
+- **Graceful concurrent retry.** `attemptNumber` is computed by count-then-insert, so two simultaneous retries surface a raw database unique-violation instead of a domain error. The unique constraint already prevents corruption; convert the collision into a handled retry or a clear domain error.
+- **Candidate hydration query efficiency.** Hydration currently issues sequential per-record provider and database calls, plus one work lookup per resolved work and one insert per provenance link. Batch these before any live route depends on this path, since a single source code can return up to 100 records.
+- **Page-scoped offline guard for Reading profile.** The global offline banner exists but its copy is shelf and quick-log specific. A caregiver editing a child's profile on unreliable connectivity must be warned before beginning a private-data input workflow, as `docs/design/accessibility.md` requires.
+
+Candidate future addition, not approved or scoped yet: a closed-vocabulary interest classifier that maps free-text child interests to the existing closed `TopicCodeV1` set only (never to open text, a rank, a score, or an unverified fact) so more real phrasing reaches a topical candidate source than the exact-alias match alone. This is a classification task into a fixed small vocabulary, not open generation, so it carries none of the fabrication risk of an LLM writing prose or picking books. It would require its own phase-one proposal, privacy review, and owner approval before implementation and would not change the deterministic scoring, ranking, composition, or eligibility rules above.
 
 Acceptance evidence: fixed inputs are repeatable; weights and source signals are inspectable; no unverified work or padded result can enter a bag; limited-pool and no-candidate cases are tested; explanations cite only verified or declared evidence.
 
@@ -955,7 +1075,38 @@ Specialists: human household participant and lead triage; independent regression
 
 Owner decisions: alpha correction set and readiness for a controlled five-family beta.
 
-Mandatory human stop: Checkpoint 11 is the V0.1 gate. The lead presents observed evidence and the correction pass, stops for owner inspection and guidance, and requires explicit approval before commit/push. No beta identity, invitation, or public work begins without separate Checkpoint 12A authorization.
+Mandatory human stop: Checkpoint 11 is the V0.1 gate. The lead presents observed evidence and the correction pass, stops for owner inspection and guidance, and requires explicit approval before commit/push. No beta identity, invitation, or public work begins without separate Checkpoint 12A authorization. Continued household use after approval accumulates the evidence that Checkpoint 11A reviews.
+
+### Checkpoint 11A - Recommendation quality review and intelligence direction decision
+
+Goal: after sustained real household use, decide with evidence whether recommendation quality needs refinement and in which direction, including whether any bounded machine-learning or LLM capability is now justified. This checkpoint exists because the owner registered standing skepticism about the deterministic-only baseline in section 6.3, and that question deserves observed evidence rather than continued assertion in either direction.
+
+Timing: begins after Checkpoint 11 approval and after approximately two months of continued household use, or sooner if recommendation quality is clearly failing. V0.1 still completes at Checkpoint 11; this is a post-V0.1 quality gate that must be resolved before Checkpoint 12A invites external families, so that beta households are not recruited onto recommendations already known to be weak.
+
+This is a review and decision checkpoint. It produces evidence, a diagnosis, options, and an owner decision. It does not implement.
+
+Included:
+
+- Assemble observed evidence across all bags generated since the alpha began: Normal Bag Rate, Limited Pool Rate, No Candidate Rate, catalog opens, saves, `Not for us` actions with reasons, obtained books, reading outcomes, and reactions attributed to recommendations.
+- Owner qualitative judgment of each reviewed bag: plausible and useful, plausible but generic, or wrong.
+- Diagnosis separating the four distinct causes, because each has a different fix and only some involve a model at all: thin declared context, weak candidate pool, weak ranking of an adequate pool, or adequate picks presented with poor explanation wording.
+- Specifically measure how often free-text interests failed exact alias matching and fell back to the generic corpus, since section 6.3 predicts this as the most likely cause of generic-feeling bags.
+- Deterministic tuning options: revised weights, new signals from accumulated history, revised composition, expanded topic vocabulary and aliases, or expanded candidate sourcing.
+- Bounded closed-vocabulary interest classification presented as a scoped option with expected benefit, privacy implications, and cost per bag.
+- Explanation rewording behind `AIProvider` presented as a separate scoped option with the same analysis.
+- Learned ranking presented honestly, including whether the available outcome volume can support it at all and what it would cost in inspectability and fabrication risk.
+- Optional: an offline, non-production experiment comparing the deterministic ranker against one or two alternative approaches (for example a small learned re-ranker, or an LLM-prompted re-ranker) evaluated only against already-logged historical alpha outcomes. No live traffic, no new data collection beyond what alpha use already produced, and no user-facing exposure. This is a low-stakes way to actually try tier 2 and tier 3 approaches on real household data before deciding whether either earns a real checkpoint, and it is the owner's opportunity to experiment hands-on if they want it. It does not require the full phase-one gate that a production change would, precisely because it changes nothing live; it does still follow the privacy and no-fabrication rules for handling that data.
+- Unit-cost impact of every proposed option under section 9.2, so a quality gain that breaks unit economics is visible as such.
+
+Excluded: implementing any chosen direction; scaffolding, dependency installation, or model selection before a separate approved checkpoint; hosted LLM use without a separate child-privacy gate; and any change to the product-truth invariants in section 2.3, which remain absolute regardless of the direction chosen.
+
+Acceptance evidence: complete bag-level evidence set with owner judgments; explicit diagnosis attributing quality problems to context, pool, ranking, or wording; free-text interest match-rate measurement; each option presented with expected benefit, privacy implication, unit-cost impact, and effect on inspectability; and an explicit statement of what evidence would change the recommendation if the owner disagrees.
+
+Specialists: lead evidence assembly and diagnosis; independent recommendation-quality and product-truth reviewers. Keep this checkpoint small; it is analysis of existing records, not new implementation.
+
+Owner decisions: whether current recommendation quality is sufficient to invite external families; which refinement direction, if any, to pursue; and whether any chosen direction warrants a newly specified checkpoint before Checkpoint 12A or is deferred until after controlled beta produces more outcome data.
+
+Mandatory human stop: no evidence summary, reviewer PASS, or agent recommendation authorizes implementing a model, adding a dependency, or changing the deterministic contract. The lead presents evidence, diagnosis, and options, stops for owner judgment, reverifies requested analysis corrections, and requires explicit approval before commit/push. Any approved refinement direction is implemented only under its own separately specified and approved checkpoint.
 
 ### Checkpoint 12A - Secure controlled free beta
 
@@ -973,11 +1124,12 @@ Included:
 - Five invited households.
 - At least three separately moderated caregiver-child end-to-end usability sessions when participation and consent permit.
 - Longitudinal follow-up across recommendation choice, library pursuit, reading outcome, correction, and later adaptation.
-- Free access.
+- Free access during beta, described in every invitation, in-product statement, and support reply as free during beta or free for beta families, and never as permanently free, free forever, or always free. See section 9.2.
+- An updated per-household cost estimate measured against five real households.
 
 Excluded: unrestricted public registration, public child data, billing, public acquisition site, and marketing expansion. Public registration requires a separately specified future checkpoint and is authorized by neither 12A nor 12B.
 
-Acceptance evidence: cross-household isolation; recovery and deletion; support ownership; no alpha data leakage; explicit invited-family list and rollout plan; owner-approved family-research protocol; moderated-session synthesis with child participation kept minimal and private; disposition of recurring comprehension, trust, effort, accessibility, and recommendation-quality findings.
+Acceptance evidence: cross-household isolation; recovery and deletion; support ownership; no alpha data leakage; explicit invited-family list and rollout plan; owner-approved family-research protocol; moderated-session synthesis with child participation kept minimal and private; disposition of recurring comprehension, trust, effort, accessibility, and recommendation-quality findings; and an audit confirming that no invitation, in-product, or support copy promises permanent free access.
 
 Specialists: authentication/domain implementer; security and privacy isolation reviewers.
 
@@ -1003,7 +1155,7 @@ Potential included scope:
 
 Excluded: private household content, public product navigation, unsupported claims, unrestricted registration, billing, ads, affiliates, sponsored ranking, or child-data monetization.
 
-Acceptance evidence: claim audit; fixture audit; public/private boundary test; privacy and accessibility review; acquisition measurement allowlist.
+Acceptance evidence: claim audit, including confirmation that no page, CTA, or metadata promises permanent free access or a guaranteed future price; fixture audit; public/private boundary test; privacy and accessibility review; acquisition measurement allowlist.
 
 Specialists: product/marketing implementer; privacy, accessibility, and claim-verification reviewers.
 
@@ -1025,7 +1177,7 @@ Excluded: unrestricted registration, public child data, billing, advertising, sp
 
 Acceptance evidence: activation and recommendation-outcome cohorts, Normal/Limited/No-candidate rates, retention, support burden, cost, privacy and security results, incident response, and deletion/export reliability.
 
-Specialists: product operations and identity implementers; security, privacy, measurement, and support reviewers.
+Specialists: product operations and identity implementers; security, privacy, measurement, and support reviewers. At each enrollment ceiling, the venture-investor persona reviews the updated per-household cost baseline against the owner's stated monthly spend ceiling before expansion is proposed.
 
 Owner decisions: each participant ceiling, participant sourcing, invitation execution, budget, support capacity, and whether to pause, continue, or stop.
 
@@ -1035,7 +1187,7 @@ Mandatory human stop: neither metrics nor agent consensus authorizes enrollment.
 
 Goal: determine whether retained families have a specific unmet job worth funding.
 
-Research requires final Checkpoint 12C approval and evidence from the owner-gated expansion to at most 100 households. Prerequisites reviewed by the owner include recommendation coverage and outcomes, repeat library-trip use, household effort and abandonment, support burden, privacy, reliability, and operating cost.
+Research requires final Checkpoint 12C approval and evidence from the owner-gated expansion to at most 100 households. Prerequisites reviewed by the owner include recommendation coverage and outcomes, repeat library-trip use, household effort and abandonment, support burden, privacy, reliability, and operating cost. Operating-cost evidence is not reconstructed retroactively here; it accumulates from the per-household hosting-cost baseline first recorded at Checkpoint 7P and updated at Checkpoint 8A.
 
 Phase one is a research and contact gate. Before contacting any participant, offering an incentive, recording a session, or collecting research data, present participant criteria or exact contacts, outreach wording, consent, incentive and cost, privacy protections, recording behavior, retention and deletion, analysis ownership, and who will conduct contact. Obtain explicit human authorization for the exact activity. Contact remains human-owned unless specifically delegated.
 
@@ -1045,12 +1197,13 @@ Included:
 - Multiple-child or caregiver-coordination hypotheses.
 - Optional supporter-model research.
 - Long-term institutional hypotheses subject to privacy review.
+- Cost-recovery analysis using the accumulated section 9.2 cost record: measured per-household cost at current scale, projected cost at target scale, the price range that would cover cost plus modest margin, and whether the observed unmet job supports that range.
 
 Excluded: billing, payment data, paywalls, ads, affiliates, sponsorships, commercial rank influence, recommendation degradation, or child-data monetization.
 
 Checkpoint 13 authorizes research only. Any pricing, billing, or commercial implementation requires a new explicitly specified checkpoint.
 
-Specialists: product and economic researcher; privacy reviewer; staff-engineering cost reviewer.
+Specialists: product and economic researcher. Reviewers: venture-investor persona (pricing realism, unit economics, scaling constraints, and whether the product can sustain itself), privacy reviewer (any research contact or data use), and staff-engineering cost reviewer (validating the recorded cost model against real infrastructure).
 
 Owner decisions: whether observed traction justifies research and whether any later commercial checkpoint should be proposed.
 
@@ -1065,6 +1218,8 @@ Before Checkpoint 12A:
 - At least two plausible recommendations in most reviewed normal bags.
 - Successful catalog, obtainment, read, and reaction attribution.
 - No material truth, privacy, security, or recovery failure.
+- Checkpoint 11A resolved: the owner judges recommendation quality sufficient to invite external families, or an approved refinement has been completed under its own checkpoint.
+- A recorded per-household cost estimate that sits within the owner's stated monthly spend ceiling at the five-household scale.
 - Owner judges a five-family beta supportable.
 
 Before Checkpoint 12C stage-one expansion to at most 25 households, provisional targets are:
@@ -1091,7 +1246,7 @@ These thresholds are planning hypotheses. The owner may revise them at a checkpo
 
 ## 16. Current owner decision
 
-The owner approved and delivered Checkpoint 6 on 2026-08-15 and explicitly authorized Checkpoint 7 to begin. The approved plan splits Checkpoint 7 into separately gated 7A and 7B, so current authorization is limited to Checkpoint 7A:
+The owner approved and delivered Checkpoint 6 on 2026-08-15 and explicitly authorized Checkpoint 7 to begin. The approved plan splits Checkpoint 7 into separately gated 7A and 7B, so current authorization is limited to Checkpoint 7A. On 2026-08-16, the owner approved the Checkpoint 7A phase-one proposal (`docs/architecture/checkpoint-7a-phase-one-proposal.md`) and its interactive design gate as written, including all 12 owner decisions in that proposal and the Refined-Brighter-default/Original-Bright-Snap-parallel direction. Bounded implementation per that proposal's "Implementation sequence after approval" is now authorized:
 
 - Support one or more caregiver-managed child profiles with an explicit active child; collect one coarse age range plus nonexclusive current reading-relationship choices, editable current interests and retained historical phases, controlled kinds-of-books preferences, durable preference observations, and explicit request-scoped reference behavior without cross-child mixing.
 - Source and hydrate a verified candidate pool with normalized facts, provenance, coverage, deduplication, and exclusions. Development-only coverage and insufficiency previews are allowed but are not recommendation results.

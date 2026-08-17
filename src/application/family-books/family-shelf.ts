@@ -1,15 +1,11 @@
 import { type VerifiedBookMetadata, type VerifiedBookWork } from "@/application/books/book-metadata";
+import { persistVerifiedMetadata } from "@/application/books/persist-metadata";
 import { type z } from "zod";
 import {
   familyBookShelfStatusSchema,
 } from "@/domain/family-books/validation";
 import { readingGraphFromRows, resolveCurrentReadingRecords } from "@/application/reading/current-records";
 import { sortReadingEvents } from "@/application/reading/summary";
-import {
-  encodeSerialized,
-  metadataProvenanceSchema,
-  stringListSchema,
-} from "@/domain/shared/serialized";
 import { prisma } from "@/infrastructure/db/prisma";
 
 export type ShelfStatus = z.infer<typeof familyBookShelfStatusSchema>;
@@ -28,18 +24,6 @@ export type SaveFamilyBookResult = {
   wasAlreadyOnShelf: boolean;
   shelfStatus: ShelfStatus;
 };
-
-function provenance(recordId: string, fields: Record<string, string>): string {
-  return encodeSerialized(metadataProvenanceSchema, {
-    provider: "open-library",
-    recordId,
-    fields,
-  });
-}
-
-function optionalStringList(values: string[]): string | null {
-  return values.length === 0 ? null : encodeSerialized(stringListSchema, values);
-}
 
 function asShelfStatus(value: string | null): ShelfStatus | undefined {
   return value === null ? undefined : familyBookShelfStatusSchema.parse(value);
@@ -98,69 +82,7 @@ export async function saveToFamilyShelf(
   addedVia: "manual_isbn" | "search" = "manual_isbn",
 ): Promise<SaveFamilyBookResult> {
   return prisma.$transaction(async (transaction) => {
-    const work = await transaction.bookWork.upsert({
-      where: {
-        metadataProvider_metadataRecordId: {
-          metadataProvider: "open-library",
-          metadataRecordId: metadata.workRecordId,
-        },
-      },
-      update: {
-        title: metadata.title,
-        subtitle: metadata.subtitle,
-        authors: encodeSerialized(stringListSchema, metadata.authors),
-        description: metadata.description,
-        subjects: optionalStringList(metadata.subjects),
-        series: metadata.series,
-        metadataProvenance: provenance(metadata.workRecordId, metadata.fieldCoverage),
-      },
-      create: {
-        title: metadata.title,
-        subtitle: metadata.subtitle,
-        authors: encodeSerialized(stringListSchema, metadata.authors),
-        description: metadata.description,
-        subjects: optionalStringList(metadata.subjects),
-        series: metadata.series,
-        metadataProvider: "open-library",
-        metadataRecordId: metadata.workRecordId,
-        metadataProvenance: provenance(metadata.workRecordId, metadata.fieldCoverage),
-      },
-    });
-
-    const edition = "editionRecordId" in metadata
-      ? await transaction.bookEdition.upsert({
-        where: {
-          metadataProvider_metadataRecordId: {
-            metadataProvider: "open-library",
-            metadataRecordId: metadata.editionRecordId,
-          },
-        },
-        update: {
-          workId: work.id,
-          isbn10: metadata.isbn10,
-          isbn13: metadata.isbn13,
-          publisher: metadata.publisher,
-          publicationDate: metadata.publicationDate,
-          pageCount: metadata.pageCount,
-          coverSmallUrl: metadata.coverSmallUrl,
-          coverLargeUrl: metadata.coverLargeUrl,
-          metadataProvenance: provenance(metadata.editionRecordId, metadata.fieldCoverage),
-        },
-        create: {
-          workId: work.id,
-          isbn10: metadata.isbn10,
-          isbn13: metadata.isbn13,
-          publisher: metadata.publisher,
-          publicationDate: metadata.publicationDate,
-          pageCount: metadata.pageCount,
-          coverSmallUrl: metadata.coverSmallUrl,
-          coverLargeUrl: metadata.coverLargeUrl,
-          metadataProvider: "open-library",
-          metadataRecordId: metadata.editionRecordId,
-          metadataProvenance: provenance(metadata.editionRecordId, metadata.fieldCoverage),
-        },
-      })
-      : undefined;
+    const { work, edition } = await persistVerifiedMetadata(transaction, metadata);
 
     const existingFamilyBook = await transaction.familyBook.findUnique({
       where: { householdId_workId: { householdId, workId: work.id } },

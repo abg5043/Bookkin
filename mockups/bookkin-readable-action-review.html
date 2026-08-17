@@ -1,0 +1,669 @@
+<div id="bookkin-readable-action-review">
+  <div class="viz-controls" aria-label="Prototype controls">
+    <span class="text-small text-muted">Viewport</span>
+    <button class="btn btn-primary" type="button" data-viewport="desktop" aria-pressed="true">Desktop</button>
+    <button class="btn" type="button" data-viewport="phone" aria-pressed="false">Phone</button>
+    <label class="form-check form-switch">
+      <input class="form-check-input" id="bk5-notes" type="checkbox" checked>
+      <span class="form-check-label">Design comments</span>
+    </label>
+  </div>
+
+  <div class="bk5-layout">
+    <div class="bk5-stage">
+      <div class="bk5-device bk5-desktop" data-device>
+        <div class="bk5-product" data-product></div>
+      </div>
+    </div>
+    <aside class="card bk5-comments" aria-label="Design comments">
+      <p class="text-small text-muted">Comments stay outside the proposed interface. Select one to highlight its subject.</p>
+      <div data-comments></div>
+    </aside>
+  </div>
+</div>
+
+<style>
+  #bookkin-readable-action-review {
+    --bk5-bg: light-dark(#fffaf7, #181619);
+    --bk5-surface: light-dark(#ffffff, #242125);
+    --bk5-ink: light-dark(#211c24, #fff8fc);
+    --bk5-muted: light-dark(#5f5663, #cec4cf);
+    --bk5-line: light-dark(#d9cfd9, #554b56);
+    --bk5-coral: light-dark(#c9434e, #ff8e92);
+    --bk5-coral-dark: light-dark(#9f2f3c, #ffacaf);
+    --bk5-coral-ink: light-dark(#ffffff, #2b1115);
+    --bk5-blush: light-dark(#fbe2df, #462c33);
+    --bk5-apricot: light-dark(#f8dcc0, #463126);
+    --bk5-lilac: light-dark(#e8def4, #392f45);
+    --bk5-focus: light-dark(#5542b2, #b8aaff);
+    color-scheme: light dark;
+  }
+
+  #bookkin-readable-action-review .bk5-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(210px, 0.3fr);
+    gap: 1rem;
+    align-items: start;
+    margin-top: 1rem;
+  }
+
+  #bookkin-readable-action-review .bk5-stage {
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  #bookkin-readable-action-review .bk5-device {
+    width: 100%;
+    transition: width 160ms ease;
+  }
+
+  #bookkin-readable-action-review .bk5-device.bk5-phone {
+    width: min(100%, 390px);
+  }
+
+  #bookkin-readable-action-review .bk5-product {
+    position: relative;
+    overflow: hidden;
+    min-height: 650px;
+    border: 1px solid var(--bk5-line);
+    border-radius: 1.35rem;
+    background: var(--bk5-bg);
+    color: var(--bk5-ink);
+    box-shadow: 0 20px 55px light-dark(rgb(66 45 65 / 0.12), rgb(0 0 0 / 0.35));
+    font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+
+  #bookkin-readable-action-review .bk5-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.95rem 1.25rem;
+    border-bottom: 1px solid var(--bk5-line);
+    background: var(--bk5-surface);
+  }
+
+  #bookkin-readable-action-review .bk5-brand {
+    margin-right: auto;
+    font-family: Charter, Georgia, serif;
+    font-size: 1.6rem;
+    font-weight: 500;
+    letter-spacing: -0.045em;
+  }
+
+  #bookkin-readable-action-review .bk5-nav,
+  #bookkin-readable-action-review .bk5-filter,
+  #bookkin-readable-action-review .bk5-book,
+  #bookkin-readable-action-review .bk5-close,
+  #bookkin-readable-action-review .bk5-choice,
+  #bookkin-readable-action-review .bk5-recent {
+    border: 0;
+    background: transparent;
+    color: var(--bk5-ink);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  #bookkin-readable-action-review .bk5-nav {
+    padding: 0.45rem 0.6rem;
+    border-bottom: 2px solid var(--bk5-coral);
+  }
+
+  #bookkin-readable-action-review .bk5-alpha {
+    color: var(--bk5-muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #bookkin-readable-action-review .bk5-page {
+    padding: 1.5rem 1.6rem 6rem;
+  }
+
+  #bookkin-readable-action-review .bk5-kicker {
+    margin: 0;
+    color: var(--bk5-coral-dark);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  #bookkin-readable-action-review .bk5-title {
+    margin: 0.3rem 0 0;
+    font-family: Charter, Georgia, serif;
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    font-weight: 400;
+  }
+
+  #bookkin-readable-action-review .bk5-meta {
+    display: block;
+    margin-top: 0.22rem;
+    color: var(--bk5-muted);
+    font-size: 0.82rem;
+  }
+
+  #bookkin-readable-action-review .bk5-tools {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) auto;
+    gap: 0.7rem;
+    margin-top: 1.2rem;
+  }
+
+  #bookkin-readable-action-review .bk5-search {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid var(--bk5-line);
+    border-radius: 0.85rem;
+    background: var(--bk5-surface);
+    color: var(--bk5-ink);
+    font: inherit;
+  }
+
+  #bookkin-readable-action-review .bk5-filters {
+    display: flex;
+    gap: 0.35rem;
+  }
+
+  #bookkin-readable-action-review .bk5-filter {
+    padding: 0.52rem 0.72rem;
+    border: 1px solid var(--bk5-line);
+    border-radius: 999px;
+    background: var(--bk5-surface);
+    color: var(--bk5-muted);
+    font-size: 0.8rem;
+  }
+
+  #bookkin-readable-action-review .bk5-filter[aria-pressed="true"] {
+    border-color: var(--bk5-coral);
+    background: var(--bk5-blush);
+    color: var(--bk5-ink);
+  }
+
+  #bookkin-readable-action-review .bk5-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.2rem;
+  }
+
+  #bookkin-readable-action-review .bk5-book {
+    padding: 0;
+    text-align: left;
+  }
+
+  #bookkin-readable-action-review .bk5-cover {
+    aspect-ratio: 2 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 0.7rem;
+    border: 1px solid var(--bk5-line);
+    border-radius: 1rem;
+    background: var(--bk5-lilac);
+    color: var(--bk5-ink);
+    text-align: center;
+    font-family: Charter, Georgia, serif;
+    box-shadow: 0 8px 22px light-dark(rgb(60 43 61 / 0.09), rgb(0 0 0 / 0.28));
+  }
+
+  #bookkin-readable-action-review .bk5-book:nth-child(3n + 2) .bk5-cover {
+    background: var(--bk5-apricot);
+  }
+
+  #bookkin-readable-action-review .bk5-book:nth-child(3n + 3) .bk5-cover {
+    background: var(--bk5-blush);
+  }
+
+  #bookkin-readable-action-review .bk5-book-title {
+    display: block;
+    margin-top: 0.55rem;
+    color: var(--bk5-ink);
+    font-family: Charter, Georgia, serif;
+    font-weight: 500;
+  }
+
+  #bookkin-readable-action-review .bk5-chip {
+    display: inline-block;
+    margin-top: 0.42rem;
+    padding: 0.25rem 0.54rem;
+    border-radius: 999px;
+    background: var(--bk5-blush);
+    color: var(--bk5-ink);
+    font-size: 0.75rem;
+  }
+
+  #bookkin-readable-action-review .bk5-fab-wrap {
+    position: absolute;
+    z-index: 12;
+    right: 1.25rem;
+    bottom: 1.15rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.55rem;
+  }
+
+  #bookkin-readable-action-review .bk5-fab-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+
+  #bookkin-readable-action-review .bk5-fab-menu[hidden] {
+    display: none;
+  }
+
+  #bookkin-readable-action-review .bk5-fab-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.55rem 0.5rem 0.85rem;
+    border: 1px solid var(--bk5-line);
+    border-radius: 999px;
+    background: var(--bk5-surface);
+    color: var(--bk5-ink);
+    box-shadow: 0 10px 28px light-dark(rgb(66 43 64 / 0.18), rgb(0 0 0 / 0.38));
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  #bookkin-readable-action-review .bk5-fab-action:first-child {
+    transform: translateX(-0.85rem);
+  }
+
+  #bookkin-readable-action-review .bk5-action-mark {
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--bk5-blush);
+    color: var(--bk5-coral-dark);
+    font-family: Charter, Georgia, serif;
+  }
+
+  #bookkin-readable-action-review .bk5-fab {
+    position: relative;
+    width: 3.8rem;
+    height: 3.8rem;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 46% 54% 48% 52% / 52% 45% 55% 48%;
+    background: linear-gradient(145deg, var(--bk5-coral), var(--bk5-coral-dark));
+    color: var(--bk5-coral-ink);
+    box-shadow: 0 0 0 5px var(--bk5-blush), 0 13px 34px light-dark(rgb(167 48 60 / 0.31), rgb(0 0 0 / 0.46));
+    font: inherit;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 150ms ease;
+  }
+
+  #bookkin-readable-action-review .bk5-fab[aria-expanded="true"] {
+    transform: rotate(45deg);
+  }
+
+  #bookkin-readable-action-review .bk5-backdrop {
+    position: absolute;
+    z-index: 20;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 1rem;
+    box-sizing: border-box;
+    background: light-dark(rgb(42 29 43 / 0.42), rgb(0 0 0 / 0.6));
+  }
+
+  #bookkin-readable-action-review .bk5-modal {
+    width: min(100%, 550px);
+    max-height: 88%;
+    overflow: auto;
+    box-sizing: border-box;
+    padding: 1.1rem;
+    border: 1px solid var(--bk5-line);
+    border-radius: 1.3rem;
+    background: var(--bk5-surface);
+    color: var(--bk5-ink);
+    box-shadow: 0 24px 70px light-dark(rgb(55 34 55 / 0.28), rgb(0 0 0 / 0.52));
+  }
+
+  #bookkin-readable-action-review .bk5-modal-head {
+    display: flex;
+    align-items: start;
+    gap: 1rem;
+  }
+
+  #bookkin-readable-action-review .bk5-modal-head > div {
+    flex: 1;
+  }
+
+  #bookkin-readable-action-review .bk5-modal h2 {
+    margin: 0.25rem 0 0;
+    font-family: Charter, Georgia, serif;
+    font-weight: 400;
+  }
+
+  #bookkin-readable-action-review .bk5-close {
+    padding: 0.4rem;
+    color: var(--bk5-muted);
+  }
+
+  #bookkin-readable-action-review .bk5-recent-grid,
+  #bookkin-readable-action-review .bk5-choice-grid {
+    display: grid;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+  }
+
+  #bookkin-readable-action-review .bk5-recent-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #bookkin-readable-action-review .bk5-choice-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  #bookkin-readable-action-review .bk5-recent,
+  #bookkin-readable-action-review .bk5-choice {
+    padding: 0.62rem;
+    border: 1px solid var(--bk5-line);
+    border-radius: 0.7rem;
+    background: var(--bk5-bg);
+    color: var(--bk5-ink);
+    text-align: left;
+    font-size: 0.8rem;
+  }
+
+  #bookkin-readable-action-review .bk5-recent[aria-pressed="true"],
+  #bookkin-readable-action-review .bk5-choice[aria-pressed="true"] {
+    border-color: var(--bk5-coral);
+    background: var(--bk5-blush);
+  }
+
+  #bookkin-readable-action-review .bk5-label {
+    display: block;
+    margin-top: 0.82rem;
+    color: var(--bk5-muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+
+  #bookkin-readable-action-review .bk5-primary {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    margin-top: 0.85rem;
+    padding: 0.78rem 1rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--bk5-coral);
+    color: var(--bk5-coral-ink);
+    box-shadow: 0 -8px 18px var(--bk5-surface);
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  #bookkin-readable-action-review .bk5-confirm {
+    color: var(--bk5-coral-dark);
+    font-size: 0.8rem;
+  }
+
+  #bookkin-readable-action-review .bk5-target {
+    transition: outline-color 120ms ease;
+  }
+
+  #bookkin-readable-action-review .bk5-highlight {
+    outline: 3px solid var(--bk5-focus);
+    outline-offset: 4px;
+  }
+
+  #bookkin-readable-action-review .bk5-comments {
+    position: sticky;
+    top: 0.5rem;
+  }
+
+  #bookkin-readable-action-review .bk5-comment-button {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 0.35rem;
+    text-align: left;
+    white-space: normal;
+  }
+
+  #bookkin-readable-action-review .bk5-phone .bk5-header {
+    flex-wrap: wrap;
+  }
+
+  #bookkin-readable-action-review .bk5-phone .bk5-page {
+    padding: 1rem 1rem 5.5rem;
+  }
+
+  #bookkin-readable-action-review .bk5-phone .bk5-tools {
+    grid-template-columns: 1fr;
+  }
+
+  #bookkin-readable-action-review .bk5-phone .bk5-filter {
+    flex: 1;
+    padding-inline: 0.3rem;
+  }
+
+  #bookkin-readable-action-review .bk5-phone .bk5-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #bookkin-readable-action-review .bk5-phone .bk5-choice-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 700px) {
+    #bookkin-readable-action-review .bk5-layout {
+      grid-template-columns: 1fr;
+    }
+
+    #bookkin-readable-action-review .bk5-comments {
+      position: static;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #bookkin-readable-action-review .bk5-device,
+    #bookkin-readable-action-review .bk5-fab {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('bookkin-readable-action-review');
+    const product = root.querySelector('[data-product]');
+    const device = root.querySelector('[data-device]');
+    const commentsRegion = root.querySelector('[data-comments]');
+    const notesToggle = root.querySelector('#bk5-notes');
+    let viewport = 'desktop';
+    let menuOpen = false;
+    let modalOpen = false;
+    let selectedComment = null;
+
+    const comments = [
+      ['contrast', 'Text now uses near-black plum on porcelain or solid white. Pastels are decorative surfaces, never text colors.'],
+      ['fab', 'The spark button keeps the preferred whimsical form; there is no number or hidden count inside it.'],
+      ['fan', 'The fan contains only the two action labels and their supporting symbols. Design comments never overlay the proposed interface.'],
+      ['modal', 'The reading sheet uses solid surfaces and stronger control borders for quick scanning.']
+    ];
+
+    const books = [
+      ['The Snowy Day', 'Ezra Jack Keats', 'Owned'],
+      ['More Pies!', 'Robert Munsch', 'Borrowed'],
+      ['Last Stop on Market', 'Matt de la Peña', 'Wishlist'],
+      ['Saturday', 'Oge Mora', 'Owned'],
+      ['The Rabbit Listened', 'Cori Doerrfeld', 'Borrowed'],
+      ['Jabari Jumps', 'Gaia Cornwall', 'Wishlist'],
+      ['The Dot', 'Peter H. Reynolds', 'Owned'],
+      ['A Sick Day for Amos McGee', 'Philip C. Stead', 'Owned']
+    ];
+
+    const base = () => `
+      <header class="bk5-header bk5-target" data-target="contrast">
+        <div class="bk5-brand">Bookkin</div>
+        <button class="bk5-nav" type="button">Shelf</button>
+        <span class="bk5-alpha">Private alpha</span>
+      </header>
+      <main class="bk5-page">
+        <p class="bk5-kicker">Family shelf</p>
+        <h1 class="bk5-title">Books worth remembering.</h1>
+        <span class="bk5-meta">8 books</span>
+        <div class="bk5-tools">
+          <input class="bk5-search" type="search" placeholder="Search title or author">
+          <div class="bk5-filters">
+            <button class="bk5-filter" type="button" aria-pressed="true">All</button>
+            <button class="bk5-filter" type="button" aria-pressed="false">Owned</button>
+            <button class="bk5-filter" type="button" aria-pressed="false">Borrowed</button>
+            <button class="bk5-filter" type="button" aria-pressed="false">Wishlist</button>
+          </div>
+        </div>
+        <section class="bk5-grid bk5-target" data-target="contrast" aria-label="Family books">
+          ${books.map(([title, author, status]) => `
+            <button class="bk5-book" type="button">
+              <span class="bk5-cover">Verified provider cover</span>
+              <span class="bk5-book-title">${title}</span>
+              <span class="bk5-meta">${author}</span>
+              <span class="bk5-chip">${status}</span>
+            </button>
+          `).join('')}
+        </section>
+      </main>
+      <div class="bk5-fab-wrap bk5-target" data-target="fab">
+        <div class="bk5-fab-menu bk5-target" data-target="fan" ${menuOpen ? '' : 'hidden'}>
+          <button class="bk5-fab-action" type="button" data-log><span>Log a read</span><span class="bk5-action-mark">♡</span></button>
+          <button class="bk5-fab-action" type="button" data-add><span>Add a book</span><span class="bk5-action-mark">＋</span></button>
+        </div>
+        <button class="bk5-fab" type="button" data-toggle aria-expanded="${menuOpen}" aria-label="${menuOpen ? 'Close quick actions' : 'Open quick actions'}">✦</button>
+      </div>
+    `;
+
+    const modal = () => `
+      <div class="bk5-backdrop" data-backdrop>
+        <section class="bk5-modal bk5-target" data-target="modal" role="dialog" aria-modal="true" aria-labelledby="bk5-log-title">
+          <div class="bk5-modal-head">
+            <div><p class="bk5-kicker">Log a read</p><h2 id="bk5-log-title">What happened?</h2></div>
+            <button class="bk5-close" type="button" data-close>Close</button>
+          </div>
+          <label class="bk5-label" for="bk5-search">Recent books or shelf search</label>
+          <input class="bk5-search" id="bk5-search" placeholder="Search title or author">
+          <div class="bk5-recent-grid">
+            <button class="bk5-recent" type="button" aria-pressed="true">More Pies!</button>
+            <button class="bk5-recent" type="button" aria-pressed="false">The Snowy Day</button>
+            <button class="bk5-recent" type="button" aria-pressed="false">Saturday</button>
+          </div>
+          <span class="bk5-label">Reading event</span>
+          <div class="bk5-choice-grid">
+            <button class="bk5-choice" type="button" aria-pressed="true">Finished</button>
+            <button class="bk5-choice" type="button" aria-pressed="false">Read again</button>
+            <button class="bk5-choice" type="button" aria-pressed="false">Stopped</button>
+            <button class="bk5-choice" type="button" aria-pressed="false">Rejected</button>
+          </div>
+          <span class="bk5-label">Child’s reaction</span>
+          <div class="bk5-choice-grid">
+            <button class="bk5-choice" type="button" aria-pressed="false">Love</button>
+            <button class="bk5-choice" type="button" aria-pressed="false">Like</button>
+            <button class="bk5-choice" type="button" aria-pressed="false">Not for me</button>
+          </div>
+          <span class="bk5-label">Parent’s reaction</span>
+          <div class="bk5-choice-grid">
+            <button class="bk5-choice" type="button" aria-pressed="false">Love</button>
+            <button class="bk5-choice" type="button" aria-pressed="false">Like</button>
+            <button class="bk5-choice" type="button" aria-pressed="false">Dislike</button>
+          </div>
+          <button class="bk5-primary" type="button" data-save>Save reading moment</button>
+          <p class="bk5-confirm" data-confirm hidden>Prototype: reading moment saved.</p>
+        </section>
+      </div>
+    `;
+
+    function renderComments() {
+      commentsRegion.innerHTML = comments.map(([key, text], index) => `
+        <button class="btn btn-ghost bk5-comment-button" type="button" data-comment="${key}" aria-pressed="${selectedComment === key}">
+          <strong>Comment ${index + 1}.</strong>&nbsp;${text}
+        </button>
+      `).join('');
+      root.querySelector('.bk5-comments').hidden = !notesToggle.checked;
+    }
+
+    function render() {
+      product.innerHTML = base();
+      if (modalOpen) product.insertAdjacentHTML('beforeend', modal());
+      device.className = `bk5-device bk5-${viewport}`;
+      selectedComment = null;
+      renderComments();
+    }
+
+    root.addEventListener('click', (event) => {
+      const viewportButton = event.target.closest('[data-viewport]');
+      if (viewportButton) {
+        viewport = viewportButton.dataset.viewport;
+        root.querySelectorAll('[data-viewport]').forEach((button) => {
+          const selected = button.dataset.viewport === viewport;
+          button.setAttribute('aria-pressed', String(selected));
+          button.classList.toggle('btn-primary', selected);
+        });
+        render();
+        return;
+      }
+
+      if (event.target.closest('[data-toggle]')) {
+        menuOpen = !menuOpen;
+        render();
+        return;
+      }
+
+      if (event.target.closest('[data-log], [data-add]')) {
+        menuOpen = false;
+        modalOpen = true;
+        render();
+        return;
+      }
+
+      if (event.target.closest('[data-close]') || event.target.matches('[data-backdrop]')) {
+        modalOpen = false;
+        render();
+        return;
+      }
+
+      const selectable = event.target.closest('.bk5-choice, .bk5-recent, .bk5-filter');
+      if (selectable) {
+        selectable.parentElement.querySelectorAll('.bk5-choice, .bk5-recent, .bk5-filter').forEach((button) => button.setAttribute('aria-pressed', String(button === selectable)));
+        return;
+      }
+
+      if (event.target.closest('[data-save]')) {
+        product.querySelector('[data-confirm]').hidden = false;
+        return;
+      }
+
+      const commentButton = event.target.closest('[data-comment]');
+      if (commentButton) {
+        selectedComment = selectedComment === commentButton.dataset.comment ? null : commentButton.dataset.comment;
+        product.querySelectorAll('[data-target]').forEach((element) => element.classList.toggle('bk5-highlight', element.dataset.target === selectedComment));
+        renderComments();
+      }
+    });
+
+    notesToggle.addEventListener('change', () => {
+      selectedComment = null;
+      product.querySelectorAll('[data-target]').forEach((element) => element.classList.remove('bk5-highlight'));
+      renderComments();
+    });
+
+    render();
+  })();
+</script>

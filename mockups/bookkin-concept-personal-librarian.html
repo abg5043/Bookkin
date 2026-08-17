@@ -1,0 +1,618 @@
+<div id="bookkin-concept-personal-librarian">
+  <div class="bkpl-controls" aria-label="Prototype controls">
+    <span class="bkpl-boundary"><strong>North-star / future-direction only</strong> · not eligible for Checkpoint 5A implementation approval</span>
+    <div role="group" aria-label="Device preview">
+      <button type="button" data-device="desktop" aria-pressed="true">Desktop</button>
+      <button type="button" data-device="tablet" aria-pressed="false">Tablet</button>
+      <button type="button" data-device="phone" aria-pressed="false">Phone</button>
+    </div>
+    <label>Review state <select data-state><option value="populated">Future preview · evidence rich</option><option value="limited">Cold start / limited evidence</option><option value="first-run">First run / empty</option><option value="no-results">No results</option><option value="loading">Loading</option><option value="success">Success</option><option value="validation">Validation error</option><option value="provider">Provider error</option><option value="duplicate">Duplicate</option><option value="offline">Offline</option><option value="missing-cover">Missing cover</option><option value="failed-cover">Failed cover</option></select></label>
+  </div>
+
+  <div class="bkpl-review-layout">
+    <div class="bkpl-stage">
+      <div class="bkpl-device is-desktop" data-device-frame>
+        <section class="bkpl-product" aria-label="Bookkin Personal Librarian concept">
+          <header class="bkpl-header" data-review="identity">
+            <button type="button" data-home class="bkpl-brand">Bookkin<span aria-hidden="true">✦</span></button>
+            <nav aria-label="Primary navigation"><button type="button" data-home aria-current="page">Home</button><button type="button" data-shelf-jump>Shelf</button></nav>
+            <span>Private alpha</span>
+          </header>
+
+          <main>
+            <section class="bkpl-question" data-review="outcome">
+              <div><p class="bkpl-kicker">Your personal librarian</p><h1>What should we bring home next?</h1><p>Three thoughtful directions, grounded in what your family has actually logged.</p></div>
+              <button type="button" data-open="context">Choose trip context <span aria-hidden="true">→</span></button>
+              <p class="bkpl-context-note" data-context-note>No trip context selected. The three fixture previews are unchanged.</p>
+            </section>
+
+            <section class="bkpl-evidence" aria-labelledby="bkpl-evidence-title" data-review="evidence">
+              <div class="bkpl-evidence-head"><div><p class="bkpl-kicker">Example evidence available in this review fixture</p><h2 id="bkpl-evidence-title">A signal pool, not one universal recipe</h2></div></div>
+              <div class="bkpl-evidence-chain" data-evidence-chain>
+                <div class="bkpl-signal bkpl-child"><span>Child reaction</span><strong>Loved The Snowy Day</strong><small>Recorded reaction</small></div>
+                <div class="bkpl-signal bkpl-parent"><span>Caregiver reaction</span><strong>Caregiver: Like · The Rabbit Listened</strong><small>Actual recorded reaction · kept separate</small></div>
+                <div class="bkpl-signal bkpl-current"><span>Current interest</span><strong>Weather &amp; night skies</strong><small>Caregiver-entered · stronger</small></div>
+                <div class="bkpl-signal bkpl-history"><span>Earlier interest connection</span><strong>Construction vehicles</strong><small>Historical phase · lower weight</small></div>
+                <div class="bkpl-arrow" aria-hidden="true">→</div>
+                <div class="bkpl-result"><span>Candidate-specific use</span><strong>Only card-listed provenance applies</strong><small>Signals may support, suppress, or not affect each candidate; uncertainty remains visible</small></div>
+              </div>
+            </section>
+
+            <section class="bkpl-picks" aria-labelledby="bkpl-picks-title" data-review="recommendations">
+              <div class="bkpl-picks-head"><div><p class="bkpl-kicker">Future preview · 3 of a planned five-book bag</p><h2 id="bkpl-picks-title">A small bag, not an endless feed</h2></div><span>Availability not checked</span></div>
+              <div class="bkpl-pick-grid">
+                <button class="bkpl-pick bkpl-pick-one" type="button" data-recommendation data-title="A Big Mooncake for Little Star" data-author="Grace Lin">
+                  <span class="bkpl-cover bkpl-mooncake" aria-hidden="true"><i></i><b>A Big<br>Mooncake<br>for Little Star</b></span>
+                  <span class="bkpl-pick-copy"><span class="bkpl-role">Closest-fit slot</span><strong>A Big Mooncake for Little Star</strong><small>Grace Lin</small><em>Provenance used: caregiver-entered current interest only. Child and caregiver reactions do not support this fixture candidate.</em><span>Uncertainty: unscored preview; no source-book similarity, confidence, or availability is claimed.</span></span>
+                </button>
+                <button class="bkpl-pick bkpl-pick-two" type="button" data-recommendation data-title="The Dark" data-author="Lemony Snicket, illustrated by Jon Klassen">
+                  <span class="bkpl-cover bkpl-dark" aria-hidden="true"><i></i><b>The Dark</b></span>
+                  <span class="bkpl-pick-copy"><span class="bkpl-role">Adjacent-discovery slot</span><strong>The Dark</strong><small>Lemony Snicket · illustrated by Jon Klassen</small><em>Provenance used: caregiver-entered current interest as a possible exploration cue only; recorded reactions are not used.</em><span>Uncertainty: adjacency is a composition role in this preview, not a verified similarity or confidence claim.</span></span>
+                </button>
+                <button class="bkpl-pick bkpl-pick-three" type="button" data-recommendation data-title="Goodnight, Goodnight, Construction Site" data-author="Sherri Duskey Rinker, illustrated by Tom Lichtenheld">
+                  <span class="bkpl-cover bkpl-construction" aria-hidden="true"><i></i><b>Goodnight,<br>Goodnight,<br>Construction Site</b></span>
+                  <span class="bkpl-pick-copy"><span class="bkpl-role">Earlier-interest revisit</span><strong>Goodnight, Goodnight, Construction Site</strong><small>Sherri Duskey Rinker · illustrated by Tom Lichtenheld</small><em>Provenance used: historical construction-vehicle interest only, explicitly lower weight; current interest and reactions are not used.</em><span>Uncertainty: unscored preview; no source-book similarity, confidence, or availability is claimed.</span></span>
+                </button>
+              </div>
+            </section>
+            <section class="bkpl-review-state" data-review-state role="status" aria-live="polite" hidden></section>
+
+            <section class="bkpl-shelf" aria-labelledby="bkpl-shelf-title" data-review="shelf">
+              <div class="bkpl-shelf-head"><div><p class="bkpl-kicker">Keep the evidence fresh · <span data-count role="status" aria-live="polite">4 of 4 shown</span></p><h2 id="bkpl-shelf-title">Your shelf</h2></div><p>Search, filter, or open a book to review its history.</p></div>
+              <div class="bkpl-shelf-tools">
+                <label for="bkpl-search">Search title or author</label>
+                <input id="bkpl-search" data-search type="search" placeholder="Find a shelf book" autocomplete="off">
+                <div role="group" aria-label="Filter shelf by status">
+                  <button type="button" data-filter="all" aria-pressed="true">All</button>
+                  <button type="button" data-filter="owned" aria-pressed="false">Owned</button>
+                  <button type="button" data-filter="borrowed" aria-pressed="false">Borrowed</button>
+                  <button type="button" data-filter="wishlist" aria-pressed="false">Wishlist</button>
+                </div>
+              </div>
+              <div class="bkpl-shelf-row">
+                <button type="button" data-book data-title="the snowy day" data-author="ezra jack keats" data-status="owned"><span class="bkpl-mini bkpl-mini-snow" aria-hidden="true"><i></i></span><span><strong>The Snowy Day</strong><small>Ezra Jack Keats</small></span><em>Owned</em></button>
+                <button type="button" data-book data-title="the rabbit listened" data-author="cori doerrfeld" data-status="borrowed"><span class="bkpl-mini bkpl-mini-rabbit" aria-hidden="true"><i></i></span><span><strong>The Rabbit Listened</strong><small>Cori Doerrfeld</small></span><em>Borrowed</em></button>
+                <button type="button" data-book data-title="saturday" data-author="oge mora" data-status="owned"><span class="bkpl-mini bkpl-mini-sat" aria-hidden="true"><i></i></span><span><strong>Saturday</strong><small>Oge Mora</small></span><em>Owned</em></button>
+                <button type="button" data-book data-title="jabari jumps" data-author="gaia cornwall" data-status="wishlist"><span class="bkpl-mini bkpl-mini-jabari" aria-hidden="true"><i></i></span><span><strong>Jabari Jumps</strong><small>Gaia Cornwall</small></span><em>Wishlist</em></button>
+              </div>
+              <p class="bkpl-empty" data-empty hidden>No shelf books match. Try a different title, author, or status.</p>
+            </section>
+          </main>
+
+          <div class="bkpl-dock"><div class="bkpl-actions" data-review="actions">
+            <div class="bkpl-fan" data-fab-menu hidden>
+              <button type="button" data-open="log"><span>Log a read</span><b aria-hidden="true">✓</b></button>
+              <button type="button" data-open="add"><span>Add a book</span><b aria-hidden="true">＋</b></button>
+            </div>
+            <button class="bkpl-fab" type="button" data-fab aria-expanded="false" aria-label="Open quick actions"><span aria-hidden="true">✦</span></button>
+          </div></div>
+
+          <div class="bkpl-overlay" data-overlay hidden>
+            <section class="bkpl-modal" role="dialog" aria-modal="true" aria-labelledby="bkpl-dialog-title" data-dialog data-review="flow">
+              <div class="bkpl-modal-head"><div><p class="bkpl-kicker" data-dialog-kicker>Quick action</p><h2 id="bkpl-dialog-title" data-dialog-title>Log a read</h2></div><button type="button" data-close>Close</button></div>
+
+              <form data-panel="log" novalidate>
+                <label for="bkpl-log-search">Find a shelf book</label><input id="bkpl-log-search" data-log-search type="search" placeholder="Type at least 2 characters"><div class="bkpl-lookup" data-log-lookup role="status" aria-live="polite">No book selected.</div>
+                <fieldset><legend>Reading event <span>Required</span></legend><div class="bkpl-choices" data-group="event"><button type="button" data-value="Finished" aria-pressed="false">Finished</button><button type="button" data-value="Read again" aria-pressed="false">Read again</button><button type="button" data-value="Stopped" aria-pressed="false">Stopped</button><button type="button" data-value="Rejected" aria-pressed="false">Rejected</button></div></fieldset>
+                <div class="bkpl-reactions">
+                  <fieldset><legend>Child’s reaction <span>Optional · from child</span></legend><div class="bkpl-choices" data-group="child"><button type="button" data-value="Love" aria-pressed="false">Love</button><button type="button" data-value="Like" aria-pressed="false">Like</button><button type="button" data-value="Not for me" aria-pressed="false">Not for me</button></div></fieldset>
+                  <fieldset><legend>Caregiver’s reaction <span>Optional · from caregiver</span></legend><div class="bkpl-choices" data-group="caregiver"><button type="button" data-value="Love" aria-pressed="false">Love</button><button type="button" data-value="Like" aria-pressed="false">Like</button><button type="button" data-value="Dislike" aria-pressed="false">Dislike</button></div></fieldset>
+                </div>
+                <p class="bkpl-message" data-log-message role="status"></p><div class="bkpl-savebar"><button class="bkpl-primary" type="button" data-save-log>Save reading moment</button></div>
+              </form>
+
+              <form data-panel="add" novalidate hidden>
+                <p>Only verified metadata should become part of the shelf and recommendation evidence.</p>
+                <label for="bkpl-add-search">Title or author</label><input id="bkpl-add-search" data-add-search type="search" placeholder="Try “Mooncake”"><button class="bkpl-secondary" type="button" data-find>Find verified book</button><div class="bkpl-lookup" data-add-lookup role="status" aria-live="polite">No provider request has started.</div>
+                <p class="bkpl-planned"><strong>Camera ISBN scan · proposed</strong><br>Reserved for the approved camera checkpoint and not functional in this review.</p>
+                <fieldset><legend>Shelf status <span>Required after selecting a result</span></legend><div class="bkpl-choices" data-group="status"><button type="button" data-value="Owned" aria-pressed="false">Owned</button><button type="button" data-value="Borrowed" aria-pressed="false">Borrowed</button><button type="button" data-value="Wishlist" aria-pressed="false">Wishlist</button></div></fieldset><p class="bkpl-message" data-add-message role="status"></p><div class="bkpl-savebar"><button class="bkpl-primary" type="button" data-save-add>Add selected book</button></div>
+              </form>
+
+              <form data-panel="context" novalidate hidden>
+                <p>This previews where a future trip context would appear. It does not regenerate or rerank the three fixture candidates.</p>
+                <fieldset><legend>Trip context <span>Required</span></legend><div class="bkpl-contexts" data-group="context"><button type="button" data-value="General trip" aria-pressed="false">General trip</button><button type="button" data-value="Bedtime" aria-pressed="false">Bedtime</button><button type="button" data-value="Quick read" aria-pressed="false">Quick read</button><button type="button" data-value="Funny" aria-pressed="false">Funny</button></div></fieldset>
+                <p class="bkpl-message" data-context-message role="status"></p><div class="bkpl-savebar"><button class="bkpl-primary" type="button" data-apply-context>Preview selected context</button></div>
+              </form>
+
+              <div data-panel="recommendation" hidden>
+                <span class="bkpl-role" data-detail-role>Closest fit</span><h3 data-detail-title>Book title</h3><p data-detail-author>Author</p>
+                <div class="bkpl-detail-evidence"><strong>Why it is here</strong><p data-detail-reason>Evidence explanation.</p></div>
+                <p><strong>Truthful handoff:</strong> Bookkin has not checked library availability. A future catalog action should say “Check availability in library catalog.”</p>
+                <button class="bkpl-primary" type="button" data-close>Back to the bag</button>
+              </div>
+
+              <div data-panel="detail" hidden>
+                <span class="bkpl-status-pill" data-detail-status>Owned</span><h3 data-shelf-title>Book title</h3><p data-shelf-author>Author</p><div class="bkpl-shelf-history" data-shelf-history aria-live="polite"></div>
+                <button class="bkpl-primary" type="button" data-close>Back to the shelf</button>
+              </div>
+            </section>
+          </div>
+          <p class="bkpl-toast" data-toast role="status" aria-live="polite" hidden>Prototype action complete.</p>
+        </section>
+      </div>
+    </div>
+
+    <details class="bkpl-comments" open>
+      <summary>Design comments</summary>
+      <div>
+        <p class="bkpl-scope"><strong>Scope boundary:</strong> this is a future product-direction exploration, not approval to add recommendations, interests, profile editing, or library-bag behavior during Checkpoint 5A.</p>
+        <p><strong>Positioning:</strong> a trustworthy personal librarian that starts with the family outcome—what to bring home—then makes its reasoning inspectable.</p>
+        <button type="button" data-comment="identity" aria-pressed="false"><strong>Service-first identity.</strong> Marigold, raspberry, peacock, and ink feel warm and capable rather than “AI-powered.”</button>
+        <button type="button" data-comment="outcome" aria-pressed="false"><strong>The product promise is the first screen.</strong> “What should we bring home next?” reframes logging as useful input, not the destination.</button>
+        <button type="button" data-comment="evidence" aria-pressed="false"><strong>Candidate-specific evidence.</strong> The chain shows the available signal pool; each card states which provenance it uses, which signals do not apply, its role, and its uncertainty. No averaged family rating or universal four-signal recipe appears.</button>
+        <button type="button" data-comment="recommendations" aria-pressed="false"><strong>Small curated set.</strong> Three directions show closest fit, adjacent discovery, and a lower-weight historical revisit. The cards avoid availability claims and expose exactly which signal families support them.</button>
+        <button type="button" data-comment="shelf" aria-pressed="false"><strong>Logging infrastructure remains close.</strong> A compact searchable/filterable shelf supports evidence quality without competing with the outcome.</button>
+        <button type="button" data-comment="actions" aria-pressed="false"><strong>Fast feedback loop.</strong> Log and Add remain reachable without scrolling so recommendation quality can improve with minimal caregiver effort.</button>
+        <button type="button" data-comment="flow" aria-pressed="false"><strong>Truthful details.</strong> Recommendation detail states that availability was not checked; Add labels camera scanning as proposed.</button>
+        <button type="button" data-comment="measurement" aria-pressed="false"><strong>Privacy-safe measurement transitions.</strong> Review start, completion, cancel, error, duration, and catalog handoff without titles, names, reactions, interests, ISBNs, descriptors, or free text.</button>
+        <p><strong>Tradeoff:</strong> clearest expression of Bookkin’s long-term value, but it depends on later checkpoints for verified candidates, scoring, interests, and library-bag behavior. It should not be back-ported into the current shell checkpoint.</p>
+      </div>
+    </details>
+    <details class="bkpl-comments"><summary>Future ideas discovered · not Checkpoint 5A scope</summary><div><p>Later work may validate a five-book bag, cold-start language, evidence weighting, controlled trip context, and truthful library-catalog handoff. None belongs in the current shell implementation.</p></div></details>
+  </div>
+</div>
+
+<style>
+  #bookkin-concept-personal-librarian {
+    --bkpl-paper: light-dark(#fffef9, #1a1a24);
+    --bkpl-canvas: light-dark(#f4f2ff, #11121b);
+    --bkpl-ink: light-dark(#17213a, #fffaf2);
+    --bkpl-muted: light-dark(#566079, #c6cad5);
+    --bkpl-line: light-dark(#aeb7ca, #525b70);
+    --bkpl-yellow: light-dark(#ffd34e, #ba9016);
+    --bkpl-berry: light-dark(#c92f62, #f276a0);
+    --bkpl-berry-ink: light-dark(#ffffff, #2d101c);
+    --bkpl-teal: light-dark(#087d7f, #67c9c3);
+    --bkpl-teal-ink: light-dark(#ffffff, #082728);
+    --bkpl-lilac: light-dark(#ded7ff, #40375e);
+    --bkpl-mint: light-dark(#c7eedf, #285344);
+    --bkpl-shadow: light-dark(rgb(24 34 61 / .16), rgb(0 0 0 / .5));
+    --bkpl-dim: light-dark(rgb(23 33 58 / .5), rgb(0 0 0 / .72));
+    color: var(--bkpl-ink);
+    color-scheme: light dark;
+    width: 100%;
+  }
+  #bookkin-concept-personal-librarian * { box-sizing: border-box; }
+  #bookkin-concept-personal-librarian button,
+  #bookkin-concept-personal-librarian input,
+  #bookkin-concept-personal-librarian select { font: inherit; }
+  #bookkin-concept-personal-librarian button:focus-visible,
+  #bookkin-concept-personal-librarian a:focus-visible,
+  #bookkin-concept-personal-librarian input:focus-visible,
+  #bookkin-concept-personal-librarian select:focus-visible,
+  #bookkin-concept-personal-librarian summary:focus-visible { outline: 3px solid var(--bkpl-berry); outline-offset: 3px; }
+  #bookkin-concept-personal-librarian p,
+  #bookkin-concept-personal-librarian h1,
+  #bookkin-concept-personal-librarian h2,
+  #bookkin-concept-personal-librarian h3 { margin-top: 0; }
+  #bookkin-concept-personal-librarian .bkpl-controls { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem; margin-bottom: .75rem; }
+  #bookkin-concept-personal-librarian .bkpl-controls > div { display: flex; padding: .25rem; border: 1px solid light-dark(#aaa7bf, #595567); border-radius: 999px; background: light-dark(#ffffff, #211f2a); }
+  #bookkin-concept-personal-librarian .bkpl-controls button { padding: .55rem .8rem; border: 0; border-radius: 999px; background: transparent; color: inherit; cursor: pointer; }
+  #bookkin-concept-personal-librarian .bkpl-controls button[aria-pressed="true"] { background: light-dark(#262d48, #f6f0ff); color: light-dark(#ffffff, #1b1e31); }
+  #bookkin-concept-personal-librarian .bkpl-review-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(230px, 320px); gap: 1rem; align-items: start; }
+  #bookkin-concept-personal-librarian .bkpl-stage { min-width: 0; display: flex; justify-content: center; }
+  #bookkin-concept-personal-librarian .bkpl-device { width: 100%; transition: width 180ms ease; }
+  #bookkin-concept-personal-librarian .bkpl-device.is-tablet { width: min(100%, 760px); }
+  #bookkin-concept-personal-librarian .bkpl-device.is-phone { width: min(100%, 390px); }
+  #bookkin-concept-personal-librarian .bkpl-product { position: relative; overflow: hidden; min-height: 750px; border: 1px solid var(--bkpl-line); border-radius: 1.5rem; background: var(--bkpl-canvas); color: var(--bkpl-ink); box-shadow: 0 24px 70px var(--bkpl-shadow); font-family: ui-sans-serif, system-ui, sans-serif; }
+  #bookkin-concept-personal-librarian .bkpl-header { display: flex; align-items: center; gap: 1.2rem; padding: .9rem 1.3rem; border-bottom: 1px solid var(--bkpl-line); background: var(--bkpl-paper); }
+  #bookkin-concept-personal-librarian .bkpl-brand { display: flex; gap: .35rem; align-items: baseline; margin-right: auto; color: var(--bkpl-ink); font-family: Georgia, serif; font-weight: 500; text-decoration: none; }
+  #bookkin-concept-personal-librarian .bkpl-brand span { color: var(--bkpl-berry); }
+  #bookkin-concept-personal-librarian .bkpl-header nav { display: flex; gap: 1rem; }
+  #bookkin-concept-personal-librarian .bkpl-header nav a { padding: .35rem .15rem; color: var(--bkpl-muted); text-decoration: none; }
+  #bookkin-concept-personal-librarian .bkpl-header nav a[aria-current="page"] { color: var(--bkpl-ink); border-bottom: 2px solid var(--bkpl-berry); }
+  #bookkin-concept-personal-librarian .bkpl-header > span,
+  #bookkin-concept-personal-librarian .bkpl-kicker { color: var(--bkpl-muted); letter-spacing: .11em; text-transform: uppercase; }
+  #bookkin-concept-personal-librarian main { padding: clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 2.2rem) 6.5rem; }
+  #bookkin-concept-personal-librarian .bkpl-question { display: flex; justify-content: space-between; gap: 1.4rem; align-items: end; padding: 1rem 0 1.4rem; }
+  #bookkin-concept-personal-librarian h1,
+  #bookkin-concept-personal-librarian h2 { font-family: Georgia, serif; font-weight: 400; letter-spacing: -.035em; }
+  #bookkin-concept-personal-librarian .bkpl-question h1 { margin-bottom: .6rem; }
+  #bookkin-concept-personal-librarian .bkpl-question p:last-child { margin-bottom: 0; color: var(--bkpl-muted); }
+  #bookkin-concept-personal-librarian .bkpl-question > button { flex: 0 0 auto; min-height: 46px; padding: .65rem .8rem; border: 1px solid var(--bkpl-ink); border-radius: .7rem; background: var(--bkpl-yellow); color: var(--bkpl-ink); cursor: pointer; }
+  #bookkin-concept-personal-librarian .bkpl-evidence { padding: 1rem; border: 1px solid var(--bkpl-line); border-radius: 1rem; background: var(--bkpl-paper); }
+  #bookkin-concept-personal-librarian .bkpl-evidence-head,
+  #bookkin-concept-personal-librarian .bkpl-picks-head,
+  #bookkin-concept-personal-librarian .bkpl-shelf-head { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
+  #bookkin-concept-personal-librarian .bkpl-evidence-head h2,
+  #bookkin-concept-personal-librarian .bkpl-picks-head h2,
+  #bookkin-concept-personal-librarian .bkpl-shelf-head h2 { margin-bottom: .5rem; }
+  #bookkin-concept-personal-librarian .bkpl-evidence-head button { border: 0; background: transparent; color: var(--bkpl-teal); cursor: pointer; }
+  #bookkin-concept-personal-librarian .bkpl-evidence-chain { display: grid; grid-template-columns: repeat(4, minmax(120px, 1fr)) auto minmax(130px, .9fr); gap: .5rem; align-items: stretch; }
+  #bookkin-concept-personal-librarian .bkpl-signal,
+  #bookkin-concept-personal-librarian .bkpl-result { display: flex; flex-direction: column; gap: .2rem; min-width: 0; padding: .7rem; border: 1px solid var(--bkpl-line); border-top: 5px solid var(--bkpl-teal); border-radius: .6rem; background: var(--bkpl-canvas); }
+  #bookkin-concept-personal-librarian .bkpl-child { border-top-color: var(--bkpl-berry); }
+  #bookkin-concept-personal-librarian .bkpl-parent { border-top-color: var(--bkpl-teal); }
+  #bookkin-concept-personal-librarian .bkpl-current { border-top-color: var(--bkpl-yellow); }
+  #bookkin-concept-personal-librarian .bkpl-history { border-top-color: var(--bkpl-lilac); opacity: .85; }
+  #bookkin-concept-personal-librarian .bkpl-result { border-top-color: var(--bkpl-ink); background: var(--bkpl-ink); color: var(--bkpl-paper); }
+  #bookkin-concept-personal-librarian .bkpl-signal span,
+  #bookkin-concept-personal-librarian .bkpl-result span { color: var(--bkpl-muted); }
+  #bookkin-concept-personal-librarian .bkpl-result span { color: color-mix(in srgb, var(--bkpl-paper) 72%, transparent); }
+  #bookkin-concept-personal-librarian .bkpl-signal small,
+  #bookkin-concept-personal-librarian .bkpl-result small { color: inherit; opacity: .76; }
+  #bookkin-concept-personal-librarian .bkpl-arrow { display: grid; place-items: center; color: var(--bkpl-berry); }
+  #bookkin-concept-personal-librarian .bkpl-picks { margin-top: 1.2rem; }
+  #bookkin-concept-personal-librarian .bkpl-picks-head > span { padding: .32rem .55rem; border: 1px solid var(--bkpl-line); border-radius: 999px; color: var(--bkpl-muted); }
+  #bookkin-concept-personal-librarian .bkpl-pick-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
+  #bookkin-concept-personal-librarian .bkpl-pick { display: grid; grid-template-columns: minmax(84px, .62fr) minmax(0, 1.2fr); gap: .75rem; min-width: 0; padding: .8rem; border: 1px solid var(--bkpl-line); border-radius: 1rem; background: var(--bkpl-paper); color: var(--bkpl-ink); text-align: left; cursor: pointer; }
+  #bookkin-concept-personal-librarian .bkpl-pick:hover { border-color: var(--bkpl-berry); box-shadow: 0 10px 24px var(--bkpl-shadow); }
+  #bookkin-concept-personal-librarian .bkpl-cover { position: relative; display: grid; place-items: center; aspect-ratio: 2 / 3; overflow: hidden; padding: .5rem; border: 1px solid var(--bkpl-line); border-radius: .3rem .7rem .7rem .3rem; background: var(--bkpl-teal); color: var(--bkpl-teal-ink); text-align: center; font-family: Georgia, serif; box-shadow: 0 8px 16px var(--bkpl-shadow); }
+  #bookkin-concept-personal-librarian .bkpl-cover i { position: absolute; width: 58%; aspect-ratio: 1; border-radius: 50%; background: var(--bkpl-yellow); transform: translate(24%, 35%); }
+  #bookkin-concept-personal-librarian .bkpl-cover b { position: relative; z-index: 1; font-weight: 500; }
+  #bookkin-concept-personal-librarian .bkpl-mooncake { background: var(--bkpl-berry); color: var(--bkpl-berry-ink); }
+  #bookkin-concept-personal-librarian .bkpl-dark { background: var(--bkpl-ink); color: var(--bkpl-paper); }
+  #bookkin-concept-personal-librarian .bkpl-dark i { background: var(--bkpl-lilac); }
+  #bookkin-concept-personal-librarian .bkpl-construction { background: var(--bkpl-yellow); color: var(--bkpl-ink); }
+  #bookkin-concept-personal-librarian .bkpl-construction i { border-radius: 0; background: var(--bkpl-teal); transform: rotate(18deg); }
+  #bookkin-concept-personal-librarian .bkpl-pick-copy { display: flex; flex-direction: column; align-items: flex-start; gap: .18rem; min-width: 0; }
+  #bookkin-concept-personal-librarian .bkpl-pick-copy small { color: var(--bkpl-muted); }
+  #bookkin-concept-personal-librarian .bkpl-pick-copy em { margin-top: .4rem; color: var(--bkpl-ink); font-style: normal; }
+  #bookkin-concept-personal-librarian .bkpl-pick-copy > span:last-child { margin-top: .5rem; color: var(--bkpl-teal); }
+  #bookkin-concept-personal-librarian .bkpl-role { width: fit-content; padding: .24rem .5rem; border-radius: 999px; background: var(--bkpl-lilac); color: var(--bkpl-ink); }
+  #bookkin-concept-personal-librarian .bkpl-shelf { margin-top: 1.2rem; padding: 1rem; border: 1px solid var(--bkpl-line); border-radius: 1rem; background: var(--bkpl-paper); }
+  #bookkin-concept-personal-librarian .bkpl-shelf-head > p { max-width: 290px; color: var(--bkpl-muted); }
+  #bookkin-concept-personal-librarian .bkpl-shelf-tools { display: grid; grid-template-columns: auto minmax(170px, 1fr) auto; gap: .7rem; align-items: center; }
+  #bookkin-concept-personal-librarian .bkpl-shelf-tools input { min-width: 0; width: 100%; min-height: 44px; padding: .65rem .75rem; border: 1px solid var(--bkpl-line); border-radius: .6rem; background: var(--bkpl-canvas); color: var(--bkpl-ink); }
+  #bookkin-concept-personal-librarian .bkpl-shelf-tools > div { display: flex; flex-wrap: wrap; gap: .3rem; }
+  #bookkin-concept-personal-librarian .bkpl-shelf-tools button { min-height: 42px; padding: .48rem .62rem; border: 1px solid var(--bkpl-line); border-radius: 999px; background: var(--bkpl-paper); color: var(--bkpl-muted); cursor: pointer; }
+  #bookkin-concept-personal-librarian .bkpl-shelf-tools button[aria-pressed="true"] { border-color: var(--bkpl-teal); background: var(--bkpl-teal); color: var(--bkpl-teal-ink); }
+  #bookkin-concept-personal-librarian .bkpl-shelf-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .55rem; margin-top: .8rem; }
+  #bookkin-concept-personal-librarian .bkpl-shelf-row > button { display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: .55rem; align-items: center; min-width: 0; min-height: 72px; padding: .55rem; border: 1px solid var(--bkpl-line); border-radius: .65rem; background: var(--bkpl-canvas); color: var(--bkpl-ink); text-align: left; cursor: pointer; }
+  #bookkin-concept-personal-librarian .bkpl-shelf-row > button > span:nth-child(2) { display: flex; flex-direction: column; min-width: 0; }
+  #bookkin-concept-personal-librarian .bkpl-shelf-row small { color: var(--bkpl-muted); }
+  #bookkin-concept-personal-librarian .bkpl-shelf-row em { grid-column: 2; color: var(--bkpl-teal); font-style: normal; }
+  #bookkin-concept-personal-librarian .bkpl-mini { position: relative; display: block; width: 34px; aspect-ratio: 2 / 3; overflow: hidden; border: 1px solid var(--bkpl-line); border-radius: .15rem .35rem .35rem .15rem; background: var(--bkpl-teal); }
+  #bookkin-concept-personal-librarian .bkpl-mini i { position: absolute; width: 60%; aspect-ratio: 1; border-radius: 50%; right: 0; bottom: 10%; background: var(--bkpl-yellow); }
+  #bookkin-concept-personal-librarian .bkpl-mini-rabbit { background: var(--bkpl-lilac); }
+  #bookkin-concept-personal-librarian .bkpl-mini-rabbit i { background: var(--bkpl-berry); }
+  #bookkin-concept-personal-librarian .bkpl-mini-sat { background: var(--bkpl-yellow); }
+  #bookkin-concept-personal-librarian .bkpl-mini-sat i { background: var(--bkpl-berry); }
+  #bookkin-concept-personal-librarian .bkpl-mini-jabari { background: var(--bkpl-mint); }
+  #bookkin-concept-personal-librarian .bkpl-mini-jabari i { background: var(--bkpl-teal); }
+  #bookkin-concept-personal-librarian .bkpl-empty { padding: 1.5rem; border: 1px dashed var(--bkpl-line); text-align: center; color: var(--bkpl-muted); }
+  #bookkin-concept-personal-librarian .bkpl-actions { position: absolute; z-index: 8; right: 1.2rem; bottom: 1.1rem; display: flex; flex-direction: column; align-items: flex-end; gap: .55rem; }
+  #bookkin-concept-personal-librarian .bkpl-fan { display: flex; flex-direction: column; align-items: flex-end; gap: .45rem; }
+  #bookkin-concept-personal-librarian .bkpl-fan[hidden] { display: none; }
+  #bookkin-concept-personal-librarian .bkpl-fan button { display: flex; align-items: center; gap: .55rem; min-height: 46px; padding: .42rem .42rem .42rem .8rem; border: 1px solid var(--bkpl-line); border-radius: 999px; background: var(--bkpl-paper); color: var(--bkpl-ink); box-shadow: 0 10px 24px var(--bkpl-shadow); cursor: pointer; }
+  #bookkin-concept-personal-librarian .bkpl-fan button:first-child { transform: translateX(-1rem); }
+  #bookkin-concept-personal-librarian .bkpl-fan b { display: grid; place-items: center; width: 34px; aspect-ratio: 1; border-radius: 50%; background: var(--bkpl-yellow); font-weight: 500; }
+  #bookkin-concept-personal-librarian .bkpl-fab { display: grid; place-items: center; width: 60px; aspect-ratio: 1; border: 0; border-radius: 48% 52% 35% 65% / 55% 40% 60% 45%; background: var(--bkpl-berry); color: var(--bkpl-berry-ink); box-shadow: 0 0 0 6px var(--bkpl-lilac), 0 14px 28px var(--bkpl-shadow); cursor: pointer; transition: transform 160ms ease; }
+  #bookkin-concept-personal-librarian .bkpl-fab[aria-expanded="true"] { transform: rotate(45deg); }
+  #bookkin-concept-personal-librarian .bkpl-overlay { position: absolute; z-index: 20; inset: 0; display: grid; place-items: center; padding: 1rem; background: var(--bkpl-dim); }
+  #bookkin-concept-personal-librarian .bkpl-overlay[hidden] { display: none; }
+  #bookkin-concept-personal-librarian .bkpl-modal { width: min(100%, 720px); padding: 1.2rem; border: 1px solid var(--bkpl-line); border-radius: 1.3rem; background: var(--bkpl-paper); color: var(--bkpl-ink); box-shadow: 0 24px 65px var(--bkpl-shadow); }
+  #bookkin-concept-personal-librarian .bkpl-modal-head { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
+  #bookkin-concept-personal-librarian .bkpl-modal-head h2 { margin-bottom: .7rem; }
+  #bookkin-concept-personal-librarian .bkpl-modal-head button { border: 0; background: transparent; color: var(--bkpl-muted); cursor: pointer; }
+  #bookkin-concept-personal-librarian .bkpl-modal label { display: block; margin: .7rem 0 .3rem; font-weight: 500; }
+  #bookkin-concept-personal-librarian .bkpl-modal input,
+  #bookkin-concept-personal-librarian .bkpl-modal select { width: 100%; min-height: 46px; padding: .7rem .8rem; border: 1px solid var(--bkpl-line); border-radius: .6rem; background: var(--bkpl-canvas); color: var(--bkpl-ink); }
+  #bookkin-concept-personal-librarian fieldset { margin: 1rem 0 0; padding: 0; border: 0; }
+  #bookkin-concept-personal-librarian legend { font-weight: 500; }
+  #bookkin-concept-personal-librarian .bkpl-choices,
+  #bookkin-concept-personal-librarian .bkpl-contexts { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .5rem; }
+  #bookkin-concept-personal-librarian .bkpl-choices button,
+  #bookkin-concept-personal-librarian .bkpl-contexts button { min-height: 42px; padding: .5rem .65rem; border: 1px solid var(--bkpl-line); border-radius: 999px; background: var(--bkpl-paper); color: var(--bkpl-ink); cursor: pointer; }
+  #bookkin-concept-personal-librarian .bkpl-choices button[aria-pressed="true"],
+  #bookkin-concept-personal-librarian .bkpl-contexts button[aria-pressed="true"] { border-color: var(--bkpl-teal); background: var(--bkpl-teal); color: var(--bkpl-teal-ink); }
+  #bookkin-concept-personal-librarian .bkpl-reactions { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  #bookkin-concept-personal-librarian .bkpl-planned,
+  #bookkin-concept-personal-librarian .bkpl-detail-evidence { padding: .8rem; border-left: 4px solid var(--bkpl-yellow); background: var(--bkpl-lilac); }
+  #bookkin-concept-personal-librarian .bkpl-primary { width: 100%; min-height: 48px; margin-top: 1rem; padding: .75rem 1rem; border: 0; border-radius: 999px; background: var(--bkpl-berry); color: var(--bkpl-berry-ink); font-weight: 500; cursor: pointer; }
+  #bookkin-concept-personal-librarian .bkpl-status-pill { display: inline-block; padding: .26rem .5rem; border: 1px solid var(--bkpl-line); border-radius: 999px; color: var(--bkpl-muted); }
+  #bookkin-concept-personal-librarian .bkpl-toast { position: absolute; z-index: 30; left: 50%; bottom: 1rem; transform: translateX(-50%); margin: 0; padding: .7rem 1rem; border-radius: 999px; background: var(--bkpl-ink); color: var(--bkpl-paper); box-shadow: 0 12px 28px var(--bkpl-shadow); }
+  #bookkin-concept-personal-librarian .bkpl-comments { border: 1px solid light-dark(#aaa7bb, #585463); border-radius: 1rem; background: light-dark(#ffffff, #211f2a); color: light-dark(#28253b, #f5f1fb); overflow: hidden; }
+  #bookkin-concept-personal-librarian .bkpl-comments summary { padding: .9rem 1rem; cursor: pointer; font-weight: 500; }
+  #bookkin-concept-personal-librarian .bkpl-comments > div { display: grid; gap: .55rem; padding: 0 1rem 1rem; }
+  #bookkin-concept-personal-librarian .bkpl-comments p { margin: 0; color: light-dark(#514e60, #cac5d0); }
+  #bookkin-concept-personal-librarian .bkpl-scope { padding: .75rem; border-left: 4px solid light-dark(#c92f62, #f276a0); background: light-dark(#fff0f5, #412a36); }
+  #bookkin-concept-personal-librarian .bkpl-comments button { padding: .7rem; border: 1px solid light-dark(#cbc7d4, #4e4a57); border-radius: .7rem; background: transparent; color: inherit; text-align: left; cursor: pointer; }
+  #bookkin-concept-personal-librarian .bkpl-comments button[aria-pressed="true"] { border-color: light-dark(#a52650, #f276a0); background: light-dark(#fff0f5, #412a36); }
+  #bookkin-concept-personal-librarian .bkpl-highlight { outline: 4px solid var(--bkpl-berry); outline-offset: 4px; }
+  #bookkin-concept-personal-librarian .is-tablet .bkpl-evidence-chain { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #bookkin-concept-personal-librarian .is-tablet .bkpl-arrow { display: none; }
+  #bookkin-concept-personal-librarian .is-tablet .bkpl-result { grid-column: span 2; }
+  #bookkin-concept-personal-librarian .is-tablet .bkpl-pick-grid,
+  #bookkin-concept-personal-librarian .is-phone .bkpl-pick-grid { grid-template-columns: 1fr; }
+  #bookkin-concept-personal-librarian .is-tablet .bkpl-shelf-tools,
+  #bookkin-concept-personal-librarian .is-phone .bkpl-shelf-tools { grid-template-columns: 1fr; }
+  #bookkin-concept-personal-librarian .is-tablet .bkpl-shelf-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #bookkin-concept-personal-librarian .is-phone .bkpl-header { flex-wrap: wrap; }
+  #bookkin-concept-personal-librarian .is-phone .bkpl-header nav { order: 3; width: 100%; }
+  #bookkin-concept-personal-librarian .is-phone .bkpl-header > span { display: none; }
+  #bookkin-concept-personal-librarian .is-phone main { padding: 1rem 1rem 6.5rem; }
+  #bookkin-concept-personal-librarian .is-phone .bkpl-question { display: grid; }
+  #bookkin-concept-personal-librarian .is-phone .bkpl-question > button { width: 100%; }
+  #bookkin-concept-personal-librarian .is-phone .bkpl-evidence-chain { grid-template-columns: 1fr; }
+  #bookkin-concept-personal-librarian .is-phone .bkpl-arrow { display: none; }
+  #bookkin-concept-personal-librarian .is-phone .bkpl-evidence-chain .bkpl-signal:nth-child(n+3) { display: flex; }
+  #bookkin-concept-personal-librarian .is-phone .bkpl-picks-head,
+  #bookkin-concept-personal-librarian .is-phone .bkpl-shelf-head { display: block; }
+  #bookkin-concept-personal-librarian .is-phone .bkpl-pick { grid-template-columns: 98px minmax(0, 1fr); }
+  #bookkin-concept-personal-librarian .is-phone .bkpl-shelf-row { grid-template-columns: 1fr; }
+  #bookkin-concept-personal-librarian .is-phone .bkpl-reactions { grid-template-columns: 1fr; gap: 0; }
+  #bookkin-concept-personal-librarian .is-phone .bkpl-overlay { align-items: end; padding: 0; }
+  #bookkin-concept-personal-librarian .is-phone .bkpl-modal { border-radius: 1.3rem 1.3rem 0 0; }
+  @media (max-width: 850px) { #bookkin-concept-personal-librarian .bkpl-review-layout { grid-template-columns: 1fr; } }
+  @media (max-width: 420px) {
+    #bookkin-concept-personal-librarian .bkpl-controls > div { width: 100%; }
+    #bookkin-concept-personal-librarian .bkpl-controls button { flex: 1; padding-inline: .3rem; }
+    #bookkin-concept-personal-librarian .bkpl-device { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { #bookkin-concept-personal-librarian .bkpl-device, #bookkin-concept-personal-librarian .bkpl-fab { transition: none; } }
+  #bookkin-concept-personal-librarian .bkpl-boundary{display:inline-flex;min-height:44px;align-items:center;padding:.55rem .75rem;border:2px solid light-dark(#a52650,#f276a0);border-radius:.65rem;background:light-dark(#fff0f5,#412a36);color:light-dark(#5f1732,#fff5f8)}
+  #bookkin-concept-personal-librarian .bkpl-product{overflow:clip}#bookkin-concept-personal-librarian .bkpl-question{flex-wrap:wrap}#bookkin-concept-personal-librarian .bkpl-context-note{flex-basis:100%;margin:0;color:var(--bkpl-muted)}
+  #bookkin-concept-personal-librarian .bkpl-dock{position:sticky;z-index:8;right:0;bottom:0;left:0;height:96px;margin-top:-96px;pointer-events:none;background:linear-gradient(transparent,var(--bkpl-canvas) 62%)}#bookkin-concept-personal-librarian .bkpl-actions{right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));pointer-events:auto}
+  #bookkin-concept-personal-librarian .bkpl-review-state{margin:1rem 0;padding:1rem;border:1px dashed var(--bkpl-line);border-radius:.8rem;background:var(--bkpl-paper)}#bookkin-concept-personal-librarian .bkpl-review-state button,#bookkin-concept-personal-librarian .bkpl-secondary{min-height:44px;margin-top:.45rem;padding:.55rem .7rem;border:1px solid var(--bkpl-line);border-radius:.6rem;background:var(--bkpl-paper);color:var(--bkpl-ink)}
+  #bookkin-concept-personal-librarian .bkpl-lookup{margin-top:.6rem;padding:.7rem;border:1px dashed var(--bkpl-line);border-radius:.6rem;background:var(--bkpl-canvas)}#bookkin-concept-personal-librarian .bkpl-lookup button{display:grid;width:100%;min-height:56px;margin-top:.4rem;padding:.6rem;border:1px solid var(--bkpl-line);border-radius:.5rem;background:var(--bkpl-paper);color:var(--bkpl-ink);text-align:left}#bookkin-concept-personal-librarian .bkpl-lookup button[aria-pressed=true]{box-shadow:inset 4px 0 var(--bkpl-teal)}
+  #bookkin-concept-personal-librarian .bkpl-modal legend span{color:var(--bkpl-muted);font-weight:400}#bookkin-concept-personal-librarian .bkpl-message{min-height:1.5rem;margin:.6rem 0 0;color:var(--bkpl-berry)}#bookkin-concept-personal-librarian .bkpl-savebar{position:sticky;bottom:0;margin:1rem 0 0;padding:.7rem 0 calc(.4rem + env(safe-area-inset-bottom));background:var(--bkpl-paper)}
+  #bookkin-concept-personal-librarian .bkpl-controls button,#bookkin-concept-personal-librarian .bkpl-controls select,#bookkin-concept-personal-librarian .bkpl-shelf-tools button,#bookkin-concept-personal-librarian .bkpl-choices button,#bookkin-concept-personal-librarian .bkpl-contexts button,#bookkin-concept-personal-librarian .bkpl-modal-head button,#bookkin-concept-personal-librarian .bkpl-header button,#bookkin-concept-personal-librarian .bkpl-primary,#bookkin-concept-personal-librarian .bkpl-secondary,#bookkin-concept-personal-librarian .bkpl-comments button{min-width:44px;min-height:44px}
+  #bookkin-concept-personal-librarian .bkpl-modal{display:flex;flex-direction:column;max-height:min(84vh,720px);overflow:hidden}#bookkin-concept-personal-librarian .bkpl-modal>form,#bookkin-concept-personal-librarian .bkpl-modal>div[data-panel]{overflow:auto;overscroll-behavior:contain;padding-right:.15rem}
+  #bookkin-concept-personal-librarian .is-phone .bkpl-evidence-chain .bkpl-signal,#bookkin-concept-personal-librarian .is-phone .bkpl-evidence-chain .bkpl-result{display:grid;grid-template-columns:minmax(90px,.75fr) minmax(0,1.25fr);gap:.2rem .5rem;padding:.55rem;border-top:1px solid var(--bkpl-line);border-left:5px solid var(--bkpl-teal)}#bookkin-concept-personal-librarian .is-phone .bkpl-evidence-chain .bkpl-child{border-left-color:var(--bkpl-berry)}#bookkin-concept-personal-librarian .is-phone .bkpl-evidence-chain .bkpl-current{border-left-color:var(--bkpl-yellow)}#bookkin-concept-personal-librarian .is-phone .bkpl-evidence-chain .bkpl-history{border-left-color:var(--bkpl-lilac)}#bookkin-concept-personal-librarian .is-phone .bkpl-evidence-chain small{grid-column:1/-1}#bookkin-concept-personal-librarian .is-phone .bkpl-modal{max-height:min(78vh,640px)}
+  #bookkin-concept-personal-librarian .bkpl-shelf-history{display:grid;gap:.65rem;margin-top:1rem;padding:.85rem;border-left:4px solid var(--bkpl-teal);background:var(--bkpl-canvas)}#bookkin-concept-personal-librarian .bkpl-shelf-history h3,#bookkin-concept-personal-librarian .bkpl-shelf-history p{margin:0}#bookkin-concept-personal-librarian .bkpl-shelf-history dl{display:grid;grid-template-columns:auto 1fr;gap:.3rem .75rem;margin:0}#bookkin-concept-personal-librarian .bkpl-shelf-history dt{font-weight:500}#bookkin-concept-personal-librarian .bkpl-shelf-history dd{margin:0}
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('bookkin-concept-personal-librarian');
+    const frame = root.querySelector('[data-device-frame]');
+    const product = root.querySelector('.bkpl-product');
+    const search = root.querySelector('[data-search]');
+    const empty = root.querySelector('[data-empty]');
+    const count = root.querySelector('[data-count]');
+    const stateSelect = root.querySelector('[data-state]');
+    const reviewState = root.querySelector('[data-review-state]');
+    const evidenceSection = root.querySelector('.bkpl-evidence');
+    const evidence = root.querySelector('[data-evidence-chain]');
+    const picks = root.querySelector('.bkpl-picks');
+    const shelf = root.querySelector('.bkpl-shelf');
+    const fab = root.querySelector('[data-fab]');
+    const menu = root.querySelector('[data-fab-menu]');
+    const overlay = root.querySelector('[data-overlay]');
+    const dialog = root.querySelector('[data-dialog]');
+    const toast = root.querySelector('[data-toast]');
+    const contextNote = root.querySelector('[data-context-note]');
+    const firstCover = root.querySelector('.bkpl-cover');
+    const originalCoverClass = firstCover.className;
+    const originalCoverMarkup = firstCover.innerHTML;
+    const originalEvidence = evidence.innerHTML;
+    const originalPickCopy = Array.from(root.querySelectorAll('[data-recommendation]')).map((card) => ({
+      role: card.querySelector('.bkpl-role').textContent,
+      reason: card.querySelector('.bkpl-pick-copy em').textContent,
+      relation: card.querySelector('.bkpl-pick-copy > span:last-child').textContent
+    }));
+    let filter = 'all';
+    let currentState = 'populated';
+    let returnFocus = null;
+    let logBook = null;
+    let addResult = null;
+    let addChosen = false;
+    let timer = null;
+    const stateCopy = {
+      'first-run': ['Future direction needs a starting point.', 'Add a verified shelf book first. No reading history or recommendation evidence starts automatically.'],
+      'no-results': ['No future bag preview is shown.', 'The fixture has no candidates for this review state; no availability or result is implied.'],
+      loading: ['Preparing a future bag preview…', 'Verified candidates and stored evidence would still be required before anything appears.'],
+      success: ['Fixture action completed.', 'Only the explicit fixture selection was accepted; no real recommendation batch was generated.'],
+      validation: ['Nothing was submitted.', 'Choose the required fixture values and try again. Optional reactions may stay blank.'],
+      provider: ['Candidate or book lookup is unavailable.', 'The fixture provider returned an error. Nothing was added or recommended.'],
+      duplicate: ['Already on the shelf.', 'No duplicate was created and the existing shelf status was not changed.'],
+      offline: ['You’re offline.', 'Browsing this future preview still works; Log and Add cannot report success until reconnected.'],
+      'missing-cover': ['Missing-cover treatment.', 'Recommendation role, title, author, and evidence remain readable.'],
+      'failed-cover': ['Failed-cover treatment.', 'The preview stays usable and does not invent replacement metadata.']
+    };
+    const shelfHistory = {
+      'the snowy day': { moment: 'This week · Finished', child: 'Love', caregiver: 'Love' },
+      'the rabbit listened': { moment: 'Today · Read again', child: 'Love', caregiver: 'Like' },
+      saturday: { moment: 'This month · Finished', child: 'Like', caregiver: 'Like' }
+    };
+
+    function books() { return Array.from(root.querySelectorAll('[data-book]')); }
+    function recommendationCards() { return Array.from(root.querySelectorAll('[data-recommendation]')); }
+    function showToast(message, duration = 3000) { toast.textContent = message; toast.hidden = false; window.setTimeout(() => { toast.hidden = true; }, duration); }
+    function restoreRichState() {
+      evidence.innerHTML = originalEvidence;
+      recommendationCards().forEach((card, index) => {
+        card.querySelector('.bkpl-role').textContent = originalPickCopy[index].role;
+        card.querySelector('.bkpl-pick-copy em').textContent = originalPickCopy[index].reason;
+        card.querySelector('.bkpl-pick-copy > span:last-child').textContent = originalPickCopy[index].relation;
+      });
+      firstCover.className = originalCoverClass;
+      firstCover.innerHTML = originalCoverMarkup;
+    }
+    function applyFilters() {
+      const query = search.value.trim().toLowerCase();
+      let visible = 0;
+      books().forEach((book) => {
+        const show = (!query || book.dataset.title.includes(query) || book.dataset.author.includes(query)) && (filter === 'all' || book.dataset.status === filter);
+        book.hidden = !show;
+        if (show) visible += 1;
+      });
+      empty.hidden = visible !== 0;
+      count.textContent = `${visible} of ${books().length} shown`;
+    }
+    function showState(name) {
+      currentState = name;
+      stateSelect.value = name;
+      restoreRichState();
+      const keepContent = ['populated', 'limited', 'offline', 'missing-cover', 'failed-cover'].includes(name);
+      evidenceSection.hidden = !keepContent;
+      picks.hidden = !keepContent;
+      shelf.hidden = !keepContent;
+      reviewState.hidden = name === 'populated' || name === 'missing-cover' || name === 'failed-cover';
+      if (name === 'limited') {
+        evidence.innerHTML = '<div class="bkpl-signal bkpl-child"><span>Child reaction</span><strong>None recorded yet</strong><small>No inferred reaction</small></div><div class="bkpl-signal bkpl-parent"><span>Caregiver reaction</span><strong>None recorded yet</strong><small>No averaged family rating</small></div><div class="bkpl-signal bkpl-current"><span>Current interest</span><strong>Weather &amp; night skies</strong><small>Caregiver-entered · only personalization input</small></div><div class="bkpl-signal bkpl-history"><span>Earlier interest</span><strong>None recorded yet</strong><small>No historical weight available</small></div><div class="bkpl-arrow" aria-hidden="true">→</div><div class="bkpl-result"><span>Cold start</span><strong>Low-personalization preview</strong><small>Future scoring and verified candidates required</small></div>';
+        const limitedCopy = [
+          ['Current-interest preview', 'Current-interest-only fixture; no reaction or source-book similarity is claimed.', 'Evidence available: one caregiver-entered current interest.'],
+          ['Adjacent role preview', 'Shown to review a future exploration role, not as a supported semantic match.', 'Evidence available: one current interest; confidence is limited.'],
+          ['Exploration slot', 'Shown to review bag composition only; no historical signal exists in this state.', 'Evidence available: none for this slot; no personalization claim.']
+        ];
+        recommendationCards().forEach((card, index) => {
+          card.querySelector('.bkpl-role').textContent = limitedCopy[index][0];
+          card.querySelector('.bkpl-pick-copy em').textContent = limitedCopy[index][1];
+          card.querySelector('.bkpl-pick-copy > span:last-child').textContent = limitedCopy[index][2];
+        });
+        reviewState.hidden = false;
+        reviewState.innerHTML = '<h2>Cold start / limited evidence</h2><p>All four signal families remain visible. These three future previews are explicitly low-personalization and are not a generated bag.</p>';
+      } else if (name === 'missing-cover' || name === 'failed-cover') {
+        firstCover.className = 'bkpl-cover';
+        firstCover.innerHTML = `<b>${name === 'missing-cover' ? 'Cover unavailable' : 'Cover failed to load'}</b>`;
+      } else if (name !== 'populated') {
+        const copy = stateCopy[name];
+        const action = name === 'first-run' || name === 'provider' ? 'Open Add a book' : name === 'validation' ? 'Open Log a read' : 'Return to future preview';
+        reviewState.innerHTML = `<h2>${copy[0]}</h2><p>${copy[1]}</p><button type="button" data-pl-recover>${action}</button>`;
+      }
+      if (keepContent) applyFilters();
+    }
+    function setFab(open) {
+      fab.setAttribute('aria-expanded', String(open));
+      fab.setAttribute('aria-label', open ? 'Close quick actions' : 'Open quick actions');
+      menu.hidden = !open;
+      if (open) window.requestAnimationFrame(() => menu.querySelector('[data-open="log"]').focus());
+    }
+    function resetPanel(panel) {
+      panel.querySelectorAll('[data-group] button').forEach((button) => button.setAttribute('aria-pressed', 'false'));
+      panel.querySelectorAll('input').forEach((input) => { input.value = ''; });
+      panel.querySelectorAll('.bkpl-message').forEach((message) => { message.textContent = ''; });
+      root.querySelector('[data-log-lookup]').textContent = 'No book selected.';
+      root.querySelector('[data-add-lookup]').textContent = 'No provider request has started.';
+      logBook = null;
+      addResult = null;
+      addChosen = false;
+    }
+    function setProductInert(inert) {
+      root.querySelector('.bkpl-header').toggleAttribute('inert', inert);
+      root.querySelector('main').toggleAttribute('inert', inert);
+      root.querySelector('.bkpl-dock').toggleAttribute('inert', inert);
+    }
+    function openPanel(name, source) {
+      returnFocus = source || document.activeElement || fab;
+      setFab(false);
+      if (!['recommendation', 'detail'].includes(name)) resetPanel(root.querySelector(`[data-panel="${name}"]`));
+      root.querySelectorAll('[data-panel]').forEach((panel) => { panel.hidden = panel.dataset.panel !== name; });
+      const titles = { log: ['Quick action', 'Log a read'], add: ['Verified discovery', 'Add a book'], context: ['Trip context preview', 'Choose a trip context'], recommendation: ['Future recommendation detail', 'Why this fixture book'], detail: ['Shelf book', 'Book details'] };
+      root.querySelector('[data-dialog-kicker]').textContent = titles[name][0];
+      root.querySelector('[data-dialog-title]').textContent = titles[name][1];
+      setProductInert(true);
+      overlay.hidden = false;
+      const target = ['recommendation', 'detail'].includes(name) ? root.querySelector(`[data-panel="${name}"] [data-close]`) : root.querySelector(`[data-panel="${name}"] input, [data-panel="${name}"] button`);
+      window.requestAnimationFrame(() => target.focus());
+    }
+    function closePanel(cancelled = true) {
+      overlay.hidden = true;
+      setProductInert(false);
+      if (cancelled) showToast('Action cancelled. Nothing was submitted.', 1800);
+      const target = returnFocus && returnFocus.isConnected ? returnFocus : fab;
+      returnFocus = null;
+      target.focus();
+    }
+    function lookup(kind, value) {
+      const box = root.querySelector(`[data-${kind}-lookup]`);
+      window.clearTimeout(timer);
+      if (currentState === 'offline') { box.textContent = 'Offline: no lookup was started.'; return; }
+      const query = value.trim().toLowerCase();
+      if (query.length < 2) { box.textContent = kind === 'log' ? 'Type at least 2 characters. No book selected.' : 'Type at least 2 characters. No provider request was started.'; return; }
+      box.textContent = 'Loading verified fixture results…';
+      timer = window.setTimeout(() => {
+        if (query.includes('error')) { box.innerHTML = '<strong>Provider error.</strong><br>Try “Mooncake” or another title or author.'; return; }
+        if (query.includes('none')) { box.innerHTML = '<strong>No verified result.</strong><br>Try a more complete title or author.'; return; }
+        let result = null;
+        if (kind === 'log') {
+          const match = books().find((book) => book.dataset.title.includes(query) || book.dataset.author.includes(query));
+          if (match) result = { t: match.querySelector('strong').textContent, a: match.querySelector('small').textContent };
+        } else if (query.includes('snow') || query.includes('ezra')) result = { t: 'The Snowy Day', a: 'Ezra Jack Keats', duplicate: true };
+        else if (query.includes('moon') || query.includes('grace')) result = { t: 'A Big Mooncake for Little Star', a: 'Grace Lin', duplicate: false };
+        if (!result) { box.innerHTML = `<strong>No ${kind === 'log' ? 'shelf' : 'verified fixture'} result.</strong><br>Try another title or author.`; return; }
+        box.innerHTML = `<button type="button" data-pl-result="${kind}" aria-pressed="false"><strong>${result.t}</strong><span>${result.a}</span></button>`;
+        if (kind === 'add') addResult = result;
+      }, 380);
+    }
+    function trapFocus(event) {
+      if (event.key === 'Escape') { event.preventDefault(); closePanel(true); return; }
+      if (event.key !== 'Tab') return;
+      const focusable = Array.from(dialog.querySelectorAll('button:not(:disabled), input:not(:disabled), select:not(:disabled)')).filter((element) => element.offsetParent !== null);
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
+
+    root.addEventListener('input', (event) => {
+      setFab(false);
+      if (event.target === search) { if (currentState !== 'offline') { currentState = 'populated'; stateSelect.value = 'populated'; } applyFilters(); }
+      if (event.target.matches('[data-log-search]')) lookup('log', event.target.value);
+      if (event.target.matches('[data-add-search]')) lookup('add', event.target.value);
+    });
+    root.addEventListener('change', (event) => { setFab(false); if (event.target === stateSelect) showState(event.target.value); });
+    root.addEventListener('click', (event) => {
+      if (!event.target.closest('[data-fab]')) setFab(false);
+      const device = event.target.closest('[data-device]');
+      if (device) { root.querySelectorAll('[data-device]').forEach((button) => button.setAttribute('aria-pressed', String(button === device))); frame.className = `bkpl-device is-${device.dataset.device}`; return; }
+      const status = event.target.closest('[data-filter]');
+      if (status) { filter = status.dataset.filter; root.querySelectorAll('[data-filter]').forEach((button) => button.setAttribute('aria-pressed', String(button === status))); if (currentState !== 'offline') showState('populated'); else applyFilters(); return; }
+      if (event.target.closest('[data-fab]')) { setFab(fab.getAttribute('aria-expanded') !== 'true'); return; }
+      const opener = event.target.closest('[data-open]');
+      if (opener) { openPanel(opener.dataset.open, opener.closest('.bkpl-actions') ? fab : opener); return; }
+      const recommendation = event.target.closest('[data-recommendation]');
+      if (recommendation) { root.querySelector('[data-detail-title]').textContent = recommendation.dataset.title; root.querySelector('[data-detail-author]').textContent = recommendation.dataset.author; root.querySelector('[data-detail-role]').textContent = recommendation.querySelector('.bkpl-role').textContent; root.querySelector('[data-detail-reason]').textContent = `${recommendation.querySelector('.bkpl-pick-copy em').textContent} ${recommendation.querySelector('.bkpl-pick-copy > span:last-child').textContent}`; openPanel('recommendation', recommendation); return; }
+      const book = event.target.closest('[data-book]');
+      if (book) { const history=shelfHistory[book.dataset.title];root.querySelector('[data-shelf-title]').textContent = book.querySelector('strong').textContent; root.querySelector('[data-shelf-author]').textContent = book.querySelector('small').textContent; root.querySelector('[data-detail-status]').textContent = book.querySelector('em').textContent;root.querySelector('[data-shelf-history]').innerHTML=history?`<h3>Chronological history</h3><p><strong>${history.moment}</strong></p><dl><dt>Child</dt><dd>${history.child}</dd><dt>Caregiver</dt><dd>${history.caregiver}</dd></dl>`:'<h3>Chronological history</h3><p>No reading moments are logged for this fixture book.</p><dl><dt>Child</dt><dd>Not recorded</dd><dt>Caregiver</dt><dd>Not recorded</dd></dl>'; openPanel('detail', book); return; }
+      if (event.target.closest('[data-close]')) { closePanel(false); return; }
+      if (event.target === overlay) { closePanel(true); return; }
+      const result = event.target.closest('[data-pl-result]');
+      if (result) { result.setAttribute('aria-pressed', 'true'); if (result.dataset.plResult === 'log') logBook = result.querySelector('strong').textContent; else addChosen = true; return; }
+      const choice = event.target.closest('[data-group] button');
+      if (choice) { const next = choice.getAttribute('aria-pressed') !== 'true'; choice.parentElement.querySelectorAll('button').forEach((button) => button.setAttribute('aria-pressed', 'false')); choice.setAttribute('aria-pressed', String(next)); return; }
+      if (event.target.closest('[data-find]')) { lookup('add', root.querySelector('[data-add-search]').value); return; }
+      if (event.target.closest('[data-shelf-jump]')) { shelf.scrollIntoView({ block: 'start' }); window.requestAnimationFrame(() => search.focus()); return; }
+      if (event.target.closest('[data-pl-recover]')) { if (currentState === 'first-run' || currentState === 'provider') openPanel('add', fab); else if (currentState === 'validation') openPanel('log', fab); else showState('populated'); return; }
+      if (event.target.closest('[data-home]')) { if (currentState === 'offline') applyFilters(); else showState('populated'); root.querySelector('.bkpl-question').scrollIntoView({ block: 'start' }); return; }
+      const comment = event.target.closest('[data-comment]');
+      if (comment) { const activate = comment.getAttribute('aria-pressed') !== 'true'; root.querySelectorAll('[data-comment]').forEach((button) => button.setAttribute('aria-pressed', 'false')); root.querySelectorAll('[data-review]').forEach((target) => target.classList.remove('bkpl-highlight')); if (activate) { comment.setAttribute('aria-pressed', 'true'); root.querySelectorAll(`[data-review="${comment.dataset.comment}"]`).forEach((target) => target.classList.add('bkpl-highlight')); } return; }
+    });
+
+    function saveLog() {
+      const readingEvent = root.querySelector('[data-group="event"] button[aria-pressed="true"]');
+      const message = root.querySelector('[data-log-message]');
+      if (currentState === 'offline') { message.textContent = 'Offline: nothing was saved. Reconnect and try again.'; return; }
+      if (!logBook || !readingEvent) { message.textContent = 'Nothing was saved. Select a shelf book and event; reactions may stay blank.'; return; }
+      const child = root.querySelector('[data-group="child"] button[aria-pressed="true"]');
+      const caregiver = root.querySelector('[data-group="caregiver"] button[aria-pressed="true"]');
+      closePanel(false);
+      showToast(`Saved ${readingEvent.dataset.value} for ${logBook}.${child ? ` Child: ${child.dataset.value}.` : ''}${caregiver ? ` Caregiver: ${caregiver.dataset.value}.` : ''}${!child && !caregiver ? ' No reactions recorded.' : ''}`, 3300);
+    }
+    function saveAdd() {
+      const status = root.querySelector('[data-group="status"] button[aria-pressed="true"]');
+      const message = root.querySelector('[data-add-message]');
+      if (currentState === 'offline') { message.textContent = 'Offline: nothing was added. Reconnect and try again.'; return; }
+      if (!addChosen || !addResult || !status) { message.textContent = 'Nothing was added. Select a verified result and shelf status.'; return; }
+      if (addResult.duplicate) { message.textContent = 'Already on the shelf. No duplicate was created or changed.'; return; }
+      closePanel(false);
+      showToast(`Added ${addResult.t} as ${status.dataset.value}. No history or reactions were created.`, 3400);
+    }
+    function applyContext() {
+      const context = root.querySelector('[data-group="context"] button[aria-pressed="true"]');
+      const message = root.querySelector('[data-context-message]');
+      if (currentState === 'offline') { message.textContent = 'Offline: the context preview was not applied.'; return; }
+      if (!context) { message.textContent = 'Choose one trip context. Nothing was applied.'; return; }
+      closePanel(false);
+      contextNote.textContent = `${context.dataset.value} context preview applied. The three fixture candidates were not regenerated or reranked.`;
+      showToast(`${context.dataset.value} context placement previewed. Candidate fixtures are unchanged.`, 3200);
+    }
+    root.querySelector('[data-save-log]').addEventListener('click', saveLog);
+    root.querySelector('[data-save-add]').addEventListener('click', saveAdd);
+    root.querySelector('[data-apply-context]').addEventListener('click', applyContext);
+    root.querySelector('[data-panel="log"]').addEventListener('submit', (event) => { event.preventDefault(); saveLog(); });
+    root.querySelector('[data-panel="add"]').addEventListener('submit', (event) => { event.preventDefault(); saveAdd(); });
+    root.querySelector('[data-panel="context"]').addEventListener('submit', (event) => { event.preventDefault(); applyContext(); });
+    root.addEventListener('pointerdown', (event) => {
+      const wasOpen = fab.getAttribute('aria-expanded') === 'true';
+      if (!wasOpen || event.target.closest('[data-fab]') || event.target.closest('[data-fab-menu]')) return;
+      setFab(false);
+      if (!event.target.closest('[data-open],[data-book],[data-recommendation],[data-pl-recover]')) window.requestAnimationFrame(() => fab.focus());
+    }, true);
+    dialog.addEventListener('keydown', trapFocus);
+    product.addEventListener('keydown', (event) => { if (event.key === 'Escape' && overlay.hidden && fab.getAttribute('aria-expanded') === 'true') { setFab(false); fab.focus(); } });
+    showState('populated');
+  })();
+</script>

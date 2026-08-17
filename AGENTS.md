@@ -15,8 +15,25 @@
 - The lead agent owns checkpoint authorization, scope interpretation, shared-contract integration, final validation, and the human approval request.
 - Use one named writer at a time for each shared SDD, schema and migration history, shared contract, package manifest and lockfile, global shell or token file, analytics dictionary, and deployment or CI configuration.
 - Parallelize only disjoint paths after shared contracts are frozen.
+- Practice token and compute frugality: default to direct lead execution over subagent delegation for single-file, single-decision, or quickly-verifiable work; reserve specialists and independent reviewers for genuinely large or disjoint scope; size each agent's model and effort to its task instead of defaulting to maximum capability; and never run more specialist or reviewer agents on one piece of material than the mandatory independent-review rule requires.
 - Give each specialist a bounded context packet containing the checkpoint, approval evidence, included and forbidden scope, allowed and forbidden paths, frozen contracts, verified fixtures, required evidence, and authority limits.
 - Require an independent read-only review by an agent who did not implement the material work, then have the lead integrate and run the complete relevant validation.
+- Select reviewer personas by what the checkpoint actually changed, never as a fixed panel. Choose the minimum set whose lens genuinely applies — usually one or two, occasionally three for a checkpoint that is simultaneously schema-heavy, user-facing, and privacy-affecting. Running every persona on every checkpoint is waste, dilutes each review, and is explicitly forbidden. Reviewers are read-only, run on a mid-tier model rather than the lead's model, and receive a bounded context packet naming the exact files and the exact lens.
+
+  | Persona | Lens | Select when the checkpoint changes |
+  | --- | --- | --- |
+  | Staff engineer, FAANG | Correctness, concurrency, data integrity, idempotency, ownership scoping | Schema, migrations, domain or application use cases, provider adapters, persistence, retries |
+  | Product designer, major SaaS | Mockup fidelity, interaction design, accessibility, copy discipline, responsive behavior | Any caregiver-visible screen, flow, component, or stylesheet |
+  | Product manager, consumer startup | Product truth, scope discipline against the approved checkpoint, vocabulary, user value | Scope, new user-visible capability, consumer copy, success metrics, result semantics |
+  | Parent of a young child (target user) | Real-world usability under time pressure, emotional tone, trust, jargon detection | First-run setup, any flow a caregiver completes while distracted, any new consumer copy |
+  | Child-privacy reviewer | Child-data minimization, outbound query contents, retention, consent, COPPA-shaped risk | Child data, external provider queries, logging, analytics, exports, retention |
+  | Librarian or children's-literature specialist | Book metadata truth, age suitability claims, catalog and availability semantics | Recommendation quality, candidate sourcing rules, age guidance, library contract |
+  | Infrastructure and reliability reviewer | Secrets, backups, rollback, teardown, cost ceilings, protected access | Deployment, hosting, provisioning, environment configuration, operational runbooks |
+  | Venture investor or accelerator mentor | Unit economics, willingness to pay, monetization viability, scaling constraints, retention and growth mechanics, competitive positioning | Hosting tier and cost decisions, per-household cost baselines, enrollment and expansion gates, pricing or monetization research, success metrics that bear on viability |
+
+  A checkpoint that adds a persona-relevant risk not covered above may propose one additional targeted persona, stated with its lens in the checkpoint report.
+
+  The venture reviewer advises strictly inside the product's fixed constraints and has no authority to relax them. Section 2.3 product-truth invariants, the child-privacy posture, and the section 9.2 prohibitions on advertising, affiliates, sponsored placement, commercial ranking influence, and child-data monetization are not tradeable for growth or revenue, and a recommendation to weaken any of them is rejected without escalation rather than presented to the owner as an option. Its value is pricing realism, cost-structure pressure-testing, and honest assessment of whether the product can sustain itself — not growth tactics that would compromise what families are being asked to trust.
 - After two bounded failures with the same cause, return a blocked handoff. Do not widen scope, add dependencies, weaken tests, invent fixtures, or perform a broad rewrite as recovery.
 - No agent may perform or authorize deployment, publication, account or resource creation, billable services, secrets access, external invitations, public registration, or monetization without an explicit human gate for the exact action. Invitations are human-owned external actions unless the owner separately delegates exact recipients and wording.
 

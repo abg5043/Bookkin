@@ -63,6 +63,9 @@ function fromPrismaAgeStageValue(value: RecommendationRequest["ageStageValue"]):
   if (value === "age_2_3") return "2_3";
   if (value === "age_4_5") return "4_5";
   if (value === "age_6_8") return "6_8";
+  if (value === null) {
+    throw new DomainInvariantError("This recommendation request has no legacy age/stage value to compare.");
+  }
   return value;
 }
 

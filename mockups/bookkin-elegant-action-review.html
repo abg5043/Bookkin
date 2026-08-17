@@ -1,0 +1,720 @@
+<div id="bookkin-elegant-action-review">
+  <div class="viz-controls" aria-label="Prototype controls">
+    <span class="text-small text-muted">Viewport</span>
+    <button class="btn btn-primary" type="button" data-viewport="desktop" aria-pressed="true">Desktop</button>
+    <button class="btn" type="button" data-viewport="phone" aria-pressed="false">Phone</button>
+    <label class="form-check form-switch">
+      <input class="form-check-input" id="bk4-notes-toggle" type="checkbox" checked>
+      <span class="form-check-label">Design notes</span>
+    </label>
+  </div>
+
+  <div class="bk4-review-layout">
+    <div class="bk4-stage">
+      <div class="bk4-device bk4-desktop" data-device>
+        <div class="bk4-product" data-product aria-live="polite"></div>
+      </div>
+    </div>
+    <aside class="card bk4-notes" aria-label="Design comments">
+      <p class="text-small text-muted">Select a comment to highlight its decision.</p>
+      <div data-notes></div>
+    </aside>
+  </div>
+</div>
+
+<style>
+  #bookkin-elegant-action-review {
+    --bk4-cloud: light-dark(#fffaf7, #191619);
+    --bk4-surface: light-dark(#ffffff, #242026);
+    --bk4-blush: light-dark(#fde9e4, #442d35);
+    --bk4-apricot: light-dark(#ffe8cf, #463328);
+    --bk4-lilac: light-dark(#f0eafb, #342d45);
+    --bk4-ink: light-dark(#302735, #f7edf6);
+    --bk4-muted: light-dark(#746978, #bfb2c0);
+    --bk4-coral: light-dark(#d95654, #f2847e);
+    --bk4-coral-deep: light-dark(#b83e47, #ff9b95);
+    --bk4-coral-ink: light-dark(#ffffff, #2a1519);
+    --bk4-line: light-dark(#e5dce5, #4c414d);
+    --bk4-focus: light-dark(#6855bd, #b7a8ff);
+    color-scheme: light dark;
+  }
+
+  #bookkin-elegant-action-review .bk4-review-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(200px, 0.3fr);
+    gap: 1rem;
+    align-items: start;
+    margin-top: 1rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-stage {
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  #bookkin-elegant-action-review .bk4-device {
+    width: 100%;
+    transition: width 160ms ease;
+  }
+
+  #bookkin-elegant-action-review .bk4-device.bk4-phone {
+    width: min(100%, 390px);
+  }
+
+  #bookkin-elegant-action-review .bk4-product {
+    position: relative;
+    overflow: hidden;
+    min-height: 650px;
+    border: 1px solid var(--bk4-line);
+    border-radius: 1.4rem;
+    background:
+      radial-gradient(circle at 88% 14%, var(--bk4-apricot) 0 6%, transparent 18%),
+      radial-gradient(circle at 9% 82%, var(--bk4-lilac) 0 5%, transparent 16%),
+      var(--bk4-cloud);
+    color: var(--bk4-ink);
+    box-shadow: 0 20px 60px light-dark(rgb(80 54 76 / 0.12), rgb(0 0 0 / 0.34));
+    font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+
+  #bookkin-elegant-action-review .bk4-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.95rem 1.25rem;
+    border-bottom: 1px solid var(--bk4-line);
+    background: color-mix(in srgb, var(--bk4-surface) 92%, transparent);
+  }
+
+  #bookkin-elegant-action-review .bk4-brand {
+    margin-right: auto;
+    font-family: Charter, Georgia, serif;
+    font-size: 1.6rem;
+    font-weight: 500;
+    letter-spacing: -0.045em;
+  }
+
+  #bookkin-elegant-action-review .bk4-nav,
+  #bookkin-elegant-action-review .bk4-filter,
+  #bookkin-elegant-action-review .bk4-book,
+  #bookkin-elegant-action-review .bk4-close,
+  #bookkin-elegant-action-review .bk4-choice,
+  #bookkin-elegant-action-review .bk4-recent {
+    border: 0;
+    background: transparent;
+    color: var(--bk4-ink);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  #bookkin-elegant-action-review .bk4-nav {
+    padding: 0.45rem 0.6rem;
+    border-bottom: 2px solid var(--bk4-coral);
+  }
+
+  #bookkin-elegant-action-review .bk4-alpha {
+    color: var(--bk4-muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #bookkin-elegant-action-review .bk4-page {
+    padding: 1.5rem 1.6rem 6rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-kicker {
+    margin: 0;
+    color: var(--bk4-coral-deep);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  #bookkin-elegant-action-review .bk4-title {
+    margin: 0.28rem 0 0;
+    font-family: Charter, Georgia, serif;
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    font-weight: 400;
+  }
+
+  #bookkin-elegant-action-review .bk4-meta {
+    display: block;
+    margin-top: 0.2rem;
+    color: var(--bk4-muted);
+    font-size: 0.78rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-tools {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) auto;
+    gap: 0.7rem;
+    margin-top: 1.2rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-search {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.72rem 0.88rem;
+    border: 1px solid var(--bk4-line);
+    border-radius: 0.9rem;
+    background: var(--bk4-surface);
+    color: var(--bk4-ink);
+    font: inherit;
+    box-shadow: 0 5px 18px light-dark(rgb(75 56 76 / 0.05), rgb(0 0 0 / 0.18));
+  }
+
+  #bookkin-elegant-action-review .bk4-filters {
+    display: flex;
+    gap: 0.35rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-filter {
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--bk4-line);
+    border-radius: 999px;
+    background: var(--bk4-surface);
+    color: var(--bk4-muted);
+    font-size: 0.78rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-filter[aria-pressed="true"] {
+    border-color: var(--bk4-coral);
+    background: var(--bk4-blush);
+    color: var(--bk4-ink);
+  }
+
+  #bookkin-elegant-action-review .bk4-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.2rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-book {
+    padding: 0;
+    text-align: left;
+  }
+
+  #bookkin-elegant-action-review .bk4-cover {
+    aspect-ratio: 2 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 0.7rem;
+    border: 1px solid var(--bk4-line);
+    border-radius: 1rem 1rem 0.8rem 0.8rem;
+    background: linear-gradient(150deg, var(--bk4-lilac), var(--bk4-surface));
+    color: var(--bk4-muted);
+    text-align: center;
+    font-family: Charter, Georgia, serif;
+    box-shadow: 0 9px 24px light-dark(rgb(67 47 70 / 0.09), rgb(0 0 0 / 0.28));
+  }
+
+  #bookkin-elegant-action-review .bk4-book:nth-child(3n + 2) .bk4-cover {
+    background: linear-gradient(150deg, var(--bk4-apricot), var(--bk4-surface));
+  }
+
+  #bookkin-elegant-action-review .bk4-book:nth-child(3n + 3) .bk4-cover {
+    background: linear-gradient(150deg, var(--bk4-blush), var(--bk4-surface));
+  }
+
+  #bookkin-elegant-action-review .bk4-book-title {
+    display: block;
+    margin-top: 0.55rem;
+    font-family: Charter, Georgia, serif;
+    font-weight: 500;
+  }
+
+  #bookkin-elegant-action-review .bk4-chip {
+    display: inline-block;
+    margin-top: 0.4rem;
+    padding: 0.24rem 0.52rem;
+    border-radius: 999px;
+    background: var(--bk4-blush);
+    color: var(--bk4-muted);
+    font-size: 0.72rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-fab-wrap {
+    position: absolute;
+    z-index: 12;
+    right: 1.25rem;
+    bottom: 1.15rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.55rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-fab-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-fab-menu[hidden] {
+    display: none;
+  }
+
+  #bookkin-elegant-action-review .bk4-fab-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.48rem 0.55rem 0.48rem 0.8rem;
+    border: 1px solid var(--bk4-line);
+    border-radius: 999px;
+    background: var(--bk4-surface);
+    color: var(--bk4-ink);
+    box-shadow: 0 10px 28px light-dark(rgb(75 45 69 / 0.15), rgb(0 0 0 / 0.36));
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  #bookkin-elegant-action-review .bk4-fab-action-mark {
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--bk4-blush);
+    color: var(--bk4-coral-deep);
+    font-family: Charter, Georgia, serif;
+  }
+
+  #bookkin-elegant-action-review .bk4-fab-action:first-child {
+    transform: translateX(-0.9rem);
+  }
+
+  #bookkin-elegant-action-review .bk4-fab {
+    position: relative;
+    width: 3.8rem;
+    height: 3.8rem;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 46% 54% 48% 52% / 52% 45% 55% 48%;
+    background: linear-gradient(145deg, var(--bk4-coral), var(--bk4-coral-deep));
+    color: var(--bk4-coral-ink);
+    box-shadow:
+      0 0 0 5px color-mix(in srgb, var(--bk4-blush) 72%, transparent),
+      0 13px 34px light-dark(rgb(177 59 68 / 0.30), rgb(0 0 0 / 0.45));
+    font: inherit;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 150ms ease, border-radius 150ms ease;
+  }
+
+  #bookkin-elegant-action-review .bk4-fab::after {
+    content: '';
+    position: absolute;
+    inset: -0.5rem;
+    border: 1px solid color-mix(in srgb, var(--bk4-coral) 34%, transparent);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  #bookkin-elegant-action-review .bk4-fab[aria-expanded="true"] {
+    transform: rotate(45deg);
+    border-radius: 50%;
+  }
+
+  #bookkin-elegant-action-review .bk4-backdrop {
+    position: absolute;
+    z-index: 20;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 1rem;
+    box-sizing: border-box;
+    background: light-dark(rgb(53 36 53 / 0.34), rgb(0 0 0 / 0.56));
+  }
+
+  #bookkin-elegant-action-review .bk4-modal {
+    width: min(100%, 550px);
+    max-height: 88%;
+    overflow: auto;
+    box-sizing: border-box;
+    padding: 1.1rem;
+    border: 1px solid var(--bk4-line);
+    border-radius: 1.35rem;
+    background: var(--bk4-surface);
+    color: var(--bk4-ink);
+    box-shadow: 0 24px 70px light-dark(rgb(58 36 57 / 0.25), rgb(0 0 0 / 0.5));
+  }
+
+  #bookkin-elegant-action-review .bk4-modal-head {
+    display: flex;
+    align-items: start;
+    gap: 1rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-modal-head > div {
+    flex: 1;
+  }
+
+  #bookkin-elegant-action-review .bk4-modal h2 {
+    margin: 0.25rem 0 0;
+    font-family: Charter, Georgia, serif;
+    font-weight: 400;
+  }
+
+  #bookkin-elegant-action-review .bk4-close {
+    padding: 0.4rem;
+    color: var(--bk4-muted);
+  }
+
+  #bookkin-elegant-action-review .bk4-recent-grid,
+  #bookkin-elegant-action-review .bk4-choice-grid {
+    display: grid;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-recent-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #bookkin-elegant-action-review .bk4-choice-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  #bookkin-elegant-action-review .bk4-recent,
+  #bookkin-elegant-action-review .bk4-choice {
+    padding: 0.6rem;
+    border: 1px solid var(--bk4-line);
+    border-radius: 0.7rem;
+    background: var(--bk4-cloud);
+    text-align: left;
+    font-size: 0.78rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-recent[aria-pressed="true"],
+  #bookkin-elegant-action-review .bk4-choice[aria-pressed="true"] {
+    border-color: var(--bk4-coral);
+    background: var(--bk4-blush);
+  }
+
+  #bookkin-elegant-action-review .bk4-label {
+    display: block;
+    margin-top: 0.8rem;
+    color: var(--bk4-muted);
+    font-size: 0.78rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-primary {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    margin-top: 0.8rem;
+    padding: 0.75rem 1rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--bk4-coral);
+    color: var(--bk4-coral-ink);
+    box-shadow: 0 -8px 18px var(--bk4-surface);
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  #bookkin-elegant-action-review .bk4-confirm {
+    margin: 0.65rem 0 0;
+    color: var(--bk4-coral-deep);
+    font-size: 0.78rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-phone .bk4-header {
+    flex-wrap: wrap;
+  }
+
+  #bookkin-elegant-action-review .bk4-phone .bk4-page {
+    padding: 1rem 1rem 5.5rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-phone .bk4-tools {
+    grid-template-columns: 1fr;
+  }
+
+  #bookkin-elegant-action-review .bk4-phone .bk4-filter {
+    flex: 1;
+    padding-inline: 0.3rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-phone .bk4-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #bookkin-elegant-action-review .bk4-phone .bk4-choice-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #bookkin-elegant-action-review .bk4-annotations [data-note] {
+    position: relative;
+  }
+
+  #bookkin-elegant-action-review .bk4-annotations [data-note]::after {
+    content: attr(data-note);
+    position: absolute;
+    z-index: 31;
+    top: -0.5rem;
+    right: -0.4rem;
+    display: grid;
+    place-items: center;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 999px;
+    background: var(--bk4-focus);
+    color: light-dark(#ffffff, #10182d);
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+  }
+
+  #bookkin-elegant-action-review [data-note].bk4-highlight {
+    outline: 3px solid var(--bk4-focus);
+    outline-offset: 4px;
+  }
+
+  #bookkin-elegant-action-review .bk4-notes {
+    position: sticky;
+    top: 0.5rem;
+  }
+
+  #bookkin-elegant-action-review .bk4-note-button {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 0.35rem;
+    text-align: left;
+    white-space: normal;
+  }
+
+  @media (max-width: 700px) {
+    #bookkin-elegant-action-review .bk4-review-layout {
+      grid-template-columns: 1fr;
+    }
+
+    #bookkin-elegant-action-review .bk4-notes {
+      position: static;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #bookkin-elegant-action-review .bk4-device,
+    #bookkin-elegant-action-review .bk4-fab {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('bookkin-elegant-action-review');
+    const product = root.querySelector('[data-product]');
+    const device = root.querySelector('[data-device]');
+    const notesRegion = root.querySelector('[data-notes]');
+    const notesToggle = root.querySelector('#bk4-notes-toggle');
+    let viewport = 'desktop';
+    let menuOpen = false;
+    let modalOpen = false;
+    let activeNote = null;
+
+    const notes = {
+      base: [
+        ['1', 'Warm porcelain, coral, apricot, and a small lilac note feel friendlier without returning to brown or beige.'],
+        ['2', 'The action is a softly irregular “spark” rather than a generic utility circle; its halo keeps it light.'],
+        ['3', 'Expanded actions arc gently instead of forming a rigid stack, with tiny marks that add restrained whimsy.'],
+        ['4', 'Typography and generous cover scale preserve the sophisticated parent-facing character.']
+      ],
+      modal: [
+        ['1', 'The same warm palette carries into the focused reading sheet.'],
+        ['2', 'Whimsy stays in shape and color; controls remain plain, readable, and fast.'],
+        ['3', 'The primary save action is coral and stable at the lower edge.']
+      ]
+    };
+
+    const books = [
+      ['The Snowy Day', 'Ezra Jack Keats', 'Owned'],
+      ['More Pies!', 'Robert Munsch', 'Borrowed'],
+      ['Last Stop on Market', 'Matt de la Peña', 'Wishlist'],
+      ['Saturday', 'Oge Mora', 'Owned'],
+      ['The Rabbit Listened', 'Cori Doerrfeld', 'Borrowed'],
+      ['Jabari Jumps', 'Gaia Cornwall', 'Wishlist'],
+      ['The Dot', 'Peter H. Reynolds', 'Owned'],
+      ['A Sick Day for Amos McGee', 'Philip C. Stead', 'Owned']
+    ];
+
+    const base = () => `
+      <header class="bk4-header" data-note="1">
+        <div class="bk4-brand">Bookkin</div>
+        <button class="bk4-nav" type="button">Shelf</button>
+        <span class="bk4-alpha">Private alpha</span>
+      </header>
+      <main class="bk4-page" data-note="4">
+        <p class="bk4-kicker">Family shelf</p>
+        <h1 class="bk4-title">Books worth remembering.</h1>
+        <span class="bk4-meta">8 books</span>
+        <div class="bk4-tools">
+          <input class="bk4-search" type="search" placeholder="Search title or author">
+          <div class="bk4-filters">
+            <button class="bk4-filter" type="button" aria-pressed="true">All</button>
+            <button class="bk4-filter" type="button" aria-pressed="false">Owned</button>
+            <button class="bk4-filter" type="button" aria-pressed="false">Borrowed</button>
+            <button class="bk4-filter" type="button" aria-pressed="false">Wishlist</button>
+          </div>
+        </div>
+        <section class="bk4-grid" aria-label="Family books">
+          ${books.map(([title, author, status]) => `
+            <button class="bk4-book" type="button">
+              <span class="bk4-cover">Verified provider cover</span>
+              <span class="bk4-book-title">${title}</span>
+              <span class="bk4-meta">${author}</span>
+              <span class="bk4-chip">${status}</span>
+            </button>
+          `).join('')}
+        </section>
+      </main>
+      <div class="bk4-fab-wrap" data-note="2">
+        <div class="bk4-fab-menu" ${menuOpen ? '' : 'hidden'} data-note="3">
+          <button class="bk4-fab-action" type="button" data-log><span>Log a read</span><span class="bk4-fab-action-mark">♡</span></button>
+          <button class="bk4-fab-action" type="button" data-add><span>Add a book</span><span class="bk4-fab-action-mark">＋</span></button>
+        </div>
+        <button class="bk4-fab" type="button" data-toggle aria-expanded="${menuOpen}" aria-label="${menuOpen ? 'Close quick actions' : 'Open quick actions'}">✦</button>
+      </div>
+    `;
+
+    const modal = () => `
+      <div class="bk4-backdrop" data-backdrop>
+        <section class="bk4-modal" role="dialog" aria-modal="true" aria-labelledby="bk4-log-title" data-note="1">
+          <div class="bk4-modal-head">
+            <div><p class="bk4-kicker">Log a read</p><h2 id="bk4-log-title">What happened?</h2></div>
+            <button class="bk4-close" type="button" data-close>Close</button>
+          </div>
+          <label class="bk4-label" for="bk4-search">Recent books or shelf search</label>
+          <input class="bk4-search" id="bk4-search" placeholder="Search title or author">
+          <div class="bk4-recent-grid">
+            <button class="bk4-recent" type="button" aria-pressed="true">More Pies!</button>
+            <button class="bk4-recent" type="button" aria-pressed="false">The Snowy Day</button>
+            <button class="bk4-recent" type="button" aria-pressed="false">Saturday</button>
+          </div>
+          <div data-note="2">
+            <span class="bk4-label">Reading event</span>
+            <div class="bk4-choice-grid">
+              <button class="bk4-choice" type="button" aria-pressed="true">Finished</button>
+              <button class="bk4-choice" type="button" aria-pressed="false">Read again</button>
+              <button class="bk4-choice" type="button" aria-pressed="false">Stopped</button>
+              <button class="bk4-choice" type="button" aria-pressed="false">Rejected</button>
+            </div>
+            <span class="bk4-label">Child’s reaction</span>
+            <div class="bk4-choice-grid">
+              <button class="bk4-choice" type="button" aria-pressed="false">Love</button>
+              <button class="bk4-choice" type="button" aria-pressed="false">Like</button>
+              <button class="bk4-choice" type="button" aria-pressed="false">Not for me</button>
+            </div>
+            <span class="bk4-label">Parent’s reaction</span>
+            <div class="bk4-choice-grid">
+              <button class="bk4-choice" type="button" aria-pressed="false">Love</button>
+              <button class="bk4-choice" type="button" aria-pressed="false">Like</button>
+              <button class="bk4-choice" type="button" aria-pressed="false">Dislike</button>
+            </div>
+          </div>
+          <button class="bk4-primary" type="button" data-save data-note="3">Save reading moment</button>
+          <p class="bk4-confirm" data-confirm hidden>Prototype: reading moment saved.</p>
+        </section>
+      </div>
+    `;
+
+    function renderNotes() {
+      const current = notes[modalOpen ? 'modal' : 'base'];
+      notesRegion.innerHTML = current.map(([number, text]) => `
+        <button class="btn btn-ghost bk4-note-button" type="button" data-note-select="${number}" aria-pressed="${activeNote === number}">
+          <strong>${number}.</strong>&nbsp;${text}
+        </button>
+      `).join('');
+      root.querySelector('.bk4-notes').hidden = !notesToggle.checked;
+    }
+
+    function render() {
+      product.innerHTML = base();
+      if (modalOpen) product.insertAdjacentHTML('beforeend', modal());
+      product.classList.toggle('bk4-annotations', notesToggle.checked);
+      device.className = `bk4-device bk4-${viewport}`;
+      activeNote = null;
+      renderNotes();
+    }
+
+    root.addEventListener('click', (event) => {
+      const viewportButton = event.target.closest('[data-viewport]');
+      if (viewportButton) {
+        viewport = viewportButton.dataset.viewport;
+        root.querySelectorAll('[data-viewport]').forEach((button) => {
+          const selected = button.dataset.viewport === viewport;
+          button.setAttribute('aria-pressed', String(selected));
+          button.classList.toggle('btn-primary', selected);
+        });
+        render();
+        return;
+      }
+
+      if (event.target.closest('[data-toggle]')) {
+        menuOpen = !menuOpen;
+        render();
+        return;
+      }
+
+      if (event.target.closest('[data-log]')) {
+        menuOpen = false;
+        modalOpen = true;
+        render();
+        return;
+      }
+
+      if (event.target.closest('[data-add]')) {
+        menuOpen = false;
+        modalOpen = true;
+        render();
+        return;
+      }
+
+      if (event.target.closest('[data-close]') || event.target.matches('[data-backdrop]')) {
+        modalOpen = false;
+        render();
+        return;
+      }
+
+      const selectable = event.target.closest('.bk4-choice, .bk4-recent, .bk4-filter');
+      if (selectable) {
+        selectable.parentElement.querySelectorAll('.bk4-choice, .bk4-recent, .bk4-filter').forEach((button) => button.setAttribute('aria-pressed', String(button === selectable)));
+        return;
+      }
+
+      if (event.target.closest('[data-save]')) {
+        product.querySelector('[data-confirm]').hidden = false;
+        return;
+      }
+
+      const noteButton = event.target.closest('[data-note-select]');
+      if (noteButton) {
+        activeNote = activeNote === noteButton.dataset.noteSelect ? null : noteButton.dataset.noteSelect;
+        product.querySelectorAll('[data-note]').forEach((element) => element.classList.toggle('bk4-highlight', element.dataset.note === activeNote));
+        renderNotes();
+      }
+    });
+
+    notesToggle.addEventListener('change', () => {
+      product.classList.toggle('bk4-annotations', notesToggle.checked);
+      activeNote = null;
+      product.querySelectorAll('[data-note]').forEach((element) => element.classList.remove('bk4-highlight'));
+      renderNotes();
+    });
+
+    render();
+  })();
+</script>
