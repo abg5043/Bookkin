@@ -335,6 +335,8 @@ Signals that would justify moving on any of these, all of which Checkpoint 11A c
 
 Until Checkpoint 11A produces that evidence, ranking, composition, eligibility, and explanation content remain deterministic, and no direction above is scoped, scaffolded, or implemented.
 
+The recommender-systems reviewer persona in `AGENTS.md` is the standing lens for this section. It reviews the deterministic weights when they are set at Checkpoint 7B and leads the diagnosis at Checkpoint 11A, so the question "are these picks actually good" is answered by someone who has tuned real ranking systems rather than inferred from the absence of test failures.
+
 #### Further reading
 
 For understanding the field well enough to evaluate Checkpoint 11A's options, not as required reading to approve anything:
@@ -909,7 +911,7 @@ Candidate future addition, not approved or scoped yet: a closed-vocabulary inter
 
 Acceptance evidence: fixed inputs are repeatable; weights and source signals are inspectable; no unverified work or padded result can enter a bag; limited-pool and no-candidate cases are tested; explanations cite only verified or declared evidence.
 
-Specialists: recommendation implementer; independent scoring/test and product-truth reviewers.
+Specialists: recommendation implementer. Reviewers: recommender-systems researcher (signal design, weighting, cold-start behavior, and whether the fixed fixtures actually evaluate ranking quality rather than only determinism), plus independent scoring/test and product-truth reviewers. This is the first checkpoint where "the code is correct" and "the picks are good" are different questions, and the deterministic weights are set here — a reviewer who has tuned real ranking systems is the lens that catches a scorer that is repeatable but poorly calibrated.
 
 Owner decisions: scoring weights, suppression policy, composition behavior, and fixture plausibility.
 
@@ -1102,7 +1104,7 @@ Excluded: implementing any chosen direction; scaffolding, dependency installatio
 
 Acceptance evidence: complete bag-level evidence set with owner judgments; explicit diagnosis attributing quality problems to context, pool, ranking, or wording; free-text interest match-rate measurement; each option presented with expected benefit, privacy implication, unit-cost impact, and effect on inspectability; and an explicit statement of what evidence would change the recommendation if the owner disagrees.
 
-Specialists: lead evidence assembly and diagnosis; independent recommendation-quality and product-truth reviewers. Keep this checkpoint small; it is analysis of existing records, not new implementation.
+Specialists: lead evidence assembly and diagnosis. Reviewers: recommender-systems researcher (primary — diagnosing whether weak picks trace to thin context, weak pool, weak ranking, or wording, and judging honestly whether the accumulated outcome volume can support a learned approach at all) and product-truth reviewer. Keep this checkpoint small; it is analysis of existing records, not new implementation.
 
 Owner decisions: whether current recommendation quality is sufficient to invite external families; which refinement direction, if any, to pursue; and whether any chosen direction warrants a newly specified checkpoint before Checkpoint 12A or is deferred until after controlled beta produces more outcome data.
 
