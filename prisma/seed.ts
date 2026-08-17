@@ -14,6 +14,12 @@ const prisma = new PrismaClient();
  * Re-running this is safe and idempotent; it is the preview reset path.
  */
 
+/**
+ * Cover images are served locally from `public/showcase-covers/` and each one is the genuine
+ * cover of the title it is attached to. `Goodnight Moon` deliberately has no cover so a
+ * reviewer sees the real "Cover unavailable" state alongside the populated one — showing only
+ * the happy path would hide how Bookkin handles metadata it does not have.
+ */
 const showcaseWorks = [
   {
     id: "showcase-work-snowy-day",
@@ -21,6 +27,7 @@ const showcaseWorks = [
     authors: ["Ezra Jack Keats"],
     subjects: ["winter", "snow", "city life"],
     shelfStatus: "owned" as const,
+    coverUrl: "/showcase-covers/snowy-day-cover.jpg",
   },
   {
     id: "showcase-work-wild-things",
@@ -28,20 +35,23 @@ const showcaseWorks = [
     authors: ["Maurice Sendak"],
     subjects: ["imagination", "feelings"],
     shelfStatus: "owned" as const,
+    coverUrl: "/showcase-covers/wild-things-cover.jpg",
+  },
+  {
+    id: "showcase-work-market-street",
+    title: "Last Stop on Market Street",
+    authors: ["Matt de la Peña", "Christian Robinson"],
+    subjects: ["city life", "buses", "family", "gratitude"],
+    shelfStatus: "borrowed" as const,
+    coverUrl: "/showcase-covers/market-street-cover.jpg",
   },
   {
     id: "showcase-work-goodnight-moon",
     title: "Goodnight Moon",
     authors: ["Margaret Wise Brown"],
     subjects: ["bedtime", "rhyming"],
-    shelfStatus: "borrowed" as const,
-  },
-  {
-    id: "showcase-work-very-hungry-caterpillar",
-    title: "The Very Hungry Caterpillar",
-    authors: ["Eric Carle"],
-    subjects: ["insects", "counting", "food"],
     shelfStatus: "wishlist" as const,
+    coverUrl: undefined,
   },
 ];
 
@@ -134,7 +144,7 @@ async function main() {
       },
     });
 
-    await prisma.familyBook.upsert({
+    const familyBook = await prisma.familyBook.upsert({
       where: { householdId_workId: { householdId: household.id, workId: work.id } },
       update: { shelfStatus: work.shelfStatus },
       create: {
@@ -142,6 +152,40 @@ async function main() {
         workId: work.id,
         addedVia: "showcase_seed",
         shelfStatus: work.shelfStatus,
+      },
+    });
+
+    // Cover URLs live on the edition, so a work without a cover simply gets no edition row and
+    // renders through the genuine missing-cover path rather than a placeholder value.
+    if (work.coverUrl === undefined) continue;
+
+    const editionId = `${work.id}-edition`;
+    await prisma.bookEdition.upsert({
+      where: { id: editionId },
+      update: { coverSmallUrl: work.coverUrl, coverLargeUrl: work.coverUrl },
+      create: {
+        id: editionId,
+        workId: work.id,
+        coverSmallUrl: work.coverUrl,
+        coverLargeUrl: work.coverUrl,
+        metadataProvider: "bookkin-showcase-seed",
+        metadataRecordId: editionId,
+        metadataProvenance: JSON.stringify({
+          provider: "bookkin-showcase-seed",
+          recordId: editionId,
+          fields: { cover: "showcase seed" },
+        }),
+      },
+    });
+
+    await prisma.familyBookEdition.upsert({
+      where: { familyBookId_editionId: { familyBookId: familyBook.id, editionId } },
+      update: {},
+      create: {
+        householdId: household.id,
+        familyBookId: familyBook.id,
+        editionId,
+        addedVia: "showcase_seed",
       },
     });
   }
@@ -180,9 +224,11 @@ async function main() {
   });
 
   console.log(`Seeded household ${household.id} with child ${child.id}.`);
+  const withCovers = showcaseWorks.filter((work) => work.coverUrl !== undefined).length;
   console.log(`Showcase shelf: ${showcaseWorks.length} real children's books, 1 reading moment, 1 reaction.`);
+  console.log(`Covers: ${withCovers} served locally, ${showcaseWorks.length - withCovers} deliberately missing to show that state.`);
   console.log("All showcase metadata is recorded under the 'bookkin-showcase-seed' provider.");
-  console.log("No cover images or age guidance are seeded, because Bookkin has not verified them.");
+  console.log("No age guidance is seeded, because Bookkin has not verified it.");
 }
 
 main()
