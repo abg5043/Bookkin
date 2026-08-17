@@ -49,13 +49,33 @@ If you deploy without `BOOKKIN_PREVIEW_PASSPHRASE`, the site returns `503` for e
 
 ## Step 3 — First deploy and database setup
 
-Vercel builds on push. After the first successful deploy, the database is still empty. From your local machine, pointed at the Neon database:
+Vercel builds on push. After the first successful deploy, the database is still empty. Run the schema and seed from your local machine, pointed at the Neon database.
+
+**PowerShell (Windows — this is what you are using).** PowerShell has no inline `VAR=value command` prefix; that syntax is bash-only and fails with "is not recognized as the name of a cmdlet". Set the variable first, run both commands, then clear it:
+
+```powershell
+$env:DATABASE_URL = "<your-neon-connection-string>"
+```
+
+```powershell
+npx prisma migrate deploy
+```
+
+```powershell
+npm run db:seed
+```
+
+```powershell
+Remove-Item Env:\DATABASE_URL
+```
+
+Do not skip the final line. `$env:` persists for the entire terminal window and takes precedence over the local `.env` file, so leaving it set means a later `npm run db:migrate` in that same window would silently run against the hosted database instead of local Docker. Closing the window has the same effect.
+
+**Bash / macOS / Linux**, for reference:
 
 ```bash
 DATABASE_URL="<your-neon-connection-string>" npx prisma migrate deploy
 ```
-
-Then seed the synthetic showcase data:
 
 ```bash
 DATABASE_URL="<your-neon-connection-string>" npm run db:seed
