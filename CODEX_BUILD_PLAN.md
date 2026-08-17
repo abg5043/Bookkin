@@ -1120,6 +1120,7 @@ Phase one is an identity, participant, and external-action gate. Present provide
 
 Included:
 
+- Rate limiting for the preview unlock endpoint, carried forward from the Checkpoint 7P security review and specified in `docs/architecture/preview-gate-rate-limiting-plan.md`. The endpoint currently accepts unlimited passphrase guesses. That is a low risk against a synthetic-data preview shared with a few named reviewers, and an unacceptable one the moment this checkpoint introduces real family and child records. It must be implemented before any non-synthetic data reaches a hosted environment, whichever checkpoint that happens in.
 - Authentication and authorization.
 - Household membership and isolation.
 - Recovery, logout, member removal, export, and deletion.

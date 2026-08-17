@@ -131,6 +131,14 @@ Two things that would change that, both of which you would choose deliberately:
 
 Record the observed monthly cost after the first full month as the per-household cost baseline that Checkpoints 8A, 12C, and 13 build on. At one household this figure is a **ceiling, not a projection**, and it excludes your own support time.
 
+## Known weakness: unlimited passphrase attempts
+
+The unlock endpoint does not throttle guesses. Against a multi-word passphrase protecting synthetic data, shared with a few named people, this is low risk — but it is the reason to keep the audience small and individually named rather than posting the link anywhere.
+
+Do not share this URL broadly, and do not load any real family data into it. The fix is planned in `docs/architecture/preview-gate-rate-limiting-plan.md` and is required before real data or Checkpoint 12A, whichever comes first.
+
+Related: the runbook previously implied a twelve-hour session. That expiry is enforced by the browser, not the server, so treat the session as lasting until you rotate the passphrase. Rotating it in Vercel remains the reliable way to revoke access.
+
 ## What this preview is not
 
 It is not application authentication, not a production environment, and not a place for real child data. Household accounts arrive at Checkpoint 12A. Until then, one shared passphrase protects one synthetic household.
