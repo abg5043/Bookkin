@@ -16,8 +16,16 @@ import { NextResponse, type NextRequest } from "next/server";
 const COOKIE_NAME = "bookkin_preview";
 const SESSION_MAX_AGE_SECONDS = 60 * 60 * 12;
 
-function isHostedEnvironment(): boolean {
-  return process.env.VERCEL === "1" || process.env.BOOKKIN_FORCE_PREVIEW_GATE === "true";
+/**
+ * Deliberately an inverse check. An earlier version asked "is this Vercel?" and only failed
+ * closed there, which meant deploying this same code to any other host without updating the
+ * function would silently serve the entire application publicly. Safety must not depend on
+ * recognizing the platform, so anything that is not an explicitly local development server is
+ * treated as hosted and must be configured.
+ */
+function isLocalDevelopment(): boolean {
+  if (process.env.BOOKKIN_FORCE_PREVIEW_GATE === "true") return false;
+  return process.env.NODE_ENV === "development";
 }
 
 /** Constant-time comparison so a wrong passphrase cannot be recovered by timing the response. */
@@ -82,15 +90,13 @@ export async function proxy(request: NextRequest) {
   const passphrase = process.env.BOOKKIN_PREVIEW_PASSPHRASE;
 
   if (passphrase === undefined || passphrase.length === 0) {
-    if (isHostedEnvironment()) {
-      // Fail closed: a hosted deployment without a configured passphrase is misconfigured,
-      // and must never silently serve the preview to the open internet.
-      return new NextResponse("This preview is not configured.", {
-        status: 503,
-        headers: { "Cache-Control": "no-store", "X-Robots-Tag": "noindex, nofollow" },
-      });
-    }
-    return NextResponse.next();
+    if (isLocalDevelopment()) return NextResponse.next();
+    // Fail closed: any non-local deployment without a configured passphrase is misconfigured,
+    // and must never silently serve the preview to the open internet.
+    return new NextResponse("This preview is not configured.", {
+      status: 503,
+      headers: { "Cache-Control": "no-store", "X-Robots-Tag": "noindex, nofollow" },
+    });
   }
 
   const expected = await expectedCookieValue(passphrase);
@@ -102,6 +108,7 @@ export async function proxy(request: NextRequest) {
       return lockedResponse("That passphrase did not match. Try again.");
     }
     const response = NextResponse.redirect(new URL("/", request.url), 303);
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
     response.cookies.set(COOKIE_NAME, expected, {
       httpOnly: true,
       sameSite: "lax",
@@ -124,6 +131,7 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   // Static assets are excluded so the unlock page can style itself; no application data is
-  // served from these paths.
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  // served from these paths. robots.txt is excluded so a crawler can actually read the
+  // disallow directive instead of receiving a 401 — the gate still denies it every real page.
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|robots.txt).*)"],
 };

@@ -2,6 +2,49 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+/**
+ * Deterministic showcase seed for the Checkpoint 7P protected preview.
+ *
+ * Every book below is a real, well-known children's title with accurate bibliographic facts,
+ * recorded under an explicit `bookkin-showcase-seed` provider so it can never be mistaken for a
+ * verified Open Library record. Nothing here is invented: no fabricated title, author, cover
+ * URL, age guidance, or subject. Fields Bookkin has not verified are left absent rather than
+ * filled in, which is what the product promises everywhere else.
+ *
+ * Re-running this is safe and idempotent; it is the preview reset path.
+ */
+
+const showcaseWorks = [
+  {
+    id: "showcase-work-snowy-day",
+    title: "The Snowy Day",
+    authors: ["Ezra Jack Keats"],
+    subjects: ["winter", "snow", "city life"],
+    shelfStatus: "owned" as const,
+  },
+  {
+    id: "showcase-work-wild-things",
+    title: "Where the Wild Things Are",
+    authors: ["Maurice Sendak"],
+    subjects: ["imagination", "feelings"],
+    shelfStatus: "owned" as const,
+  },
+  {
+    id: "showcase-work-goodnight-moon",
+    title: "Goodnight Moon",
+    authors: ["Margaret Wise Brown"],
+    subjects: ["bedtime", "rhyming"],
+    shelfStatus: "borrowed" as const,
+  },
+  {
+    id: "showcase-work-very-hungry-caterpillar",
+    title: "The Very Hungry Caterpillar",
+    authors: ["Eric Carle"],
+    subjects: ["insects", "counting", "food"],
+    shelfStatus: "wishlist" as const,
+  },
+];
+
 async function main() {
   const household = await prisma.household.upsert({
     where: { id: "seed-household" },
@@ -11,18 +54,135 @@ async function main() {
 
   const child = await prisma.childProfile.upsert({
     where: { id: "seed-child" },
-    update: {},
+    update: { ageRange: "age_4_5" },
     create: {
       id: "seed-child",
       householdId: household.id,
       nickname: "Demo reader",
-      ageStageBasis: "age",
-      ageStageValue: "age_2_3",
+      ageRange: "age_4_5",
+    },
+  });
+
+  // A completed profile so a reviewer sees the Reading profile settings view rather than an
+  // unfinished setup form.
+  await prisma.readingRelationshipPhase.upsert({
+    where: { id: "showcase-relationship-read-aloud" },
+    update: {},
+    create: {
+      id: "showcase-relationship-read-aloud",
+      householdId: household.id,
+      childId: child.id,
+      code: "read_aloud",
+      startedAt: new Date("2026-08-01T12:00:00.000Z"),
+      declaredAt: new Date("2026-08-01T12:00:00.000Z"),
+      reporterType: "caregiver",
+      sourceVersion: "showcase-seed-v1",
+      clientMutationId: "showcase-relationship-read-aloud",
+    },
+  });
+
+  await prisma.bookKindPhase.upsert({
+    where: { id: "showcase-kind-funny" },
+    update: {},
+    create: {
+      id: "showcase-kind-funny",
+      householdId: household.id,
+      childId: child.id,
+      code: "funny",
+      startedAt: new Date("2026-08-01T12:00:00.000Z"),
+      declaredAt: new Date("2026-08-01T12:00:00.000Z"),
+      reporterType: "caregiver",
+      sourceVersion: "showcase-seed-v1",
+      clientMutationId: "showcase-kind-funny",
+    },
+  });
+
+  // One current interest, deliberately left WITHOUT a topic confirmation so a reviewer can see
+  // the consent prompt behavior for themselves rather than being shown the post-consent state.
+  await prisma.interestPhase.upsert({
+    where: { id: "showcase-interest-dinosaurs" },
+    update: {},
+    create: {
+      id: "showcase-interest-dinosaurs",
+      householdId: household.id,
+      childId: child.id,
+      label: "Dinosaurs",
+      startedAt: new Date("2026-08-01T12:00:00.000Z"),
+      declaredAt: new Date("2026-08-01T12:00:00.000Z"),
+      reporterType: "caregiver",
+      sourceVersion: "showcase-seed-v1",
+      clientMutationId: "showcase-interest-dinosaurs",
+    },
+  });
+
+  for (const work of showcaseWorks) {
+    await prisma.bookWork.upsert({
+      where: { id: work.id },
+      update: {},
+      create: {
+        id: work.id,
+        title: work.title,
+        authors: JSON.stringify(work.authors),
+        subjects: JSON.stringify(work.subjects),
+        metadataProvider: "bookkin-showcase-seed",
+        metadataRecordId: work.id,
+        metadataProvenance: JSON.stringify({
+          provider: "bookkin-showcase-seed",
+          recordId: work.id,
+          fields: { title: "showcase seed", authors: "showcase seed", subjects: "showcase seed" },
+        }),
+      },
+    });
+
+    await prisma.familyBook.upsert({
+      where: { householdId_workId: { householdId: household.id, workId: work.id } },
+      update: { shelfStatus: work.shelfStatus },
+      create: {
+        householdId: household.id,
+        workId: work.id,
+        addedVia: "showcase_seed",
+        shelfStatus: work.shelfStatus,
+      },
+    });
+  }
+
+  // One reading moment with reactions, so the Reading profile history summary is non-zero and
+  // the History view has something real to show.
+  await prisma.readingEvent.upsert({
+    where: { id: "showcase-reading-snowy-day" },
+    update: {},
+    create: {
+      id: "showcase-reading-snowy-day",
+      householdId: household.id,
+      childId: child.id,
+      workId: "showcase-work-snowy-day",
+      eventType: "finished",
+      occurredAt: new Date("2026-08-10T19:30:00.000Z"),
+      clientMutationId: "showcase-reading-snowy-day",
+    },
+  });
+
+  await prisma.reaction.upsert({
+    where: { id: "showcase-reaction-snowy-day-child" },
+    update: {},
+    create: {
+      id: "showcase-reaction-snowy-day-child",
+      householdId: household.id,
+      readingEventId: "showcase-reading-snowy-day",
+      subjectType: "child",
+      value: "love",
+      declaredAt: new Date("2026-08-10T19:35:00.000Z"),
+      reporterType: "caregiver",
+      sourceType: "quick_log",
+      sourceVersion: "showcase-seed-v1",
+      clientMutationId: "showcase-reaction-snowy-day-child",
     },
   });
 
   console.log(`Seeded household ${household.id} with child ${child.id}.`);
-  console.log("No book metadata is seeded until verified provider records are available.");
+  console.log(`Showcase shelf: ${showcaseWorks.length} real children's books, 1 reading moment, 1 reaction.`);
+  console.log("All showcase metadata is recorded under the 'bookkin-showcase-seed' provider.");
+  console.log("No cover images or age guidance are seeded, because Bookkin has not verified them.");
 }
 
 main()
