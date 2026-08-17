@@ -100,3 +100,29 @@ None of these should be assumed:
 4. **Review signals last**, since they carry the most licensing complexity.
 
 This ordering front-loads what is cheap and reversible, and defers what carries legal and maintenance cost until the mechanism is proven.
+
+## Empirical findings, 2026-08-17
+
+Open Library recovered and the frozen 17-case matrix was captured for the first time (`fixtures/candidates/open-library-discovery-manifest.json`). Two findings, one of them a defect.
+
+### Defect: the confirmed topic queries do not filter for children's books
+
+Only `children_general` carries `subject:"juvenile fiction"`. The thirteen topic queries are bare — `subject:animals AND language:eng` — with no juvenile constraint. Captured top results include *Animal Farm* and Borges for `animals`, Arthur C. Clarke's *Rama II* and a satellite-engineering document for `vehicles`, the personal-finance book *Die with Zero* for `weather`, Goleman's *Emotional Intelligence* for `feelings`, and *Good Omens* for `humor`.
+
+A caregiver confirming "animals" for a four-year-old would have received Orwell. This is a correctness defect in an owner-approved frozen contract, not a tuning problem, and it changes the contract, so it requires owner approval rather than a quiet patch.
+
+### Subject specificity is a real long-tail lever, measured
+
+| Query | Results | Character of top results |
+| --- | --- | --- |
+| `subject:animals AND language:eng` | 97,630 | Adult and children's mixed; *Animal Farm* (653 editions) leads |
+| plus `subject:"juvenile fiction"` | 13,791 | Children's, but skewed to ages 8–12 |
+| plus `subject:"picture books for children"` | 805 | Genuine picture books: *Tawny Scrawny Lion* (11 editions), *Too Much Noise* (11), *Monkey Puzzle* (26) |
+
+Narrowing the subject fixes the age problem and reduces canon pull at the same time, because famous titles are a smaller share of a tighter shelf. This costs nothing and needs no external data.
+
+Caveats to verify before relying on it: `"picture books for children"` tagging coverage is volunteer-maintained and may be uneven across topics, and 805 results for a broad topic like animals suggests real coverage gaps. Each topic needs its own measurement rather than an assumption.
+
+### Confirmed by direct query, not inference
+
+Default ordering is relevance and correlates with popularity; `subject:dinosaurs` returns 7,143 works and the current code takes the top 100, roughly the densest 1.4%. `sort` supports `new`, `old`, `random`, `rating`, `key`, `title`. Deep pagination works — page 50 of a 7,143-result query returned a valid obscure record. Open Library carries no award, starred-review, or imprint-quality field; `subject:"Caldecott Medal"` happens to work only because volunteers tagged it, and that cannot be assumed for Cybils, Batchelder, Zolotow, or state lists.
