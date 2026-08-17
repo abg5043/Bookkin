@@ -46,6 +46,24 @@ Useful framings:
 
 Anti-positioning worth stating plainly, because these invite the Goodreads comparison: never lead with the shelf, the number of books logged, or anything resembling a rating.
 
+## The north star already exists, and we drifted from it
+
+This is not a new direction to invent. `docs/design/checkpoint-5a-exploration.md` records the owner selecting Bright Snap as the **visual language** while explicitly borrowing "the outcome-first product thesis from **Personal Librarian**," and retains this hypothesis verbatim:
+
+> **Outcome-first personal librarian:** make better next-library-trip choices more prominent than shelf administration.
+
+That is the Goodreads problem, identified and written down before any of this was built. The current application does not honor it — shelf administration is the whole application.
+
+The Personal Librarian concept (`mockups/bookkin-concept-personal-librarian.html`) opens with the product stated as a single question:
+
+> **What should we bring home next?**
+
+Its hierarchy runs: the question, then "A signal pool, not one universal recipe," then "A small bag, not an endless feed," and only then "Your shelf" and "Log a read" as supporting surfaces. That ordering is the differentiation, expressed as information architecture rather than copy.
+
+The line itself is worth keeping. "Bring home" means borrow rather than buy. "We" is the caregiver and child together, not a solitary reader. It states the job in the caregiver's own words, which is the test any landing-page headline should pass.
+
+Treat this as the north star it was chosen to be, and treat any surface that leads with the shelf as a departure from an existing decision rather than a neutral default.
+
 ## The uncomfortable implication
 
 The app currently opens on the Shelf. A shelf-first product reads as a tracker no matter what the marketing says, because the first screen is the product claim.

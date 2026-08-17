@@ -885,6 +885,29 @@ stateDiagram-v2
 
 Mandatory human stop: phase one stops before every external or billable action until the owner authorizes the exact action. Successful deployment does not approve the checkpoint. The lead presents the protected preview and operational evidence, resolves owner guidance, and requires final explicit approval before commit/push and Checkpoint 7B.
 
+### Checkpoint 7B0 - Direction check before the recommendation is built
+
+Goal: ask "are we building the right thing" while it is still cheap to change the answer, immediately before the recommendation work that the whole product rests on.
+
+This is a small, analysis-only checkpoint. It writes no application code, changes no schema, and produces a decision plus at most a revised design brief.
+
+Included:
+
+- A synthetic caregiver panel reacting to the current application and to the intended recommendation experience, asking deliberately hostile questions: why not just search the library catalog, why not Goodreads, why hand a child's interests to an app at all, and what would make this worth a second visit.
+- A marketing and brand review of the differentiation claim in `docs/product/differentiation.md`, including whether a stranger understands the product from one screen.
+- A recommender-systems review of whether the planned signals and composition can plausibly produce picks a caregiver would trust, before the weights are built rather than after.
+- An explicit revisit of the Personal Librarian north star recorded in `docs/design/checkpoint-5a-exploration.md`, including whether the application's information architecture should lead with the recommendation rather than the shelf.
+
+Excluded: implementation of any kind, scoring work, schema change, public claims, and any external contact.
+
+Acceptance evidence: the panel's objections recorded verbatim and clearly labeled synthetic; a stated position on the home-surface question; either a confirmation that the planned direction stands or a specific revised brief; and an honest statement of what this exercise cannot tell us, because simulated caregivers are not evidence about real ones.
+
+Specialists: none. Reviewers: synthetic caregiver panel, marketing and brand strategist, recommender-systems researcher.
+
+Owner decisions: whether the direction stands, whether the home surface changes, and whether any finding is significant enough to alter Checkpoint 7B or 8 scope.
+
+Mandatory human stop: this checkpoint produces a recommendation, not a mandate. Synthetic panel reactions carry no authority to change approved scope; only the owner does. The lead presents findings, stops, and requires explicit approval before Checkpoint 7B implementation begins.
+
 ### Checkpoint 7B - Deterministic scoring, composition, and explanations
 
 Goal: produce inspectable recommendation results from fixed verified fixtures without exposing them as a product workflow.
@@ -1149,6 +1172,8 @@ Mandatory human stop: phase one stops before provider creation, migration, or co
 Goal: decide whether evidence supports a truthful public information and waitlist surface.
 
 This checkpoint is optional and requires explicit owner authorization to begin after Checkpoint 12A. That start authorization permits only the approved implementation scope; it is not final approval to commit, push, deploy, or publish. Checkpoint 12C controlled expansion does not depend on performing 12B.
+
+The landing page's headline is a positioning decision, not a copy exercise, and `docs/product/differentiation.md` is its brief. The Personal Librarian concept states the product as one question — "What should we bring home next?" — which names the job in a caregiver's own words, implies borrowing rather than buying, and reads as the caregiver and child together. Any public surface should lead with the recommendation job rather than the shelf, for the same reason the application should. The marketing and brand reviewer owns whether a stranger understands the product from one screen, and the product-truth reviewer owns whether every claim on it is one the product actually delivers.
 
 Potential included scope:
 
