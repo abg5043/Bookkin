@@ -35,7 +35,7 @@ Free tier gives 0.5 GB storage and 100 CU-hours/month, and scales to zero after 
 
 1. Sign up at `vercel.com` with your GitHub account. Choose the **Hobby** plan.
 2. Import the `abg5043/Bookkin` repository.
-3. Set the production branch to the branch you want previewed.
+3. Leave the production branch as **`main`**. Approved checkpoints are merged into `main` immediately (see section 11.4 of the build plan), so `main` is always the approved, deployable state. Do not point production at a feature branch — if the live site is missing approved work, the fix is to merge that work into `main`, not to redirect the deployment.
 4. **Before the first deploy**, add these environment variables:
 
    | Name | Value |
