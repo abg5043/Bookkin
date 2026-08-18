@@ -337,6 +337,8 @@ Signals that would justify moving on any of these, all of which Checkpoint 11A c
 
 Until Checkpoint 11A produces that evidence, ranking, composition, eligibility, and explanation content remain deterministic, and no direction above is scoped, scaffolded, or implemented.
 
+**How this reconciles with the section 6.4 bake-off.** Gate G3 sits inside Checkpoint 7C, long before Checkpoint 11A, and can recommend P1 — dropping the deterministic engine. Both statements stand, and the resolution is that they answer different questions. G3 measures whether a language-model approach *retrieves better* on held-out evidence; Checkpoint 11A decides whether the product *adopts* a different tier after real household outcomes. A G3 result recommending P1 is evidence carried forward to 11A, and it authorizes a scoped, non-shipping evaluation only. It does not authorize shipping a language-model ranker before 11A, and it does not shorten the privacy and product-truth gate in 6.4.6. If G3 makes P1 look decisively right, the honest response is to say so loudly and still wait for real outcomes, because held-out recall on a canon-shaped positive set is exactly the evidence least able to settle this.
+
 The recommender-systems reviewer persona in `AGENTS.md` is the standing lens for this section. It reviews the deterministic weights when they are set at Checkpoint 7B and leads the diagnosis at Checkpoint 11A, so the question "are these picks actually good" is answered by someone who has tuned real ranking systems rather than inferred from the absence of test failures.
 
 #### Further reading
@@ -664,6 +666,20 @@ This exists because the goal is narrower than "a book app," and narrow goals dri
 Specialist completion, independent-review PASS, tests, CI, agent consensus, and lead technical completion do not approve a checkpoint. The lead must present evidence, stop all current and next-checkpoint work, receive the human product owner's review and guidance, rework and reverify requested current-checkpoint changes, and obtain explicit human approval before beginning, delegating, scaffolding, or researching implementation for the next checkpoint.
 
 Git commit and push do not substitute for approval. Before approval, the report shows repository status, intended commit scope, and unrelated dirty files. After approval, the delivery record includes commit hash, branch, remote, push result, and CI result. Unrelated changes and secrets are never included. If remote CI or deployment is itself acceptance evidence, a checkpoint phase-one gate must authorize the exact branch, commit scope, remote, cost, and action before any push; this limited execution authorization does not approve the checkpoint or authorize later work.
+
+## 11A. Rejected approaches register
+
+Settled questions, recorded so they are not relitigated. Each carries the condition that would justify reopening it; absent that condition, the question is closed and re-arguing it is wasted work.
+
+- **Creator adjacency as the primary discovery generator.** Closed: the owner already scans authors and illustrators by hand, so this retrieves books he would have found anyway and fails the north star's first clause. Demoted to a correctness check plus at most one safe-bet seat, with the new-creator quota as the hard constraint. *Reopen if:* the owner stops scanning manually, or new-creator hit rate proves lower than creator-adjacency hit rate over at least twenty real outcomes.
+- **Building an adapter for an untested signal.** Closed: every source passes a ten-book hand check before code is written. *Reopen if:* never.
+- **Conflating "already read" with "not interested."** Closed: familiarity and rejection are different facts, and one control for both would inject false negatives from books never experienced. *Reopen if:* never.
+- **Treating a catalog's juvenile or picture-book facet as content suitability.** Closed: the facet encodes format and reading level. Picture books are published for readers up to roughly fourteen and include titles on death, war, and deportation that pass every facet test. Suitability requires published age bands. *Reopen if:* a catalog facet exposing a true developmental band is found.
+- **Reading a book's subject headings from a catalog feed record.** Closed: verified that headings are not returned per item; only format code and language appear. Membership requires a heading-to-identifier inverted index built by per-heading enumeration. *Reopen if:* the catalog adds headings to its feed.
+- **Subjective ratings as project status.** Closed: self-assessed scores survived six drafts while containing three material errors. Replaced by measured metrics against a manual baseline. *Reopen if:* never.
+- **Netflix-scale algorithmic sophistication as the target.** Closed: Netflix's quality derives from hundreds of millions of users and zero-cost implicit signal, not from algorithm design, and its own prize-winning model was never deployed because simpler methods sufficed. The transferable mechanism is implicit signal — reread capture — not model complexity. *Reopen if:* the household reaction corpus exceeds several thousand events, which it will not.
+- **Completing a phase on deliverables rather than gates.** Closed: every phase exits on a measured metric, not on code shipped. *Reopen if:* never.
+- **Treating absence of a reread as a negative preference signal.** Closed: reread opportunity is confounded by loan duration, caregiver choice, competing books, and simple opportunity. Rereads are strong positive evidence; no reread is neutral. Use explicit negative outcomes instead. *Reopen if:* a dataset records genuine repeated opportunity-to-reread and demonstrates that non-selection predicts dislike independently of those confounders.
 
 ## 12. Required checkpoint report format
 
@@ -993,9 +1009,15 @@ Mandatory human stop: phase one stops before every external or billable action u
 
 Adopted from recommendation-engine plan v3.4 Phase A. Goal: build the retrieval universe and measure whether a usable tone vocabulary exists, before any scoring is written.
 
+**Provider decision this checkpoint depends on, stated explicitly because it changes an existing invariant.** The recommendation-engine plan builds its corpus from the **library catalog**, not from Open Library. The owner approved this on 2026-08-17, with the reasoning that sharpening against one known catalog during alpha is worth more than provider generality, and that a caregiver choosing their own library system is a later capability rather than an alpha requirement. Two consequences must be recorded rather than assumed:
+
+- **Section 2.3 currently scopes the official library catalog to availability only.** Using it as the candidate corpus widens that scope and requires the owner to amend the invariant, not merely to approve this checkpoint. Until amended, this checkpoint is blocked.
+- **Open Library does not disappear.** It remains the verified bibliographic metadata provider behind `BookMetadataProvider`, and the Checkpoint 7A candidate pool, provenance model, and eligibility rules are provider-neutral and carry over. What changes is which system supplies the retrieval universe, not how verified facts are stored.
+- Peer-system holdings and subject-heading facets are catalog-consortium concepts with no Open Library equivalent. Any step below that depends on them depends on this decision.
+
 Included:
 
-- Read the library catalog's real subject-heading facet list off its own interface; classify each heading as tone-bearing or topical; record every heading's corpus frequency. This is a field test — the facet vocabulary is not exposed in the feed, and guessing at it is how the topic-dictionary defect happened.
+- Read the library catalog's real subject-heading facet list off its own interface; classify each heading as tone-bearing or topical; record every heading's corpus frequency. This is a field test: the facet vocabulary is not exposed in the catalog's feed, so it cannot be inferred and must be read from the interface.
 - Verify the picture-book filter actually excludes chapter books, easy readers, and foreign-language editions, using known-bad queries.
 - **Gate G1 — tone vocabulary richness.**
 - Enumerate the corpus and build a heading-to-identifier inverted index. Subject headings are not returned per record, so membership must be precomputed once and then read locally.
@@ -1051,18 +1073,40 @@ Logging ships **with** the engine, not after it. The engine's only source of hou
 Included, in this order:
 
 - One-tap rate-and-dismiss on the recommendation card itself: no separate logging screen, the dismiss control and the rating control are the same gesture, two truthful records written from one tap, a five-second ceiling measured with a stopwatch, one-handed and offline-tolerant, with a ten-second undo.
-- Distinct dismiss states that never conflate familiarity with rejection. "Already read it" and "not interested" are different facts, and merging them injects false negatives from books never experienced.
+- Distinct dismiss states, each writing an event and a reaction as separate records with distinct provenance, never collapsed into one field. These define the outcomes the section 6.4 metrics count, including `child_love`, which the delight-rate formula depends on:
+
+  | Tap | Meaning | Event | Reaction | Effect |
+  | --- | --- | --- | --- | --- |
+  | Loved it | Read, she wants it again | `finished` | `child_love` | Strong positive; counts toward delight rate |
+  | She liked it | Read, went fine | `finished` | `child_like` | Positive |
+  | Not for us | Read, did not land | `finished` | `child_dislike` | Negative, and per section 2.3 never becomes a dislike of every topic in the book |
+  | We stopped | Started, abandoned | `stopped` | `child_dislike` | Strong negative |
+  | Already read it | Read before Bookkin | `read_prior` | none | Excludes forever; prompts once, optionally and skippably, for a reaction |
+  | Not interested | Never read it | `declined` | none | Excludes; weak negative on retrieval, not on tone |
+  | Save for later | — | none | none | Stays eligible, deprioritized sixty days |
+
+  **"Already read it" and "not interested" must remain distinct.** The first is familiarity, the second is rejection, and merging them injects false negatives from books never experienced.
 - Reread capture — the highest-value signal in the system, at zero marginal logging cost.
 - Explicit negative capture, keeping non-reread neutral. Absence of a reread is missing evidence, not evidence of failure.
 - Illustrator indexed and weighted separately from author, since for picture books the illustrator often carries more taste signal.
 - Inverse-frequency heading weights, so a heading covering half the corpus does not dominate the profile.
-- Confidence-ramped personalization, so a handful of early reactions cannot overpower the quality and suitability layers or confidently learn the wrong child.
+- Confidence-ramped personalization, so a handful of early reactions cannot overpower the quality and suitability layers or confidently learn the wrong child. The ramp must satisfy: one to three reactions makes household fit a weak tie-breaker only; roughly five to ten clear outcomes makes it meaningful; roughly fifteen to twenty-five may make it a major ranking component. No single book may define an entire topic or tone preference, and explicit negative evidence stays local to the traits it actually supports rather than poisoning every subject attached to the book. A saturating function is an acceptable first fixture, but its constant is empirical and must not be canonized without replay or field evidence.
+- Seed only what the caregiver actually remembers: roughly five to eight books clearly loved, three to five clearly liked, three to five that clearly failed. **These are targets, never quotas — do not manufacture balance.** A known title with an uncertain reaction is recorded as familiarity only, with the reaction left unknown. Familiarity backfill and taste backfill are different jobs, and demanding a rating for every known title is the friction that kills the app.
+- Keep the first three bags conservative but informative: retain the new-creator quota, require strong external quality evidence, allow at most one high-uncertainty exploration pick, and do not let a weak early taste centroid suppress otherwise excellent candidates. Where a taste hypothesis is genuinely uncertain, test it across successive bags rather than deciding from one book. This is bounded exploration, not experimentation on the child: every book must already be a credible, age-appropriate recommendation.
+- Keep child and caregiver reactions separate, never averaged. A book can legitimately be loved by the child and disliked by the adult reading it, and that combination is useful information for composition rather than a contradiction to resolve.
 - Composition with the new-creator quota: at least two books per bag by creators with no household history, at most one from creator adjacency, and a smaller bag rather than backfilling with known creators.
 - Generate the first bag, then **physically pull the books at the library and judge them in hand**, then read them with the child and log real outcomes.
 - **Gate G4 — first real bags against the manual baseline.**
 - **Gate G5 — new-creator delight rate at twenty outcomes.**
 
 Excluded: tone vectors and curated similarity tiers unless G1 came back weak or G4 shows a measured tone gap.
+
+**Relationship to Checkpoint 8, stated because these two overlap and would otherwise collide.** This checkpoint produces real bags, read by a real child, logged through a real one-tap control, because G4 and G5 cannot be scored any other way. It is therefore not a fixture-only checkpoint, and Checkpoint 8 is not the first time a bag reaches a caregiver. The division is:
+
+- **This checkpoint** builds the engine and the minimum caregiver-facing surface needed to generate a bag and capture honest outcomes from it, for the owner's own household.
+- **Checkpoint 8** delivers the outcome-first workflow as a product: the recommendation home surface, the catalog handoff, explanations, limited-pool and no-candidate presentation, and the full save and replace behavior.
+
+**The one-tap rate-and-dismiss control is caregiver-facing and therefore requires an interactive design review before implementation, presenting at least three distinct options per section 3.1.** It is the highest-frequency interaction in the product and its five-second budget is an acceptance criterion, so it does not get to skip the gate on the grounds that it is small. The dismiss states below are the behavior the design must express, not a design.
 
 Acceptance evidence: log cost stopwatch-measured under the ceiling; every write producing separate inspectable event and reaction records; a dismissed book never reappearing; the new-creator quota holding or the bag shrinking; G4 and G5 scored against the manual baseline.
 

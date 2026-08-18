@@ -1,42 +1,42 @@
-docs: close the discovery-drift hole and three evaluation defects
+docs: fix a fabricated causal claim and four incorporation defects
 
-An independent recommender-systems review found a structural flaw in the
-gate design plus several evaluation problems that would have produced
-wrong decisions.
+An independent fidelity review of the v3.4 incorporation found a claim I
+invented and several real contradictions.
 
-The serious one: nothing re-checked discovery after G5 passed. G6 scored
-only aggregate delight rate, which structurally rewards conservatism,
-since a book similar to a known love is a near-certain hit while a
-genuine discovery pick is high variance. Optimization could therefore
-have tuned the engine back toward safe canon-adjacent picks, undoing the
-north star while every gate still read PASS. G6 now requires a
-new-creator delight-rate trend as a second condition, and a flat or
-declining trend routes to re-diagnosis even when the aggregate looks
-healthy.
+The worst was a fabricated causal link. Both the build plan and
+AGENTS.md asserted that guessing at a catalog's facet vocabulary "is how
+the topic-dictionary defect happened." Those are two different defects
+in two different systems: the topic-dictionary defect was an Open
+Library query shipped without a juvenile filter, caught by the coverage
+matrix, and has nothing to do with facets being absent from a catalog
+feed. Merging them into one story would have misled anyone trying to
+prevent a recurrence. Both are now stated separately, with the explicit
+note that neither is evidence for the other.
 
-G3's ground truth is the household's own historically found books, which
-the north star describes as canon-leaning, so recall against it rewards
-reproducing the canon. G3 is now scoped to detecting decisively worse or
-suspiciously better rather than ranking close methods, owner judgment is
-blind and pairwise because articulate model explanations persuade
-independently of pick quality, an explicit-negative set is required so
-precision can be checked at all, and the trivial baseline is defined as
-most-held-in-age-band rather than a strawman.
+Records the library-catalog-as-corpus decision the owner approved,
+instead of importing catalog-shaped work silently. Section 2.3 currently
+scopes the catalog to availability only, so this checkpoint is blocked
+until the owner amends that invariant rather than merely approving the
+checkpoint. Open Library remains the verified metadata provider, and the
+candidate pool and provenance model are provider-neutral and carry over.
 
-G4 fired at roughly the sample size where the confidence ramp has barely
-engaged personalization, while the new-creator quota forces high-variance
-picks at the same moment, so it now allows for both and is scored on the
-non-exploration portion.
+Checkpoint 7D excluded a user-facing bag while requiring twenty real
+logged outcomes, which is impossible without one, and shipped the
+highest-frequency control in the product with no design gate. Its
+relationship to Checkpoint 8 is now explicit, and the one-tap control
+requires an interactive review with three or more options.
 
-Delight rate gains a maturity window, since a reread cannot occur in the
-first days a book is home and counting fresh borrows would manufacture a
-pivot out of arithmetic.
+Restores the dismiss-state table, without which child_love — which the
+delight-rate formula depends on — was undefined anywhere; the bootstrap
+confidence bands, seeding guidance, bounded-exploration rule, and the
+requirement never to average child and caregiver reactions; and the
+rejected-approaches register, whose reopen-if conditions are what stop
+settled questions being relitigated.
 
-Also: holdings are described as less confounded by popularity rather than
-independent of it, band position is normalized by years since
-publication because a new book and a fading one occupy the same band for
-opposite reasons, summary embeddings are computed during the corpus pass
-where they are nearly free rather than forcing a second enumeration, and
-heading weights are damped like personalization is.
+Reconciles two contradictions: G3 can recommend dropping the
+deterministic engine long before Checkpoint 11A authorizes it, so a G3
+result is now evidence carried forward and authorizes evaluation only;
+and delight rate is named authoritative for the north-star question
+while the existing success metrics continue to govern product health.
 
 Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>

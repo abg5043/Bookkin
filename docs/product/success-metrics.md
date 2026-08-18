@@ -1,6 +1,8 @@
 # Success metrics
 
-The provisional north-star hypothesis is the percentage of verified recommendations that are pursued through the official catalog, explicitly obtained, read, and positively received. Checkpoint 10A must approve its exact outcome conditions, maturity window, reaction subject, and denominator. Longer term, rereads are a stronger signal than passive app usage.
+**Delight rate, defined in `CODEX_BUILD_PLAN.md` section 6.4.1, is the project's primary metric and the authoritative answer to the north-star question every checkpoint report must address.** It supersedes the provisional hypothesis below as the operating measure, and is active from G0 onward rather than waiting for Checkpoint 10A. The measures in this document remain valid and are reported alongside it: they describe product health — activation, coverage, reliability, correction success — where delight rate describes whether the recommendations are any good. Where the two appear to disagree, delight rate governs the north-star question and this document governs everything else. Checkpoint 10A confirms the exact outcome conditions, maturity window, reaction subject, and denominator for both.
+
+The earlier provisional north-star hypothesis, retained for continuity, was the percentage of verified recommendations that are pursued through the official catalog, explicitly obtained, read, and positively received. Checkpoint 10A must approve its exact outcome conditions, maturity window, reaction subject, and denominator. Longer term, rereads are a stronger signal than passive app usage.
 
 Core activation means that a household:
 
