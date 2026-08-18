@@ -372,6 +372,8 @@ DELIGHT RATE = (books brought home that earned child_love OR a reread)
 
 Measured over a rolling window of the last twenty books brought home. Nothing else is the goal.
 
+**A book enters the window only after a maturity period** — long enough for a realistic loan-and-reread cycle. A reread cannot happen in the first days a book is home, so counting freshly-borrowed books mechanically depresses the rate. That distortion is worst at exactly the sample size where G4 fires, and would manufacture a pivot out of arithmetic. Immature books are reported separately as pending, never silently counted as failures.
+
 | Supporting metric | Definition | Why it exists |
 | --- | --- | --- |
 | **Bag→Borrow Rate** | Books borrowed per bag delivered | A bag where nothing appealed enough to borrow is a total failure that would otherwise compute as 0/0 and disappear. Delight rate alone cannot see it. |
@@ -412,10 +414,20 @@ Failing a gate never means "try harder." It means executing a named alternative.
 - **G0 — manual baseline.** No code. Cannot fail; blocks all downstream gates.
 - **G1 — tone vocabulary richness.** Pass at twelve or more tone-bearing headings, at least six with corpus frequency under 15%. Weak or fail routes to P3. A heading matching 47% of the corpus discriminates nothing and does not count.
 - **G2 — corpus integrity.** Pass at 90% work-ID resolution, zero adult/chapter/easy-reader leaks in a 200-record sample, and 90% coverage of known-loved books. Coverage below 75% means the corpus is the wrong universe; re-scope before building on it.
-- **G3 — bake-off.** The major pivot gate. Leave-one-positive-out recall for three competing methods plus owner eyeball on at least three bags each. Frontier LLM decisively better routes to P1; nothing beating the trivial baseline routes to P6.
-- **G4 — first real bags.** Delight rate against manual baseline after roughly ten books. More than fifteen points below manual routes to P2 if the cause is thin household data, P3 or P4 if the cause is retrieval.
-- **G5 — beats manual scanning.** New-creator delight rate at twenty outcomes. At least one new-creator book per bag landing positive. Consistent underperformance means the discovery premise is wrong.
-- **G6 — optimization plateau.** Delight-rate trend across three windows of twenty. Flat and above manual plus ten routes to P5; flat and below routes to P2.
+- **G3 — bake-off.** The major pivot gate. Leave-one-positive-out recall for three competing methods plus owner judgment on at least three bags each. Frontier LLM decisively better routes to P1; nothing beating the trivial baseline routes to P6. Three constraints on how it is run, because the naive version measures the wrong thing:
+  - **The ground truth is canon-biased and must be treated as such.** The positives are books this household already found, using methods the north star describes as canon-leaning. Recall against that set rewards reproducing the canon, which is the opposite of the product's purpose. G3 is therefore trustworthy for detecting a method that is *decisively worse* or *suspiciously better*, and is not trustworthy for ranking two close methods. A five-point recall difference does not choose a winner.
+  - **Owner judgment is blind and pairwise.** Bags are presented unlabeled, in pairs, with the preference and a one-line reason recorded before any label is revealed. An articulate explanation from a language model is persuasive independently of whether the books behind it are better, and unblinded side-by-side review cannot separate the two.
+  - **Include a small explicit-negative set** — books the household rejected or stopped — so precision can be sanity-checked. Recall alone rewards a method that returns everything eligible.
+  - **The trivial baseline is defined as most-held-in-age-band**, not a random strawman. Beating a strawman proves nothing, and most-held is the real competitor.
+- **G4 — first real bags.** Delight rate against manual baseline after roughly ten books. More than fifteen points below manual routes to P2 if the cause is thin household data, P3 or P4 if the cause is retrieval. Two allowances, because the naive threshold would fire on designed-in cold-start behavior rather than a defect:
+  - **Personalization has barely engaged at this point by design.** Section 6.4's confidence ramp makes household fit a weak tie-breaker until roughly five to ten clear outcomes, which is approximately where G4 fires. A bag still driven mainly by quality, suitability, and heading similarity may reasonably lose to a caregiver's personally-tuned picks without anything being wrong.
+  - **Score G4 on the non-exploration portion of each bag.** The new-creator quota deliberately forces at least two high-variance picks per bag at exactly the moment the system knows least. Those are what G5 exists to judge. Conflating a deliberately risky pick's expected miss with engine failure would trigger a pivot on the plan's own intended behavior.
+- **G5 — beats manual scanning.** New-creator delight rate at twenty outcomes. At least one new-creator book per bag landing positive. Consistent underperformance means the discovery premise is wrong. **Watch for contamination:** the household's physical shelf is unlogged, so any creator the family knows but never backfilled is wrongly counted as new, inflating this number. Treat an unexpectedly strong result as a prompt to check the backfill before believing it.
+- **G6 — optimization plateau.** Two conditions, both required.
+  - Delight-rate trend across three windows of twenty. Flat and above manual plus ten routes to P5; flat and below routes to P2.
+  - **New-creator delight-rate trend across the same windows.** Flat or declining routes to P2 or re-diagnosis **even when aggregate delight rate is healthy.**
+
+  The second condition exists because aggregate delight rate structurally rewards conservatism: a book similar to a known love is a near-certain hit, while a genuine discovery pick is higher variance. Optimizing on the aggregate alone would quietly tune the engine back toward safe, derivative, canon-adjacent picks — undoing the north star while every gate still reads PASS. G5 proves discovery works once, at twenty outcomes; without this condition nothing ever checks it again.
 
 Standing stop conditions: log cost sustained above eight seconds routes immediately to P2; three consecutive failed gates means the premise is wrong and building stops.
 
@@ -990,7 +1002,10 @@ Included:
 - Resolve work identifiers and deduplicate editions.
 - Bulk familiarity backfill of already-known household titles, so early bags do not recommend books the family already owns.
 - Ingest published age bands, which carry developmental judgment the catalog facet does not.
-- Peer-system holdings pull for the consensus band. Library holdings encode professional selection rather than sales, and targeting a band rather than the peak yields widely-selected-but-not-famous.
+- Peer-system holdings pull for the consensus band. Library holdings encode professional selection more than sales, and targeting a band rather than the peak yields widely-selected-but-not-famous. State this honestly as **less confounded by popularity, not independent of it**: patron demand drives multi-copy buying, vendor approval plans are a commercial filter, and trade reviews sit upstream of both holdings and marketing, so holdings and starred reviews are correlated rather than independent evidence.
+  - **Normalize band position by years since publication.** A genuinely excellent book two months old sits low because holdings have not diffused yet; a fading title sits mid-band on its way down. One snapshot cannot tell those apart, and they are opposite things. Durability claims require a second pull to diff against the first and must not be asserted from a single snapshot.
+- Compute and store summary embeddings during this corpus pass, even though ranking does not use them yet. The description text is already being fetched here, so the marginal cost is near zero, and deferring it would force an entire second corpus enumeration if the escalation is ever triggered. Storing is not using; whether they enter scoring remains a later decision.
+- Damp the household side of heading weighting the same way personalization is damped. With only a few dozen loved books, one book carrying a rare heading can otherwise dominate that heading's weight — the exact failure the confidence ramp exists to prevent, applied to a different piece of arithmetic.
 - **Owner-supplied curation lists**, intake per section 6.4.7. These rank highest among acquisition routes because they carry no licensing question, no scraper to maintain, and the curation judgment is the owner's own. The first slice is deliberately small — one year of one institutional list, or one state award list — sized to prove matching, provenance, and refresh before any commitment to scale.
 - **Gate G2 — corpus integrity.**
 

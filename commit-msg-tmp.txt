@@ -1,26 +1,42 @@
-design: add three home-surface options for the recommendation-first pivot
+docs: close the discovery-drift hole and three evaluation defects
 
-The application opens on the Shelf, which reads as a reading tracker
-regardless of positioning, because the first screen is the product
-claim. The owner has committed to opening on the recommendation, so
-these are the execution options for that decision.
+An independent recommender-systems review found a structural flaw in the
+gate design plus several evaluation problems that would have produced
+wrong decisions.
 
-All three open on the recommendation and none opens on the shelf. Copy,
-controls, and underlying data are identical across them so the
-comparison isolates information architecture. The Bright Snap visual
-language is unchanged.
+The serious one: nothing re-checked discovery after G5 passed. G6 scored
+only aggregate delight rate, which structurally rewards conservatism,
+since a book similar to a known love is a near-certain hit while a
+genuine discovery pick is high variance. Optimization could therefore
+have tuned the engine back toward safe canon-adjacent picks, undoing the
+north star while every gate still read PASS. G6 now requires a
+new-creator delight-rate trend as a second condition, and a flat or
+declining trend routes to re-diagnosis even when the aggregate looks
+healthy.
 
-1. The Bag — a stack already waiting, the way a librarian hands you one.
-   Immediate value on open; open question is what triggers a new bag.
-2. The Ask — opens with the question rather than the answer, with
-   one-tap context for a single request. Matches the real pre-library
-   rhythm; weakest first impression since no books are visible.
-3. Because You Loved — anchored on a book that actually worked, with the
-   reasoning as the organizing structure. Leads with the strongest
-   available signal; has a genuine cold-start problem.
+G3's ground truth is the household's own historically found books, which
+the north star describes as canon-leaning, so recall against it rewards
+reproducing the canon. G3 is now scoped to detecting decisively worse or
+suspiciously better rather than ranking close methods, owner judgment is
+blind and pairwise because articulate model explanations persuade
+independently of pick quality, an explicit-negative set is required so
+precision can be checked at all, and the trivial baseline is defined as
+most-held-in-age-band rather than a strawman.
 
-Titles shown are real books surfaced by an actual catalog query. The
-reasons shown are the kind the engine will produce and are not presented
-as verified claims.
+G4 fired at roughly the sample size where the confidence ramp has barely
+engaged personalization, while the new-creator quota forces high-variance
+picks at the same moment, so it now allows for both and is scored on the
+non-exploration portion.
+
+Delight rate gains a maturity window, since a reread cannot occur in the
+first days a book is home and counting fresh borrows would manufacture a
+pivot out of arithmetic.
+
+Also: holdings are described as less confounded by popularity rather than
+independent of it, band position is normalized by years since
+publication because a new book and a fading one occupy the same band for
+opposite reasons, summary embeddings are computed during the corpus pass
+where they are nearly free rather than forcing a second enumeration, and
+heading weights are damped like personalization is.
 
 Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
