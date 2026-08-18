@@ -101,6 +101,21 @@ None of these should be assumed:
 
 This ordering front-loads what is cheap and reversible, and defers what carries legal and maintenance cost until the mechanism is proven.
 
+## Scope correction: this document covers one axis of two
+
+A good recommendation is **similar AND great**. Awards, reviews, holdings, and imprints answer *great*. None of them answer *similar* — a starred, award-winning book can be nothing like what this child loves.
+
+Everything below is the **quality axis only**. The similarity axis is separate, already architected in the recommendation-engine plan, and is the more important of the two for discovery:
+
+| | Answers | Mechanism |
+| --- | --- | --- |
+| **Similarity** | "is it like what she loves?" | Tone subject headings weighted by inverse corpus frequency; tone/theme curated lists; tone vectors; summary-embedding neighbours |
+| **Quality** | "is it any good?" | Peer-system holdings consensus band; awards; published age bands; imprints; reviews |
+
+The engine plan ranks its discovery signals with **tone headings first and the consensus band second — similarity retrieves, quality filters.** That ordering is correct and worth stating plainly, because the reverse fails: filtering by quality first yields award winners the owner has already worked through, which is exactly the problem this product exists to solve.
+
+The failure modes are symmetrical. Quality without similarity gives excellent books that do not fit this child. Similarity without quality gives books resembling her favourites that are merely competent. Neither alone is a recommendation.
+
 ## A correction, and a layered answer
 
 An earlier draft of this document treated **library holdings as a popularity measure**, alongside sales and edition counts. That is wrong, and the distinction matters more than any other point here.
@@ -123,6 +138,22 @@ Layers 1–3 require no manual curation at all, which materially changes the ear
 **What remains genuinely hard.** Starred trade reviews are the single best curation signal and sit behind commercial licences with no free path. State award lists are unlikely to be comprehensively covered by Wikidata and probably need manual compilation. Those two are the honest limits.
 
 **Every layer must pass a hand check before it is built.** Ten books from that source, judged against household taste; fewer than three plausible means the adapter does not get written. A signal that sounds principled and fails in practice is worse than no signal, because it is expensive to maintain and invisible when wrong.
+
+## Acquisition routes, ranked by trust and risk
+
+The owner has offered to supply lists directly and asked about searching the web for reviews and scraping other metrics. Those are different routes with genuinely different risk, and the ranking matters:
+
+| Route | Trust | Risk | Verdict |
+| --- | --- | --- | --- |
+| **Owner-supplied lists** | Highest — he knows which sources he trusts | None | **Start here.** No licensing question, no scraper to maintain, and the curation judgment is the owner's own |
+| **Open structured data** — Wikidata awards, and any source with a real API and clear terms | High | Low | Verify coverage per award empirically rather than assuming it |
+| **Published institutional lists** — Bank Street, CCBC, ALSC | High | Low, subject to access terms | Check terms before ingesting |
+| **Web search for review facts** | Medium | **Fabrication risk** | Only if it extracts *verifiable facts* — award name, year, starred yes/no — each with a source URL. Never generated prose, never a model's summary of a review presented as the review |
+| **Scraping review or bookseller sites** | Medium | Terms-of-service risk, brittle | Last resort. A scraper is a permanent maintenance cost against a page layout nobody controls |
+
+The fabrication risk in the fourth row deserves emphasis, because it is the one that would quietly corrupt the product rather than break it loudly. A model asked "does this book have starred reviews" will produce a confident answer either way. What may be recorded is a *checkable* fact with a link a caregiver could follow; what may not is a model's recollection or paraphrase. If the link does not verify the claim, the claim does not get stored.
+
+**The practical consequence:** owner-supplied lists are not a fallback for when the automated routes fail. They are the best route, and they should be used first precisely because they carry the least risk of the failure this product cannot afford.
 
 ## Empirical findings, 2026-08-17
 
