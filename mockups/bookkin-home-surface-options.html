@@ -1,0 +1,269 @@
+<meta charset="utf-8">
+<div id="bkhome">
+  <style>
+    #bkhome{--rv-bg:light-dark(#f5f6f8,#151719);--rv-fg:light-dark(#17191c,#f5f5f1);--rv-line:light-dark(#cfd3d8,#4a4d50);width:100%;color:var(--rv-fg);font-family:Manrope,ui-sans-serif,system-ui,sans-serif;color-scheme:light dark}
+    #bkhome *{box-sizing:border-box}#bkhome button,#bkhome select{font:inherit}#bkhome button{cursor:pointer}#bkhome [hidden]{display:none!important}
+    #bkhome .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    #bkhome .tools{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-bottom:.8rem;padding:.7rem;border:1px solid var(--rv-line);background:var(--rv-bg)}
+    #bkhome .tools strong{margin-right:auto}#bkhome .grp{display:flex;flex-wrap:wrap;gap:.3rem;align-items:center}#bkhome .grp>span{font-size:.78rem;color:light-dark(#555b63,#c7c9cc)}
+    #bkhome .tools button{min-height:44px;padding:.55rem .72rem;border:1px solid var(--rv-line);background:light-dark(#fff,#222528);color:inherit}
+    #bkhome .tools button[aria-pressed="true"]{border-color:light-dark(#111,#fff);background:light-dark(#ffd91f,#675e00);color:light-dark(#111,#fff);font-weight:700}
+    #bkhome .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,320px);gap:1rem;align-items:start}
+    #bkhome .stage{display:flex;justify-content:center;min-width:0}
+    #bkhome .device{width:100%;transition:width .18s ease}#bkhome .device.phone{width:min(100%,390px)}
+
+    /* ---- Bright Snap product language, unchanged from the approved direction ---- */
+    #bkhome .app{--flash:#ffd91f;--flash-soft:#fff5b5;--ink:#151719;--paper:#fff;--canvas:#f2f7fa;--line:#d6e1e7;--line-strong:#aab9c2;--muted:#56626a;--coral:#ff7164;
+      position:relative;overflow:hidden;min-height:720px;border:2px solid var(--ink);border-radius:1.5rem;background:var(--canvas);color:var(--ink)}
+    #bkhome .app button{min-height:44px;color:inherit}
+    #bkhome .hdr{display:flex;align-items:center;gap:.5rem;min-height:60px;padding:0 1rem;border-bottom:2px solid var(--ink);background:var(--paper)}
+    #bkhome .brand{margin-right:auto;font-family:Georgia,serif;font-size:1.25rem;font-weight:700;letter-spacing:-.03em}
+    #bkhome .brand i{color:var(--coral);font-style:normal}
+    #bkhome .nav{display:flex;gap:.15rem}#bkhome .nav button{padding:.5rem .6rem;border:0;border-radius:999px;background:transparent;font-size:.85rem}
+    #bkhome .nav button[aria-current="page"]{background:var(--flash-soft);font-weight:700}
+    #bkhome .who{min-height:38px;max-width:120px;padding:.3rem .6rem;border:1.5px solid var(--ink);border-radius:999px;background:#fff;font-weight:700;font-size:.82rem}
+    #bkhome .body{padding:clamp(1rem,3.5vw,1.6rem);padding-bottom:4.5rem}
+    #bkhome .eyebrow{margin:0 0 .3rem;font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+    #bkhome h1{margin:0 0 .5rem;font-family:Georgia,serif;font-size:clamp(1.7rem,4.2vw,2.5rem);line-height:1.05;letter-spacing:-.03em}
+    #bkhome .lede{margin:0 0 1.1rem;max-width:34rem;color:#454b52;font-size:.95rem}
+    #bkhome .card{padding:1rem;border:1px solid var(--line);border-radius:1.1rem;background:var(--paper);box-shadow:0 10px 26px rgb(22 33 44/.08)}
+    #bkhome .primary{padding:.8rem 1.15rem;border:2px solid var(--ink);border-radius:.85rem;background:var(--flash);font-weight:800;box-shadow:3px 3px 0 var(--ink)}
+    #bkhome .ghost{padding:.5rem .8rem;border:1.5px solid var(--line-strong);border-radius:.7rem;background:#fff;font-size:.85rem}
+    #bkhome .link{padding:.3rem .1rem;border:0;background:none;color:#174f9c;text-decoration:underline;text-underline-offset:3px;font-size:.85rem}
+    #bkhome .cover{display:grid;place-items:center;width:100%;aspect-ratio:2/3;border-radius:.6rem;background:linear-gradient(150deg,#e8eef1,#d7e3e9);color:#5c6970;font-size:.65rem;text-align:center;padding:.4rem}
+    #bkhome .why{display:inline-block;margin-top:.4rem;padding:.22rem .5rem;border-radius:999px;background:var(--flash-soft);font-size:.72rem;font-weight:700}
+    #bkhome .newbadge{display:inline-block;margin-top:.4rem;margin-left:.25rem;padding:.22rem .5rem;border-radius:999px;background:#e7f6f7;font-size:.72rem;font-weight:700}
+    #bkhome .acts{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.55rem}
+    #bkhome .acts button{padding:.4rem .6rem;border:1.5px solid var(--line-strong);border-radius:.6rem;background:#fff;font-size:.78rem;min-height:38px}
+
+    /* Option 1 — the bag */
+    #bkhome .bag{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;margin-top:.4rem}
+    #bkhome .bagbook strong{display:block;margin-top:.5rem;font-size:.9rem;line-height:1.2}
+    #bkhome .bagbook small{display:block;margin-top:.15rem;color:var(--muted);font-size:.78rem}
+    #bkhome .bagfoot{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--line)}
+
+    /* Option 2 — the ask */
+    #bkhome .ask{display:grid;place-items:center;min-height:22rem;text-align:center}
+    #bkhome .ask h1{font-size:clamp(1.9rem,5.5vw,3rem);max-width:16ch}
+    #bkhome .chips{display:flex;flex-wrap:wrap;gap:.35rem;justify-content:center;margin:.9rem 0 1.2rem}
+    #bkhome .chip{padding:.4rem .7rem;border:1.5px solid var(--line-strong);border-radius:999px;background:#fff;font-size:.82rem;min-height:38px}
+    #bkhome .chip[aria-pressed="true"]{border-color:var(--ink);background:var(--flash);font-weight:700}
+
+    /* Option 3 — because you loved */
+    #bkhome .anchor{display:grid;grid-template-columns:78px minmax(0,1fr);gap:.8rem;align-items:center;padding:.85rem;border:2px solid var(--ink);border-radius:1rem;background:var(--flash-soft)}
+    #bkhome .anchor .cover{width:78px}
+    #bkhome .thread{display:grid;gap:.7rem;margin-top:.9rem;padding-left:1.1rem;border-left:3px dashed var(--line-strong)}
+    #bkhome .leaf{display:grid;grid-template-columns:56px minmax(0,1fr);gap:.75rem;align-items:start;padding:.75rem;border:1px solid var(--line);border-radius:.9rem;background:var(--paper)}
+    #bkhome .leaf .cover{width:56px}
+    #bkhome .leaf strong{display:block;font-size:.9rem}#bkhome .leaf small{display:block;margin-top:.1rem;color:var(--muted);font-size:.78rem}
+
+    #bkhome .notes{display:grid;gap:.7rem}
+    #bkhome .note{padding:.85rem;border:1px solid var(--rv-line);background:light-dark(#fff,#1c1f22)}
+    #bkhome .note h3{margin:0 0 .4rem;font-size:.95rem}
+    #bkhome .note p,#bkhome .note li{margin:.25rem 0;font-size:.84rem;line-height:1.45;color:light-dark(#4e555c,#ced1d3)}
+    #bkhome .note ul{margin:.3rem 0 0;padding-left:1.05rem}
+    #bkhome .tag{display:inline-block;padding:.15rem .45rem;border-radius:999px;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+    #bkhome .tag.plus{background:#dff5e6;color:#1c5f34}#bkhome .tag.minus{background:#ffe9ec;color:#8d2338}
+
+    @media(max-width:900px){#bkhome .layout{grid-template-columns:1fr}}
+    @media(max-width:560px){#bkhome .bag{grid-template-columns:1fr}}
+    #bkhome .device.phone .bag{grid-template-columns:1fr}
+    #bkhome .device.phone .body{padding:1rem;padding-bottom:4rem}
+  </style>
+
+  <div class="tools" aria-label="Home surface review controls">
+    <strong>Home surface — three options</strong>
+    <div class="grp"><span>Option</span>
+      <button type="button" data-opt="bag" aria-pressed="true">1 · The Bag</button>
+      <button type="button" data-opt="ask" aria-pressed="false">2 · The Ask</button>
+      <button type="button" data-opt="thread" aria-pressed="false">3 · Because You Loved</button>
+    </div>
+    <div class="grp"><span>Width</span>
+      <button type="button" data-w="desktop" aria-pressed="true">Desktop</button>
+      <button type="button" data-w="phone" aria-pressed="false">Phone</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="stage"><div class="device" id="bk-device">
+      <div class="app">
+        <header class="hdr">
+          <span class="brand">Bookkin<i>.</i></span>
+          <nav class="nav" aria-label="Primary">
+            <button type="button" aria-current="page">Next read</button>
+            <button type="button">Shelf</button>
+            <button type="button">History</button>
+          </nav>
+          <select class="who" aria-label="Active reader"><option>Maya</option><option>Theo</option></select>
+        </header>
+
+        <!-- ============ OPTION 1 — THE BAG ============ -->
+        <main class="body" data-view="bag">
+          <p class="eyebrow">Ready for your next library trip</p>
+          <h1>Three books for Maya.</h1>
+          <p class="lede">Picked from your library’s shelves. None of these are on your shelf already.</p>
+
+          <div class="bag">
+            <article class="bagbook">
+              <div class="cover">Too Much Noise<br>cover</div>
+              <strong>Too Much Noise</strong>
+              <small>Ann McGovern</small>
+              <span class="why">Cumulative + funny, like Monkey Puzzle</span>
+              <span class="newbadge">New author to you</span>
+              <div class="acts"><button type="button">Find at library</button><button type="button">Not for us</button></div>
+            </article>
+            <article class="bagbook">
+              <div class="cover">The Rooster Who<br>Set Out to See<br>the World</div>
+              <strong>The Rooster Who Set Out to See the World</strong>
+              <small>Eric Carle</small>
+              <span class="why">Carle you haven’t read</span>
+              <div class="acts"><button type="button">Find at library</button><button type="button">Not for us</button></div>
+            </article>
+            <article class="bagbook">
+              <div class="cover">Tawny Scrawny<br>Lion cover</div>
+              <strong>Tawny Scrawny Lion</strong>
+              <small>Kathryn Jackson</small>
+              <span class="why">Animals + rhyme</span>
+              <span class="newbadge">New author to you</span>
+              <div class="acts"><button type="button">Find at library</button><button type="button">Not for us</button></div>
+            </article>
+          </div>
+
+          <div class="bagfoot">
+            <button class="primary" type="button">Find these at the library</button>
+            <button class="ghost" type="button">Swap one out</button>
+            <button class="link" type="button">Why these three?</button>
+          </div>
+        </main>
+
+        <!-- ============ OPTION 2 — THE ASK ============ -->
+        <main class="body" data-view="ask" hidden>
+          <div class="ask">
+            <div>
+              <p class="eyebrow">Maya · ages 4–5 · read-alouds together</p>
+              <h1>What should we bring home next?</h1>
+              <p class="lede" style="margin-inline:auto">Tell Bookkin anything that’s true today, or just ask.</p>
+              <div class="chips" role="group" aria-label="Optional context for this request">
+                <button class="chip" type="button" aria-pressed="true">Something funny</button>
+                <button class="chip" type="button" aria-pressed="false">Short tonight</button>
+                <button class="chip" type="button" aria-pressed="false">Like Monkey Puzzle</button>
+                <button class="chip" type="button" aria-pressed="false">Dinosaurs</button>
+              </div>
+              <button class="primary" type="button">Find three books</button>
+              <p class="lede" style="margin:1rem auto 0;font-size:.85rem">Last bag: 2 of 3 brought home · <button class="link" type="button">see it again</button></p>
+            </div>
+          </div>
+        </main>
+
+        <!-- ============ OPTION 3 — BECAUSE YOU LOVED ============ -->
+        <main class="body" data-view="thread" hidden>
+          <p class="eyebrow">Following a book that worked</p>
+          <h1>Because Maya loved this one.</h1>
+          <p class="lede">Bookkin follows what actually landed, and shows its reasoning.</p>
+
+          <div class="anchor">
+            <div class="cover">Monkey Puzzle<br>cover</div>
+            <div>
+              <strong style="display:block;font-size:1rem">Monkey Puzzle</strong>
+              <small style="display:block;margin-top:.15rem;color:#56626a;font-size:.82rem">Julia Donaldson · read 4 times</small>
+              <button class="link" type="button">Follow a different book</button>
+            </div>
+          </div>
+
+          <div class="thread">
+            <article class="leaf">
+              <div class="cover">Too Much<br>Noise</div>
+              <div>
+                <strong>Too Much Noise</strong>
+                <small>Ann McGovern</small>
+                <span class="why">Same cumulative build-up</span>
+                <span class="newbadge">New author to you</span>
+                <div class="acts"><button type="button">Find at library</button><button type="button">Not for us</button></div>
+              </div>
+            </article>
+            <article class="leaf">
+              <div class="cover">Tawny<br>Scrawny</div>
+              <div>
+                <strong>Tawny Scrawny Lion</strong>
+                <small>Kathryn Jackson</small>
+                <span class="why">Animals, rhyming, gentle ending</span>
+                <span class="newbadge">New author to you</span>
+                <div class="acts"><button type="button">Find at library</button><button type="button">Not for us</button></div>
+              </div>
+            </article>
+            <article class="leaf">
+              <div class="cover">Rooster /<br>World</div>
+              <div>
+                <strong>The Rooster Who Set Out to See the World</strong>
+                <small>Eric Carle</small>
+                <span class="why">Counting + repetition</span>
+                <div class="acts"><button type="button">Find at library</button><button type="button">Not for us</button></div>
+              </div>
+            </article>
+          </div>
+        </main>
+      </div>
+    </div></div>
+
+    <aside class="notes">
+      <div class="note">
+        <h3>What is being decided</h3>
+        <p>All three open on the recommendation. None opens on the shelf. The visual language is unchanged — this is information architecture only.</p>
+        <p>Copy, controls, and the underlying data are identical across options so the comparison isolates structure.</p>
+      </div>
+
+      <div class="note" data-note="bag">
+        <h3>1 · The Bag</h3>
+        <p>A stack is already waiting, the way a librarian hands you one. The bag persists until you act on it.</p>
+        <p><span class="tag plus">for</span> Nothing to do on open — the value is visible immediately. Matches the physical object it describes.</p>
+        <p><span class="tag minus">against</span> A bag you didn’t ask for can go stale, and re-generating it on every open would waste requests and make results feel arbitrary.</p>
+        <p><strong>Open question:</strong> what triggers a new bag — time, a completed library trip, or an explicit ask?</p>
+      </div>
+
+      <div class="note" data-note="ask" hidden>
+        <h3>2 · The Ask</h3>
+        <p>Opens with the question, not the answer. The bag is a result you requested, and today’s context can be added in one tap.</p>
+        <p><span class="tag plus">for</span> Matches the real rhythm — you think about this before a library trip, not continuously. Optional chips let “short tonight” or “something funny” shape a single request without becoming a permanent profile setting.</p>
+        <p><span class="tag minus">against</span> The home screen is empty of books until you act, which is the weakest first impression of the three and the closest to a search box.</p>
+      </div>
+
+      <div class="note" data-note="thread" hidden>
+        <h3>3 · Because You Loved</h3>
+        <p>Anchored on a book that actually worked, with recommendations hanging off it and the reasoning visible as the organizing principle.</p>
+        <p><span class="tag plus">for</span> Leads with the strongest signal available — a comp title beats a topic. The explanation is the structure, not a footnote, which is exactly what a library catalog cannot do.</p>
+        <p><span class="tag minus">against</span> Needs at least one clearly-loved book, so it has a real cold-start problem. Risks feeling narrow if the anchor is stale or the child’s taste has moved.</p>
+      </div>
+
+      <div class="note">
+        <h3>Not represented here</h3>
+        <ul>
+          <li>Cold-start states, when there is not yet enough evidence for any bag.</li>
+          <li>The one-tap rate-and-dismiss flow, which ships with the engine.</li>
+          <li>Limited-pool and no-candidate results, which must never be padded.</li>
+        </ul>
+        <p>Books shown are real titles surfaced by an actual catalog query. The reasons shown are the <em>kind</em> the engine will produce; none is a verified claim yet.</p>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    (function(){
+      const root=document.getElementById('bkhome');
+      const device=document.getElementById('bk-device');
+      function press(sel,btn){root.querySelectorAll(sel).forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));}
+      root.querySelectorAll('[data-opt]').forEach(btn=>btn.addEventListener('click',()=>{
+        press('[data-opt]',btn);
+        const v=btn.dataset.opt;
+        root.querySelectorAll('[data-view]').forEach(m=>{m.hidden=m.dataset.view!==v;});
+        root.querySelectorAll('[data-note]').forEach(n=>{n.hidden=n.dataset.note!==v;});
+      }));
+      root.querySelectorAll('[data-w]').forEach(btn=>btn.addEventListener('click',()=>{
+        press('[data-w]',btn);
+        device.className='device '+(btn.dataset.w==='phone'?'phone':'');
+      }));
+      root.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+        c.setAttribute('aria-pressed',c.getAttribute('aria-pressed')==='true'?'false':'true');
+      }));
+    })();
+  </script>
+</div>

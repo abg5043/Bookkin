@@ -1,0 +1,26 @@
+design: add three home-surface options for the recommendation-first pivot
+
+The application opens on the Shelf, which reads as a reading tracker
+regardless of positioning, because the first screen is the product
+claim. The owner has committed to opening on the recommendation, so
+these are the execution options for that decision.
+
+All three open on the recommendation and none opens on the shelf. Copy,
+controls, and underlying data are identical across them so the
+comparison isolates information architecture. The Bright Snap visual
+language is unchanged.
+
+1. The Bag — a stack already waiting, the way a librarian hands you one.
+   Immediate value on open; open question is what triggers a new bag.
+2. The Ask — opens with the question rather than the answer, with
+   one-tap context for a single request. Matches the real pre-library
+   rhythm; weakest first impression since no books are visible.
+3. Because You Loved — anchored on a book that actually worked, with the
+   reasoning as the organizing structure. Leads with the strongest
+   available signal; has a genuine cold-start problem.
+
+Titles shown are real books surfaced by an actual catalog query. The
+reasons shown are the kind the engine will produce and are not presented
+as verified claims.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
