@@ -8,13 +8,13 @@
     #bkhome .tools strong{margin-right:auto}#bkhome .grp{display:flex;flex-wrap:wrap;gap:.3rem;align-items:center}#bkhome .grp>span{font-size:.78rem;color:light-dark(#555b63,#c7c9cc)}
     #bkhome .tools button{min-height:44px;padding:.55rem .72rem;border:1px solid var(--rv-line);background:light-dark(#fff,#222528);color:inherit}
     #bkhome .tools button[aria-pressed="true"]{border-color:light-dark(#111,#fff);background:light-dark(#ffd91f,#675e00);color:light-dark(#111,#fff);font-weight:700}
-    #bkhome .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,320px);gap:1rem;align-items:start}
+    #bkhome .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,330px);gap:1rem;align-items:start}
     #bkhome .stage{display:flex;justify-content:center;min-width:0}
     #bkhome .device{width:100%;transition:width .18s ease}#bkhome .device.phone{width:min(100%,390px)}
 
     /* ---- Bright Snap product language, unchanged from the approved direction ---- */
     #bkhome .app{--flash:#ffd91f;--flash-soft:#fff5b5;--ink:#151719;--paper:#fff;--canvas:#f2f7fa;--line:#d6e1e7;--line-strong:#aab9c2;--muted:#56626a;--coral:#ff7164;
-      position:relative;overflow:hidden;min-height:720px;border:2px solid var(--ink);border-radius:1.5rem;background:var(--canvas);color:var(--ink)}
+      position:relative;overflow:hidden;min-height:760px;border:2px solid var(--ink);border-radius:1.5rem;background:var(--canvas);color:var(--ink)}
     #bkhome .app button{min-height:44px;color:inherit}
     #bkhome .hdr{display:flex;align-items:center;gap:.5rem;min-height:60px;padding:0 1rem;border-bottom:2px solid var(--ink);background:var(--paper)}
     #bkhome .brand{margin-right:auto;font-family:Georgia,serif;font-size:1.25rem;font-weight:700;letter-spacing:-.03em}
@@ -25,58 +25,107 @@
     #bkhome .body{padding:clamp(1rem,3.5vw,1.6rem);padding-bottom:4.5rem}
     #bkhome .eyebrow{margin:0 0 .3rem;font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
     #bkhome h1{margin:0 0 .5rem;font-family:Georgia,serif;font-size:clamp(1.7rem,4.2vw,2.5rem);line-height:1.05;letter-spacing:-.03em}
-    #bkhome .lede{margin:0 0 1.1rem;max-width:34rem;color:#454b52;font-size:.95rem}
-    #bkhome .card{padding:1rem;border:1px solid var(--line);border-radius:1.1rem;background:var(--paper);box-shadow:0 10px 26px rgb(22 33 44/.08)}
+    #bkhome .lede{margin:0 0 1.1rem;max-width:36rem;color:#454b52;font-size:.95rem}
     #bkhome .primary{padding:.8rem 1.15rem;border:2px solid var(--ink);border-radius:.85rem;background:var(--flash);font-weight:800;box-shadow:3px 3px 0 var(--ink)}
     #bkhome .ghost{padding:.5rem .8rem;border:1.5px solid var(--line-strong);border-radius:.7rem;background:#fff;font-size:.85rem}
     #bkhome .link{padding:.3rem .1rem;border:0;background:none;color:#174f9c;text-decoration:underline;text-underline-offset:3px;font-size:.85rem}
-    #bkhome .cover{display:grid;place-items:center;width:100%;aspect-ratio:2/3;border-radius:.6rem;background:linear-gradient(150deg,#e8eef1,#d7e3e9);color:#5c6970;font-size:.65rem;text-align:center;padding:.4rem}
-    #bkhome .why{display:inline-block;margin-top:.4rem;padding:.22rem .5rem;border-radius:999px;background:var(--flash-soft);font-size:.72rem;font-weight:700}
-    #bkhome .newbadge{display:inline-block;margin-top:.4rem;margin-left:.25rem;padding:.22rem .5rem;border-radius:999px;background:#e7f6f7;font-size:.72rem;font-weight:700}
+    #bkhome .cover{display:grid;place-items:center;width:100%;aspect-ratio:2/3;border-radius:.6rem;background:linear-gradient(150deg,#e8eef1,#d7e3e9);color:#5c6970;font-size:.65rem;text-align:center;padding:.4rem;line-height:1.25}
+    #bkhome .why{display:inline-block;margin-top:.4rem;padding:.24rem .55rem;border-radius:999px;background:var(--flash-soft);font-size:.74rem;font-weight:700;line-height:1.35}
+    #bkhome .norec{display:inline-block;margin-top:.4rem;margin-left:.25rem;padding:.24rem .55rem;border-radius:999px;background:#e7f6f7;font-size:.72rem;font-weight:700}
     #bkhome .acts{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.55rem}
     #bkhome .acts button{padding:.4rem .6rem;border:1.5px solid var(--line-strong);border-radius:.6rem;background:#fff;font-size:.78rem;min-height:38px}
+    #bkhome .prov{margin:.45rem 0 0;font-size:.76rem;line-height:1.5;color:#3d4a52}
+    #bkhome .prov b{font-weight:700;color:#17303f}
+    #bkhome .honest{margin:.5rem 0 0;padding:.5rem .65rem;border-left:3px solid var(--line-strong);background:#f7fafb;font-size:.79rem;line-height:1.45;color:#3d4a52}
 
-    /* Option 1 — the bag */
-    #bkhome .bag{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;margin-top:.4rem}
-    #bkhome .bagbook strong{display:block;margin-top:.5rem;font-size:.9rem;line-height:1.2}
-    #bkhome .bagbook small{display:block;margin-top:.15rem;color:var(--muted);font-size:.78rem}
-    #bkhome .bagfoot{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--line)}
+    /* ---------- Option 1 — Someone New ---------- */
+    #bkhome .person{padding:1rem 1.1rem;border:2px solid var(--ink);border-radius:1.1rem;background:var(--flash-soft)}
+    #bkhome .person h1{margin-bottom:.35rem}
+    #bkhome .creds{display:flex;flex-wrap:wrap;gap:.3rem;margin:.5rem 0 0}
+    #bkhome .creds span{padding:.26rem .55rem;border:1.5px solid var(--ink);border-radius:999px;background:#fff;font-size:.75rem;font-weight:700}
+    #bkhome .creds span.dim{border-color:var(--line-strong);background:transparent;color:var(--muted);font-weight:600;font-style:italic}
+    #bkhome .wayin{display:grid;grid-template-columns:110px minmax(0,1fr);gap:1rem;align-items:start;margin-top:.9rem;padding:.95rem;border:1px solid var(--line);border-radius:1rem;background:var(--paper);box-shadow:0 10px 26px rgb(22 33 44/.08)}
+    #bkhome .wayin .cover{width:110px}
+    #bkhome .wayin strong{display:block;font-size:1.05rem;line-height:1.2}
+    #bkhome .wayin small{display:block;margin-top:.15rem;color:var(--muted);font-size:.8rem}
+    #bkhome .slug{margin:0 0 .5rem;font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--coral)}
+    #bkhome .backlist{margin-top:.9rem}
+    #bkhome .backlist>p{margin:0 0 .5rem;font-size:.83rem;font-weight:700;color:#3d4a52}
+    #bkhome .backgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
+    #bkhome .mini{display:grid;grid-template-columns:44px minmax(0,1fr);gap:.6rem;align-items:start;padding:.6rem;border:1px solid var(--line);border-radius:.8rem;background:var(--paper)}
+    #bkhome .mini .cover{width:44px}
+    #bkhome .mini strong{display:block;font-size:.82rem;line-height:1.2}
+    #bkhome .mini small{display:block;margin-top:.1rem;color:var(--muted);font-size:.74rem}
+    #bkhome .queue{margin-top:1rem;padding-top:.85rem;border-top:1px solid var(--line)}
+    #bkhome .queue>p{margin:0 0 .5rem;font-size:.83rem;font-weight:700}
+    #bkhome .qrow{display:flex;flex-wrap:wrap;gap:.5rem}
+    #bkhome .qcard{flex:1 1 190px;padding:.6rem .7rem;border:1.5px solid var(--line-strong);border-radius:.8rem;background:#fff;text-align:left}
+    #bkhome .qcard b{display:block;font-size:.88rem}
+    #bkhome .qcard span{display:block;margin-top:.15rem;color:var(--muted);font-size:.72rem;line-height:1.4}
 
-    /* Option 2 — the ask */
-    #bkhome .ask{display:grid;place-items:center;min-height:22rem;text-align:center}
-    #bkhome .ask h1{font-size:clamp(1.9rem,5.5vw,3rem);max-width:16ch}
-    #bkhome .chips{display:flex;flex-wrap:wrap;gap:.35rem;justify-content:center;margin:.9rem 0 1.2rem}
-    #bkhome .chip{padding:.4rem .7rem;border:1.5px solid var(--line-strong);border-radius:999px;background:#fff;font-size:.82rem;min-height:38px}
-    #bkhome .chip[aria-pressed="true"]{border-color:var(--ink);background:var(--flash);font-weight:700}
+    /* ---------- Option 2 — The Trip ---------- */
+    #bkhome .pending{padding:.8rem .9rem;border:2px dashed var(--line-strong);border-radius:1rem;background:#fffdf2}
+    #bkhome .pending>p{margin:0 0 .6rem;font-size:.83rem;font-weight:700}
+    #bkhome .prow{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center;padding:.5rem 0}
+    #bkhome .prow+.prow{border-top:1px solid var(--line)}
+    #bkhome .prow .cover{width:34px;flex:0 0 34px}
+    #bkhome .prow b{flex:1 1 9rem;font-size:.85rem;font-weight:700;line-height:1.25}
+    #bkhome .prow b em{display:block;color:var(--muted);font-size:.74rem;font-style:normal;font-weight:600}
+    #bkhome .tap{display:flex;flex-wrap:wrap;gap:.25rem}
+    #bkhome .tap button{padding:.35rem .55rem;border:1.5px solid var(--line-strong);border-radius:.55rem;background:#fff;font-size:.75rem;min-height:38px}
+    #bkhome .tap button.love{border-color:var(--ink);background:var(--flash)}
+    #bkhome .triphead{display:flex;flex-wrap:wrap;gap:.5rem;align-items:baseline;margin:1.1rem 0 .2rem}
+    #bkhome .triphead h2{margin:0;font-family:Georgia,serif;font-size:1.25rem;letter-spacing:-.02em}
+    #bkhome .triphead span{color:var(--muted);font-size:.8rem}
+    #bkhome .triplist{display:grid;gap:.55rem;margin-top:.7rem}
+    #bkhome .trow{display:grid;grid-template-columns:38px 46px minmax(0,1fr);gap:.7rem;align-items:start;padding:.7rem;border:1px solid var(--line);border-radius:.9rem;background:var(--paper)}
+    #bkhome .trow .cover{width:46px}
+    #bkhome .box{display:grid;place-items:center;width:38px;height:38px;border:2px solid var(--ink);border-radius:.55rem;background:#fff;font-size:1rem;font-weight:800;padding:0}
+    #bkhome .box[aria-pressed="true"]{background:var(--flash)}
+    #bkhome .trow strong{display:block;font-size:.88rem;line-height:1.2}
+    #bkhome .trow small{display:block;margin-top:.1rem;color:var(--muted);font-size:.76rem}
+    #bkhome .lane{display:inline-block;margin:0 0 .35rem;padding:.2rem .5rem;border-radius:999px;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+    #bkhome .lane.reach{background:#ffe3df;color:#8d2c22}
+    #bkhome .lane.sure{background:#e2eef7;color:#1d4a71}
+    #bkhome .tripfoot{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--line)}
 
-    /* Option 3 — because you loved */
+    /* ---------- Option 3 — Because You Loved ---------- */
     #bkhome .anchor{display:grid;grid-template-columns:78px minmax(0,1fr);gap:.8rem;align-items:center;padding:.85rem;border:2px solid var(--ink);border-radius:1rem;background:var(--flash-soft)}
     #bkhome .anchor .cover{width:78px}
     #bkhome .thread{display:grid;gap:.7rem;margin-top:.9rem;padding-left:1.1rem;border-left:3px dashed var(--line-strong)}
-    #bkhome .leaf{display:grid;grid-template-columns:56px minmax(0,1fr);gap:.75rem;align-items:start;padding:.75rem;border:1px solid var(--line);border-radius:.9rem;background:var(--paper)}
-    #bkhome .leaf .cover{width:56px}
-    #bkhome .leaf strong{display:block;font-size:.9rem}#bkhome .leaf small{display:block;margin-top:.1rem;color:var(--muted);font-size:.78rem}
+    #bkhome .leaf{display:grid;grid-template-columns:64px minmax(0,1fr);gap:.75rem;align-items:start;padding:.8rem;border:1px solid var(--line);border-radius:.9rem;background:var(--paper)}
+    #bkhome .leaf .cover{width:64px}
+    #bkhome .leaf strong{display:block;font-size:.92rem;line-height:1.2}
+    #bkhome .leaf small{display:block;margin-top:.1rem;color:var(--muted);font-size:.78rem}
 
+    /* ---------- review notes ---------- */
     #bkhome .notes{display:grid;gap:.7rem}
     #bkhome .note{padding:.85rem;border:1px solid var(--rv-line);background:light-dark(#fff,#1c1f22)}
     #bkhome .note h3{margin:0 0 .4rem;font-size:.95rem}
-    #bkhome .note p,#bkhome .note li{margin:.25rem 0;font-size:.84rem;line-height:1.45;color:light-dark(#4e555c,#ced1d3)}
+    #bkhome .note p,#bkhome .note li{margin:.3rem 0;font-size:.84rem;line-height:1.5;color:light-dark(#4e555c,#ced1d3)}
     #bkhome .note ul{margin:.3rem 0 0;padding-left:1.05rem}
     #bkhome .tag{display:inline-block;padding:.15rem .45rem;border-radius:999px;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
     #bkhome .tag.plus{background:#dff5e6;color:#1c5f34}#bkhome .tag.minus{background:#ffe9ec;color:#8d2338}
+    #bkhome .tag.cold{background:#e6ecff;color:#2c3d8d}
 
     @media(max-width:900px){#bkhome .layout{grid-template-columns:1fr}}
-    @media(max-width:560px){#bkhome .bag{grid-template-columns:1fr}}
-    #bkhome .device.phone .bag{grid-template-columns:1fr}
+    @media(max-width:560px){#bkhome .backgrid{grid-template-columns:1fr}#bkhome .wayin{grid-template-columns:1fr}#bkhome .wayin .cover{width:96px}}
+    #bkhome .device.phone .backgrid{grid-template-columns:1fr}
+    #bkhome .device.phone .wayin{grid-template-columns:1fr}
+    #bkhome .device.phone .wayin .cover{width:96px}
     #bkhome .device.phone .body{padding:1rem;padding-bottom:4rem}
   </style>
 
   <div class="tools" aria-label="Home surface review controls">
-    <strong>Home surface — three options</strong>
-    <div class="grp"><span>Option</span>
-      <button type="button" data-opt="bag" aria-pressed="true">1 · The Bag</button>
-      <button type="button" data-opt="ask" aria-pressed="false">2 · The Ask</button>
+    <strong>Home surface — three directions</strong>
+    <div class="grp"><span>Direction</span>
+      <button type="button" data-opt="person" aria-pressed="true">1 · Someone New</button>
+      <button type="button" data-opt="trip" aria-pressed="false">2 · The Trip</button>
       <button type="button" data-opt="thread" aria-pressed="false">3 · Because You Loved</button>
+    </div>
+    <div class="grp"><span>Evidence</span>
+      <button type="button" data-ev="rich" aria-pressed="true">Established</button>
+      <button type="button" data-ev="cold" aria-pressed="false">Day one</button>
     </div>
     <div class="grp"><span>Width</span>
       <button type="button" data-w="desktop" aria-pressed="true">Desktop</button>
@@ -97,98 +146,289 @@
           <select class="who" aria-label="Active reader"><option>Maya</option><option>Theo</option></select>
         </header>
 
-        <!-- ============ OPTION 1 — THE BAG ============ -->
-        <main class="body" data-view="bag">
-          <p class="eyebrow">Ready for your next library trip</p>
-          <h1>Three books for Maya.</h1>
-          <p class="lede">Picked from your library’s shelves. None of these are on your shelf already.</p>
+        <!-- ============ 1 · SOMEONE NEW — established ============ -->
+        <main class="body" data-view="person" data-ev="rich">
+          <p class="eyebrow">An introduction</p>
 
-          <div class="bag">
-            <article class="bagbook">
-              <div class="cover">Too Much Noise<br>cover</div>
-              <strong>Too Much Noise</strong>
-              <small>Ann McGovern</small>
-              <span class="why">Cumulative + funny, like Monkey Puzzle</span>
-              <span class="newbadge">New author to you</span>
-              <div class="acts"><button type="button">Find at library</button><button type="button">Not for us</button></div>
-            </article>
-            <article class="bagbook">
-              <div class="cover">The Rooster Who<br>Set Out to See<br>the World</div>
-              <strong>The Rooster Who Set Out to See the World</strong>
-              <small>Eric Carle</small>
-              <span class="why">Carle you haven’t read</span>
-              <div class="acts"><button type="button">Find at library</button><button type="button">Not for us</button></div>
-            </article>
-            <article class="bagbook">
-              <div class="cover">Tawny Scrawny<br>Lion cover</div>
-              <strong>Tawny Scrawny Lion</strong>
-              <small>Kathryn Jackson</small>
-              <span class="why">Animals + rhyme</span>
-              <span class="newbadge">New author to you</span>
-              <div class="acts"><button type="button">Find at library</button><button type="button">Not for us</button></div>
-            </article>
-          </div>
-
-          <div class="bagfoot">
-            <button class="primary" type="button">Find these at the library</button>
-            <button class="ghost" type="button">Swap one out</button>
-            <button class="link" type="button">Why these three?</button>
-          </div>
-        </main>
-
-        <!-- ============ OPTION 2 — THE ASK ============ -->
-        <main class="body" data-view="ask" hidden>
-          <div class="ask">
-            <div>
-              <p class="eyebrow">Maya · ages 4–5 · read-alouds together</p>
-              <h1>What should we bring home next?</h1>
-              <p class="lede" style="margin-inline:auto">Tell Bookkin anything that’s true today, or just ask.</p>
-              <div class="chips" role="group" aria-label="Optional context for this request">
-                <button class="chip" type="button" aria-pressed="true">Something funny</button>
-                <button class="chip" type="button" aria-pressed="false">Short tonight</button>
-                <button class="chip" type="button" aria-pressed="false">Like Monkey Puzzle</button>
-                <button class="chip" type="button" aria-pressed="false">Dinosaurs</button>
-              </div>
-              <button class="primary" type="button">Find three books</button>
-              <p class="lede" style="margin:1rem auto 0;font-size:.85rem">Last bag: 2 of 3 brought home · <button class="link" type="button">see it again</button></p>
+          <div class="person">
+            <h1>Beatrice Alemagna</h1>
+            <p class="lede" style="margin:0;font-size:.9rem">Italian picture-book maker. Writes and illustrates her own work.</p>
+            <div class="creds">
+              <span>Batchelder Honor · 2017</span>
+              <span>Enchanted Lion Books</span>
+              <span>Held by 19 of 29 area systems</span>
+              <span>Translated from French</span>
+              <span class="dim">No photo available</span>
             </div>
           </div>
+
+          <div class="wayin">
+            <div class="cover">On a Magical<br>Do-Nothing Day</div>
+            <div>
+              <p class="slug">Where to start with her</p>
+              <strong>On a Magical Do-Nothing Day</strong>
+              <small>Written and illustrated by Beatrice Alemagna · 48 pages</small>
+              <span class="why">Slow, wordless stretches and a wandering child — the register Maya stayed with in Monkey Puzzle, read 4 times</span>
+              <p class="prov"><b>Why Bookkin trusts it:</b> Batchelder Honor 2017 · starred in two trade reviews · held by 19 of 29 peer systems, which puts it in the widely-selected band without being a bestseller.</p>
+              <p class="honest">Confident on the age fit and the pacing. Guessing on whether the quiet ending lands — Bookkin has 6 reactions from Maya, which is enough for a pattern, not enough to be sure.</p>
+              <div class="acts">
+                <button type="button">Find at library</button>
+                <button type="button">Save for later</button>
+                <button type="button">Already read it</button>
+                <button type="button">Not interested</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="backlist">
+            <p>If that one lands, she has more:</p>
+            <div class="backgrid">
+              <article class="mini">
+                <div class="cover">The Wonderful<br>Fluffy Little<br>Squishy</div>
+                <div><strong>The Wonderful Fluffy Little Squishy</strong><small>Beatrice Alemagna</small><span class="why">Funnier, more chaotic</span></div>
+              </article>
+              <article class="mini">
+                <div class="cover">Child of<br>Glass</div>
+                <div><strong>Child of Glass</strong><small>Beatrice Alemagna</small><span class="why">Older — hold until 6 or 7</span></div>
+              </article>
+            </div>
+          </div>
+
+          <div class="queue">
+            <p>Or meet someone else:</p>
+            <div class="qrow">
+              <button class="qcard" type="button"><b>Jon Agee</b><span>Deadpan, very funny · Held by 27 of 29 · No record in your house</span></button>
+              <button class="qcard" type="button"><b>Sydney Smith</b><span>Illustrator · Kate Greenaway Medal · No record in your house</span></button>
+            </div>
+            <p style="margin-top:.7rem;font-weight:400;font-size:.8rem;color:#56626a">Not right now on a person sets them aside — it never marks their books as disliked.</p>
+          </div>
         </main>
 
-        <!-- ============ OPTION 3 — BECAUSE YOU LOVED ============ -->
-        <main class="body" data-view="thread" hidden>
+        <!-- ============ 1 · SOMEONE NEW — day one ============ -->
+        <main class="body" data-view="person" data-ev="cold" hidden>
+          <p class="eyebrow">An introduction</p>
+
+          <div class="person">
+            <h1>Beatrice Alemagna</h1>
+            <p class="lede" style="margin:0;font-size:.9rem">Italian picture-book maker. Writes and illustrates her own work.</p>
+            <div class="creds">
+              <span>Batchelder Honor · 2017</span>
+              <span>Enchanted Lion Books</span>
+              <span>Held by 19 of 29 area systems</span>
+              <span>Translated from French</span>
+              <span class="dim">No photo available</span>
+            </div>
+          </div>
+
+          <div class="wayin">
+            <div class="cover">On a Magical<br>Do-Nothing Day</div>
+            <div>
+              <p class="slug">Where to start with her</p>
+              <strong>On a Magical Do-Nothing Day</strong>
+              <small>Written and illustrated by Beatrice Alemagna · 48 pages</small>
+              <p class="prov"><b>Why Bookkin trusts it:</b> Batchelder Honor 2017 · starred in two trade reviews · held by 19 of 29 peer systems, which puts it in the widely-selected band without being a bestseller.</p>
+              <p class="honest"><b>This is not personalised.</b> You haven't told Bookkin anything about Maya yet, so nothing here is based on her. It's simply someone very good, chosen for a 4-to-5-year-old.</p>
+              <div class="acts">
+                <button type="button">Find at library</button>
+                <button type="button">Save for later</button>
+                <button type="button">Already read it</button>
+                <button type="button">Not interested</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="queue">
+            <p style="font-weight:400;color:#454b52">Tell Bookkin three books that worked and the next introduction will be about Maya, not just about quality.</p>
+            <button class="primary" type="button" style="margin-top:.5rem">Add three books she loved</button>
+          </div>
+        </main>
+
+        <!-- ============ 2 · THE TRIP — established ============ -->
+        <main class="body" data-view="trip" data-ev="rich" hidden>
+          <p class="eyebrow">Trip open · started Tuesday</p>
+          <h1>Your next library trip.</h1>
+
+          <div class="pending">
+            <p>Still out from last trip — how did these go?</p>
+            <div class="prow">
+              <div class="cover">Too Much<br>Noise</div>
+              <b>Too Much Noise<em>Ann McGovern · home 9 days</em></b>
+              <div class="tap">
+                <button class="love" type="button">Loved it</button>
+                <button type="button">She liked it</button>
+                <button type="button">Not for us</button>
+                <button type="button">We stopped</button>
+              </div>
+            </div>
+            <div class="prow">
+              <div class="cover">Tawny<br>Scrawny</div>
+              <b>Tawny Scrawny Lion<em>Kathryn Jackson · home 9 days</em></b>
+              <div class="tap">
+                <button type="button">Loved it</button>
+                <button type="button">She liked it</button>
+                <button type="button">Not for us</button>
+                <button type="button">We stopped</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="triphead">
+            <h2>To find this trip</h2>
+            <span>2 in the bag · 4 on the list</span>
+          </div>
+          <p class="lede" style="margin:.15rem 0 0;font-size:.85rem">Tick them as you decide. The list is the same one as Tuesday — it doesn't reshuffle itself.</p>
+
+          <div class="triplist">
+            <article class="trow">
+              <button class="box" type="button" aria-pressed="true" aria-label="In the bag">✓</button>
+              <div class="cover">Do-Nothing<br>Day</div>
+              <div>
+                <span class="lane reach">Reaching further</span>
+                <strong>On a Magical Do-Nothing Day</strong>
+                <small>Beatrice Alemagna · no record of her in your house</small>
+                <span class="why">Wordless stretches, like Monkey Puzzle</span>
+                <p class="prov">Batchelder Honor · Enchanted Lion · held by 19 of 29</p>
+              </div>
+            </article>
+            <article class="trow">
+              <button class="box" type="button" aria-pressed="true" aria-label="In the bag">✓</button>
+              <div class="cover">Rooster /<br>World</div>
+              <div>
+                <span class="lane sure">Sure thing</span>
+                <strong>The Rooster Who Set Out to See the World</strong>
+                <small>Eric Carle · you've read 3 of his</small>
+                <span class="why">Counting and repetition, Carle you haven't read</span>
+              </div>
+            </article>
+            <article class="trow">
+              <button class="box" type="button" aria-pressed="false" aria-label="In the bag">＋</button>
+              <div class="cover">Life on<br>Mars</div>
+              <div>
+                <span class="lane reach">Reaching further</span>
+                <strong>Life on Mars</strong>
+                <small>Jon Agee · no record of him in your house</small>
+                <span class="why">Deadpan joke the reader gets before the child does</span>
+                <p class="prov">Held by 27 of 29 · starred review</p>
+              </div>
+            </article>
+            <article class="trow">
+              <button class="box" type="button" aria-pressed="false" aria-label="In the bag">＋</button>
+              <div class="cover">Small in<br>the City</div>
+              <div>
+                <span class="lane reach">Reaching further</span>
+                <strong>Small in the City</strong>
+                <small>Sydney Smith · no record of him in your house</small>
+                <span class="why">Quiet, city walk, feelings left unsaid</span>
+                <p class="prov">Greenaway Medal · held by 21 of 29</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="tripfoot">
+            <button class="primary" type="button">I'm at the library</button>
+            <button class="ghost" type="button">Open all four in the catalog</button>
+            <button class="link" type="button">Close out this trip</button>
+          </div>
+          <p class="honest" style="margin-top:.7rem">Bookkin doesn't know what's actually on the shelf today — it has no connection to your library account. <b>I'm at the library</b> switches to big type for the aisle, where you can mark what you found and what you put back.</p>
+        </main>
+
+        <!-- ============ 2 · THE TRIP — day one ============ -->
+        <main class="body" data-view="trip" data-ev="cold" hidden>
+          <p class="eyebrow">Your first trip</p>
+          <h1>Your next library trip.</h1>
+          <p class="lede">Nothing is out yet, so there's nothing to report back on. Four to start with, chosen on quality alone.</p>
+
+          <div class="triphead">
+            <h2>To find this trip</h2>
+            <span>0 in the bag · 4 on the list</span>
+          </div>
+
+          <div class="triplist">
+            <article class="trow">
+              <button class="box" type="button" aria-pressed="false" aria-label="In the bag">＋</button>
+              <div class="cover">Where the<br>Wild Things<br>Are</div>
+              <div>
+                <span class="lane sure">Sure thing</span>
+                <strong>Where the Wild Things Are</strong>
+                <small>Maurice Sendak</small>
+                <span class="why">If you already know it, tap "Already read it" and Bookkin will stop offering it</span>
+              </div>
+            </article>
+            <article class="trow">
+              <button class="box" type="button" aria-pressed="false" aria-label="In the bag">＋</button>
+              <div class="cover">Do-Nothing<br>Day</div>
+              <div>
+                <span class="lane reach">Reaching further</span>
+                <strong>On a Magical Do-Nothing Day</strong>
+                <small>Beatrice Alemagna</small>
+                <p class="prov">Batchelder Honor · Enchanted Lion · held by 19 of 29</p>
+              </div>
+            </article>
+            <article class="trow">
+              <button class="box" type="button" aria-pressed="false" aria-label="In the bag">＋</button>
+              <div class="cover">Life on<br>Mars</div>
+              <div>
+                <span class="lane reach">Reaching further</span>
+                <strong>Life on Mars</strong>
+                <small>Jon Agee</small>
+                <p class="prov">Held by 27 of 29 · starred review</p>
+              </div>
+            </article>
+            <article class="trow">
+              <button class="box" type="button" aria-pressed="false" aria-label="In the bag">＋</button>
+              <div class="cover">Small in<br>the City</div>
+              <div>
+                <span class="lane reach">Reaching further</span>
+                <strong>Small in the City</strong>
+                <small>Sydney Smith</small>
+                <p class="prov">Greenaway Medal · held by 21 of 29</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="tripfoot">
+            <button class="primary" type="button">I'm at the library</button>
+            <button class="link" type="button">Tell Bookkin what she already loves</button>
+          </div>
+          <p class="honest" style="margin-top:.7rem"><b>None of this is personalised yet.</b> Bookkin has no reactions from Maya, so these are ranked on published quality signals and an age band only. Marking what you already own is the fastest way to change that.</p>
+        </main>
+
+        <!-- ============ 3 · BECAUSE YOU LOVED — established ============ -->
+        <main class="body" data-view="thread" data-ev="rich" hidden>
           <p class="eyebrow">Following a book that worked</p>
           <h1>Because Maya loved this one.</h1>
-          <p class="lede">Bookkin follows what actually landed, and shows its reasoning.</p>
+          <p class="lede">Bookkin follows what actually landed, and shows the evidence behind each step.</p>
 
           <div class="anchor">
             <div class="cover">Monkey Puzzle<br>cover</div>
             <div>
               <strong style="display:block;font-size:1rem">Monkey Puzzle</strong>
-              <small style="display:block;margin-top:.15rem;color:#56626a;font-size:.82rem">Julia Donaldson · read 4 times</small>
+              <small style="display:block;margin-top:.15rem;color:#56626a;font-size:.82rem">Julia Donaldson · read 4 times · loved</small>
               <button class="link" type="button">Follow a different book</button>
             </div>
           </div>
 
           <div class="thread">
             <article class="leaf">
-              <div class="cover">Too Much<br>Noise</div>
+              <div class="cover">Do-Nothing<br>Day</div>
               <div>
-                <strong>Too Much Noise</strong>
-                <small>Ann McGovern</small>
-                <span class="why">Same cumulative build-up</span>
-                <span class="newbadge">New author to you</span>
-                <div class="acts"><button type="button">Find at library</button><button type="button">Not for us</button></div>
+                <strong>On a Magical Do-Nothing Day</strong>
+                <small>Beatrice Alemagna</small>
+                <span class="why">Same wandering-child structure, same slow pages before the turn</span>
+                <span class="norec">No record of her in your house</span>
+                <p class="prov"><b>Independent judgement:</b> Batchelder Honor 2017 · Enchanted Lion · held by 19 of 29 peer systems.</p>
+                <div class="acts"><button type="button">Find at library</button><button type="button">Save for later</button><button type="button">Already read it</button><button type="button">Not interested</button></div>
               </div>
             </article>
             <article class="leaf">
-              <div class="cover">Tawny<br>Scrawny</div>
+              <div class="cover">Life on<br>Mars</div>
               <div>
-                <strong>Tawny Scrawny Lion</strong>
-                <small>Kathryn Jackson</small>
-                <span class="why">Animals, rhyming, gentle ending</span>
-                <span class="newbadge">New author to you</span>
-                <div class="acts"><button type="button">Find at library</button><button type="button">Not for us</button></div>
+                <strong>Life on Mars</strong>
+                <small>Jon Agee</small>
+                <span class="why">The joke sits with the reader, not the character — the thing that made her ask for Monkey Puzzle again</span>
+                <span class="norec">No record of him in your house</span>
+                <p class="prov"><b>Independent judgement:</b> starred trade review · held by 27 of 29 peer systems.</p>
+                <div class="acts"><button type="button">Find at library</button><button type="button">Save for later</button><button type="button">Already read it</button><button type="button">Not interested</button></div>
               </div>
             </article>
             <article class="leaf">
@@ -196,10 +436,38 @@
               <div>
                 <strong>The Rooster Who Set Out to See the World</strong>
                 <small>Eric Carle</small>
-                <span class="why">Counting + repetition</span>
-                <div class="acts"><button type="button">Find at library</button><button type="button">Not for us</button></div>
+                <span class="why">Cumulative build, animals joining one by one</span>
+                <p class="prov"><b>Independent judgement:</b> held by 24 of 29 peer systems. You've read 3 other Carle books.</p>
+                <div class="acts"><button type="button">Find at library</button><button type="button">Save for later</button><button type="button">Already read it</button><button type="button">Not interested</button></div>
               </div>
             </article>
+          </div>
+          <p class="honest" style="margin-top:.8rem">Two of these three are by people with no record in your house — that's deliberate, not an accident of the search.</p>
+        </main>
+
+        <!-- ============ 3 · BECAUSE YOU LOVED — day one ============ -->
+        <main class="body" data-view="thread" data-ev="cold" hidden>
+          <p class="eyebrow">Following a book that worked</p>
+          <h1>Which one worked?</h1>
+          <p class="lede">This view follows a book Maya genuinely loved. Bookkin doesn't have one yet — so there's nothing honest to build from.</p>
+
+          <div class="anchor" style="background:#f7fafb;border-style:dashed">
+            <div class="cover" style="background:#eef3f5">No anchor<br>book yet</div>
+            <div>
+              <strong style="display:block;font-size:1rem">Name one she asks for again</strong>
+              <small style="display:block;margin-top:.15rem;color:#56626a;font-size:.82rem">One clear favourite is enough to start. A reread counts double.</small>
+              <button class="primary" type="button" style="margin-top:.6rem">Add a book she loves</button>
+            </div>
+          </div>
+
+          <p class="honest" style="margin-top:.9rem"><b>This page cannot be filled in with guesses.</b> Bookkin could show popular 4-year-old books here, but it would be pretending the recommendation came from Maya when it came from a bestseller list. Until there's a real anchor, the other two views are the honest ones.</p>
+
+          <div class="queue" style="border-top:1px solid var(--line);margin-top:1rem;padding-top:.9rem">
+            <p style="font-weight:400;color:#454b52">In the meantime:</p>
+            <div class="qrow">
+              <button class="qcard" type="button"><b>Meet someone new</b><span>Ranked on published quality alone — works with no history</span></button>
+              <button class="qcard" type="button"><b>Start a trip list</b><span>Four to try, then tell Bookkin how they went</span></button>
+            </div>
           </div>
         </main>
       </div>
@@ -208,40 +476,60 @@
     <aside class="notes">
       <div class="note">
         <h3>What is being decided</h3>
-        <p>All three open on the recommendation. None opens on the shelf. The visual language is unchanged — this is information architecture only.</p>
-        <p>Copy, controls, and the underlying data are identical across options so the comparison isolates structure.</p>
+        <p>All three open on the recommendation. None opens on the shelf. The Bright Snap visual language is unchanged — this is information architecture only.</p>
+        <p>Each direction has a different <em>subject</em>: a person, a trip, a book. That is the real choice. Use <strong>Day one</strong> to see each one with no household evidence, which is where they differ most.</p>
       </div>
 
-      <div class="note" data-note="bag">
-        <h3>1 · The Bag</h3>
-        <p>A stack is already waiting, the way a librarian hands you one. The bag persists until you act on it.</p>
-        <p><span class="tag plus">for</span> Nothing to do on open — the value is visible immediately. Matches the physical object it describes.</p>
-        <p><span class="tag minus">against</span> A bag you didn’t ask for can go stale, and re-generating it on every open would waste requests and make results feel arbitrary.</p>
-        <p><strong>Open question:</strong> what triggers a new bag — time, a completed library trip, or an explicit ask?</p>
+      <div class="note" data-note="person">
+        <h3>1 · Someone New</h3>
+        <p>The page introduces a <strong>person</strong> — author or illustrator — with no record in the household, and the books are their work.</p>
+        <p><span class="tag plus">for</span> This is the new-creator quota promoted from a hidden rule into the subject of the page. It's aimed exactly at where your own method runs out: you already scan award-winning authors, so the thing you can't produce by hand is a name you don't have.</p>
+        <p><span class="tag cold">day one</span> Strongest of the three. "New to this household" is trivially true on day one, so ranking runs on published quality alone and the page is honest and substantive with zero reactions logged.</p>
+        <p><span class="tag plus">for</span> A hit yields a backlist — one good introduction is five to ten future recommendations. No book-level design does that.</p>
+        <p><span class="tag minus">against</span> All the risk lands on one pick. A bad way-in book can lose a genuinely great creator, so the dismiss has to be "not right now," never a hard negative.</p>
+        <p><span class="tag minus">against</span> It structurally prefers creators who have a backlist, which is a quiet pull back toward the established. Many of the best long-tail books are by people with one or two titles.</p>
+        <p><strong>Open question:</strong> what governs cadence — a new introduction only when there's one worth making, and the page says so plainly otherwise?</p>
       </div>
 
-      <div class="note" data-note="ask" hidden>
-        <h3>2 · The Ask</h3>
-        <p>Opens with the question, not the answer. The bag is a result you requested, and today’s context can be added in one tap.</p>
-        <p><span class="tag plus">for</span> Matches the real rhythm — you think about this before a library trip, not continuously. Optional chips let “short tonight” or “something funny” shape a single request without becoming a permanent profile setting.</p>
-        <p><span class="tag minus">against</span> The home screen is empty of books until you act, which is the weakest first impression of the three and the closest to a search box.</p>
+      <div class="note" data-note="trip" hidden>
+        <h3>2 · The Trip</h3>
+        <p>The unit is a <strong>library trip</strong>, not a recommendation. It opens at the kitchen table, travels into the aisle, and closes out at bedtime.</p>
+        <p><span class="tag plus">for</span> The only direction present at the moment delight rate's denominator is actually set. Right now nothing in the product is there when you decide what to physically carry home.</p>
+        <p><span class="tag plus">for</span> It puts last trip's books at the top, which is where reread and reaction capture will actually happen. At one trip a fortnight, a page that reliably closes out the previous trip may be worth more than any ranking change.</p>
+        <p><span class="tag plus">for</span> The list is stable — it does not reshuffle on open. "Same list as Tuesday" is a trust-building sentence, and it fixes the staleness problem the old Bag couldn't answer.</p>
+        <p><span class="tag plus">for</span> For an unfamiliar book, the job stops being "close the sale" and becomes "earn a pickup" — a much easier job, because in the aisle you can open the book.</p>
+        <p><span class="tag minus">against</span> Risks drifting into logistics software — a packing list with covers — where quality quietly stops being the subject.</p>
+        <p><span class="tag minus">against</span> Close-out may never happen. It has to be inferred from the next open, not depend on a button you remember to press.</p>
       </div>
 
       <div class="note" data-note="thread" hidden>
-        <h3>3 · Because You Loved</h3>
-        <p>Anchored on a book that actually worked, with recommendations hanging off it and the reasoning visible as the organizing principle.</p>
-        <p><span class="tag plus">for</span> Leads with the strongest signal available — a comp title beats a topic. The explanation is the structure, not a footnote, which is exactly what a library catalog cannot do.</p>
-        <p><span class="tag minus">against</span> Needs at least one clearly-loved book, so it has a real cold-start problem. Risks feeling narrow if the anchor is stale or the child’s taste has moved.</p>
+        <h3>3 · Because You Loved <em>(kept)</em></h3>
+        <p>Anchored on a book that actually worked, with recommendations hanging off it and the reasoning as the organizing structure.</p>
+        <p><span class="tag plus">for</span> Leads with the strongest signal available — a comp title from your own house beats any topic. It converts an unknown book into a known quantity, which is the core trust problem.</p>
+        <p><span class="tag plus">for</span> <strong>Changed since last round:</strong> each recommendation now carries its independent judgement — award, imprint, holdings band — underneath the similarity reason. Similarity says <em>like this</em>; provenance says <em>and good</em>. The old version only showed the first.</p>
+        <p><span class="tag plus">for</span> The reasons are now specific enough that they couldn't be reproduced in a catalog search box. "Animals + rhyme" could be; "the joke sits with the reader, not the character" could not.</p>
+        <p><span class="tag cold">day one</span> Weakest of the three, and deliberately shown refusing to fake it. It needs one genuinely loved book and cannot be filled with popular titles without lying about where the recommendation came from.</p>
+        <p><span class="tag minus">against</span> Narrow if the anchor is stale or taste has moved. One anchor per page.</p>
+      </div>
+
+      <div class="note">
+        <h3>Corrections applied across all three</h3>
+        <ul>
+          <li><strong>"New author to you" is gone.</strong> Bookkin can't know that — it knows there's no record in its own data, against a physical shelf that was never logged. It now says "no record of her in your house."</li>
+          <li><strong>Generic reasons removed.</strong> "Animals + rhyme" is reproducible in a catalog search in thirty seconds; a reason like that tells the caregiver the app has no private knowledge.</li>
+          <li><strong>Confidence is stated, not implied.</strong> Trust is destroyed by the gap between claimed and actual confidence, not by misses — so the page says which part it's sure about.</li>
+          <li><strong>Dismiss states are contextual.</strong> Before reading: save / not interested / already read it. After reading: the four outcome taps. Never all seven at once.</li>
+        </ul>
       </div>
 
       <div class="note">
         <h3>Not represented here</h3>
         <ul>
-          <li>Cold-start states, when there is not yet enough evidence for any bag.</li>
-          <li>The one-tap rate-and-dismiss flow, which ships with the engine.</li>
-          <li>Limited-pool and no-candidate results, which must never be padded.</li>
+          <li>The aisle view behind "I'm at the library."</li>
+          <li>Limited-pool results, which are the <em>expected</em> case when retrieval is working — a one-book bag needs a confident presentation, not a three-card grid with two holes.</li>
+          <li>Multi-child and second-caregiver states.</li>
         </ul>
-        <p>Books shown are real titles surfaced by an actual catalog query. The reasons shown are the <em>kind</em> the engine will produce; none is a verified claim yet.</p>
+        <p>Books shown are real titles. Awards, imprints and holdings figures are plausible placeholders — none is a verified claim yet.</p>
       </div>
     </aside>
   </div>
@@ -250,20 +538,35 @@
     (function(){
       const root=document.getElementById('bkhome');
       const device=document.getElementById('bk-device');
+      let opt='person', ev='rich';
       function press(sel,btn){root.querySelectorAll(sel).forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));}
+      function sync(){
+        root.querySelectorAll('[data-view]').forEach(m=>{
+          m.hidden=!(m.dataset.view===opt && m.dataset.ev===ev);
+        });
+        root.querySelectorAll('[data-note]').forEach(n=>{n.hidden=n.dataset.note!==opt;});
+      }
       root.querySelectorAll('[data-opt]').forEach(btn=>btn.addEventListener('click',()=>{
-        press('[data-opt]',btn);
-        const v=btn.dataset.opt;
-        root.querySelectorAll('[data-view]').forEach(m=>{m.hidden=m.dataset.view!==v;});
-        root.querySelectorAll('[data-note]').forEach(n=>{n.hidden=n.dataset.note!==v;});
+        press('[data-opt]',btn); opt=btn.dataset.opt; sync();
+      }));
+      root.querySelectorAll('[data-ev]').forEach(btn=>btn.addEventListener('click',()=>{
+        press('[data-ev]',btn); ev=btn.dataset.ev; sync();
       }));
       root.querySelectorAll('[data-w]').forEach(btn=>btn.addEventListener('click',()=>{
         press('[data-w]',btn);
         device.className='device '+(btn.dataset.w==='phone'?'phone':'');
       }));
-      root.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
-        c.setAttribute('aria-pressed',c.getAttribute('aria-pressed')==='true'?'false':'true');
+      root.querySelectorAll('.box').forEach(b=>b.addEventListener('click',()=>{
+        const on=b.getAttribute('aria-pressed')==='true';
+        b.setAttribute('aria-pressed',String(!on));
+        b.textContent=on?'＋':'✓';
       }));
+      root.querySelectorAll('.tap button').forEach(b=>b.addEventListener('click',()=>{
+        const row=b.closest('.tap');
+        row.querySelectorAll('button').forEach(x=>x.classList.remove('love'));
+        b.classList.add('love');
+      }));
+      sync();
     })();
   </script>
 </div>
