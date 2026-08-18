@@ -101,6 +101,29 @@ None of these should be assumed:
 
 This ordering front-loads what is cheap and reversible, and defers what carries legal and maintenance cost until the mechanism is proven.
 
+## A correction, and a layered answer
+
+An earlier draft of this document treated **library holdings as a popularity measure**, alongside sales and edition counts. That is wrong, and the distinction matters more than any other point here.
+
+**Library holdings encode professional selection.** A librarian with a finite budget decided to buy the book. A title held by 25 of 29 peer systems was chosen by 25 independent professional selectors — that is exactly the "a human read it and chose it" signal this document is chasing, and it is free, structured, and already available.
+
+Holdings are *partially* confounded by popularity, because libraries also buy what patrons request. The fix is to target a **band rather than the peak**: widely selected but not blockbuster. Books held by many systems while not being the most-held are, almost by construction, professionally chosen and not famous.
+
+That reframing produces a layered answer where every layer is free:
+
+| Layer | Signal | Cost | Status |
+| --- | --- | --- | --- |
+| **1** | **Peer-system holdings consensus band** — professional selection across ~29 systems, targeting the band rather than the top | Free, no external dependency | Already planned in the recommendation-engine plan |
+| **2** | **Wikidata award join** — award membership is structured, open, queryable data | Free, open licence | Coverage per award must be measured, not assumed |
+| **3** | **Bank Street and CCBC** — published per-title age bands with ISBNs, which are simultaneously a suitability signal and a curation signal | Free, published | Access terms need checking |
+| **4** | **Hand-curated seed slice** for awards the layers above miss — state lists especially | Owner or specialist time | The residual, not the whole job |
+
+Layers 1–3 require no manual curation at all, which materially changes the earlier conclusion that "the real fix is a content task." The content task is the **residual** after three free automated layers, not the starting point.
+
+**What remains genuinely hard.** Starred trade reviews are the single best curation signal and sit behind commercial licences with no free path. State award lists are unlikely to be comprehensively covered by Wikidata and probably need manual compilation. Those two are the honest limits.
+
+**Every layer must pass a hand check before it is built.** Ten books from that source, judged against household taste; fewer than three plausible means the adapter does not get written. A signal that sounds principled and fails in practice is worse than no signal, because it is expensive to maintain and invisible when wrong.
+
 ## Empirical findings, 2026-08-17
 
 Open Library recovered and the frozen 17-case matrix was captured for the first time (`fixtures/candidates/open-library-discovery-manifest.json`). Two findings, one of them a defect.
