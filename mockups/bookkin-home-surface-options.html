@@ -1,102 +1,109 @@
 <meta charset="utf-8">
-<div id="bkhome">
+<div id="bkhome" data-direction="refined">
   <style>
     #bkhome{--rv-bg:light-dark(#f5f6f8,#151719);--rv-fg:light-dark(#17191c,#f5f5f1);--rv-line:light-dark(#cfd3d8,#4a4d50);width:100%;color:var(--rv-fg);font-family:Manrope,ui-sans-serif,system-ui,sans-serif;color-scheme:light dark}
     #bkhome *{box-sizing:border-box}#bkhome button,#bkhome select{font:inherit}#bkhome button{cursor:pointer}#bkhome [hidden]{display:none!important}
+    #bkhome .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     #bkhome .tools{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-bottom:.8rem;padding:.7rem;border:1px solid var(--rv-line);background:var(--rv-bg)}
     #bkhome .tools strong{margin-right:auto}#bkhome .grp{display:flex;flex-wrap:wrap;gap:.3rem;align-items:center}#bkhome .grp>span{font-size:.78rem;color:light-dark(#555b63,#c7c9cc)}
     #bkhome .tools button{min-height:44px;padding:.55rem .72rem;border:1px solid var(--rv-line);background:light-dark(#fff,#222528);color:inherit}
-    #bkhome .tools button[aria-pressed="true"]{border-color:light-dark(#111,#fff);background:light-dark(#ffd91f,#675e00);color:light-dark(#111,#fff);font-weight:700}
+    #bkhome .tools button[aria-pressed="true"]{border-color:light-dark(#111,#fff);background:light-dark(#ffe500,#675e00);color:light-dark(#111,#fff);font-weight:700}
     #bkhome .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,330px);gap:1rem;align-items:start}
     #bkhome .stage{display:flex;justify-content:center;min-width:0}
-    #bkhome .device{width:100%;transition:width .18s ease}#bkhome .device.phone{width:min(100%,390px)}
+    #bkhome .device{width:100%;transition:width .18s ease}
+    #bkhome .device.phone{width:min(100%,390px)}#bkhome .device.tablet{width:min(100%,760px)}
 
-    /* ---- Bright Snap product language, unchanged from the approved direction ---- */
-    #bkhome .app{--flash:#ffd91f;--flash-soft:#fff5b5;--ink:#151719;--paper:#fff;--canvas:#fdf7ec;--line:#e4d9c6;--line-strong:#b9a98d;--muted:#6b6152;--coral:#ff7164;--mint:#3fb98f;--sky:#4a9fd8;--grape:#9b6bd6;
-      position:relative;overflow:hidden;min-height:780px;border:2px solid var(--ink);border-radius:1.5rem;background:var(--canvas);color:var(--ink)}
-    #bkhome .app button{min-height:44px;color:inherit}
-    #bkhome .hdr{display:flex;align-items:center;gap:.5rem;min-height:60px;padding:0 1rem;border-bottom:2px solid var(--ink);background:var(--paper)}
-    #bkhome .brand{margin-right:auto;font-family:Georgia,serif;font-size:1.3rem;font-weight:700;letter-spacing:-.03em}
-    #bkhome .brand i{color:var(--coral);font-style:normal}
-    #bkhome .nav{display:flex;gap:.15rem}#bkhome .nav button{padding:.5rem .6rem;border:0;border-radius:999px;background:transparent;font-size:.85rem}
-    #bkhome .nav button[aria-current="page"]{background:var(--flash);font-weight:700;box-shadow:2px 2px 0 var(--ink)}
-    #bkhome .who{min-height:38px;max-width:120px;padding:.3rem .6rem;border:2px solid var(--ink);border-radius:999px;background:#fff;font-weight:700;font-size:.82rem}
+    /* ===== Refined Brighter — default review direction. Tokens match Checkpoint 7A. ===== */
+    #bkhome .app{--flash:#ffe500;--flash-soft:#fff8b8;--ink:#111316;--paper:#fff;--canvas:#f4f7f8;
+      --line:#cbd2d7;--line-strong:#adb6bd;--muted:#555d65;
+      --cyan:#2dd7df;--cyan-soft:#bdeef1;--rose:#ff6b86;--rose-soft:#ffdfe5;--rose-ink:#c5264c;--blue:#3578f6;--blue-soft:#dce8ff;
+      position:relative;overflow:hidden;min-height:780px;border:2px solid var(--ink);border-radius:20px;background:var(--canvas);color:var(--ink)}
+    #bkhome .app button,#bkhome .app select{min-height:44px;color:inherit}
+    #bkhome .app button:focus-visible,#bkhome .app select:focus-visible{outline:3px solid var(--ink);outline-offset:3px;box-shadow:0 0 0 6px var(--cyan)}
+
+    #bkhome .hdr{display:flex;align-items:center;gap:.5rem;min-height:64px;padding:0 1rem;border-bottom:2px solid var(--ink);background:var(--paper)}
+    #bkhome .brand{margin-right:auto;font-family:Fraunces,Georgia,serif;font-size:1.35rem;font-weight:600;letter-spacing:-.03em}
+    #bkhome .brand i{color:var(--rose);font-style:normal}
+    #bkhome .nav{display:flex;gap:.2rem}#bkhome .nav button{min-width:44px;padding:.55rem .7rem;border:0;border-radius:999px;background:transparent;font-size:.85rem}
+    #bkhome .nav button[aria-current="page"]{background:var(--flash);font-weight:700}
+    #bkhome .who{min-height:44px;max-width:132px;padding:.45rem .55rem;border:1.5px solid var(--ink);border-radius:999px;background:#fff;font-weight:700;font-size:.82rem}
     #bkhome .body{padding:clamp(1rem,3.5vw,1.6rem);padding-bottom:4.5rem}
-    #bkhome .eyebrow{margin:0 0 .3rem;font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--coral)}
-    #bkhome h1{margin:0 0 .5rem;font-family:Georgia,serif;font-size:clamp(1.8rem,4.4vw,2.6rem);line-height:1.03;letter-spacing:-.03em}
-    #bkhome .lede{margin:0 0 1.1rem;max-width:36rem;color:#4d463c;font-size:.95rem}
-    #bkhome .primary{padding:.8rem 1.15rem;border:2px solid var(--ink);border-radius:.85rem;background:var(--flash);font-weight:800;box-shadow:3px 3px 0 var(--ink)}
-    #bkhome .primary:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--ink)}
-    #bkhome .ghost{padding:.55rem .85rem;border:2px solid var(--ink);border-radius:.7rem;background:#fff;font-size:.85rem;font-weight:700;box-shadow:2px 2px 0 var(--ink)}
-    #bkhome .link{padding:.3rem .1rem;border:0;background:none;color:#1a5ba6;text-decoration:underline;text-underline-offset:3px;font-size:.85rem;font-weight:600}
+    #bkhome .eyebrow{margin:0 0 .35rem;font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--rose-ink)}
+    #bkhome h1{margin:0 0 .5rem;font-family:Fraunces,Georgia,serif;font-size:clamp(2rem,5vw,3.4rem);line-height:1;letter-spacing:-.035em}
+    #bkhome .lede{margin:0 0 1.1rem;max-width:36rem;color:#454b52;font-size:.95rem}
 
-    /* joyful covers — each book gets its own colour */
-    #bkhome .cover{display:grid;place-items:center;width:100%;aspect-ratio:2/3;overflow:hidden;border:2px solid var(--ink);border-radius:.5rem;color:#2a2118;font-family:Georgia,serif;font-size:.66rem;font-weight:700;text-align:center;padding:.4rem;line-height:1.25;box-shadow:2px 2px 0 rgb(21 23 25/.25)}
-    #bkhome .trow .cover{font-size:.58rem;padding:.25rem}
-    #bkhome .c1{background:linear-gradient(150deg,#ffd91f,#ffb347)}
-    #bkhome .c2{background:linear-gradient(150deg,#8fd9ff,#5aa9e6);color:#10293d}
-    #bkhome .c3{background:linear-gradient(150deg,#ffb0a6,#ff7164);color:#3d1410}
-    #bkhome .c4{background:linear-gradient(150deg,#a8e6c9,#3fb98f);color:#0f3326}
-    #bkhome .c5{background:linear-gradient(150deg,#d9bcf5,#9b6bd6);color:#2a1240}
-    #bkhome .c6{background:linear-gradient(150deg,#ffe9a8,#f2c14e);color:#3d2f0d}
-    #bkhome .c7{background:linear-gradient(150deg,#c3e88d,#8bc34a);color:#1f3306}
-    #bkhome .c8{background:linear-gradient(150deg,#ffc2e0,#f06fae);color:#3d0f28}
+    /* three deliberate control tiers, so something recedes and something leads */
+    #bkhome .primary{padding:.8rem 1.15rem;border:2px solid var(--ink);border-radius:12px;background:var(--flash);font-weight:800;box-shadow:3px 3px 0 var(--ink)}
+    #bkhome .ghost{padding:.6rem .9rem;border:1.5px solid var(--line-strong);border-radius:12px;background:#fff;font-size:.87rem;font-weight:700}
+    #bkhome .link{padding:.3rem .1rem;border:0;background:none;color:#1a5ba6;text-decoration:underline;text-underline-offset:3px;font-size:.87rem;font-weight:600}
 
-    /* reason stickers — the variety is the point, so each type gets its own colour */
-    #bkhome .sticker{display:inline-block;margin:0 0 .4rem;padding:.28rem .6rem;border:2px solid var(--ink);border-radius:999px;font-size:.7rem;font-weight:800;letter-spacing:.03em;box-shadow:2px 2px 0 var(--ink);transform:rotate(-1.5deg)}
+    #bkhome .cover{display:grid;place-items:center;width:100%;aspect-ratio:2/3;overflow:hidden;border:1.5px solid var(--line-strong);border-radius:7px;background:#e9eef1;color:#464f56;font-family:Fraunces,Georgia,serif;font-size:.62rem;font-weight:600;text-align:center;padding:.35rem;line-height:1.25}
+    #bkhome .cover img{width:100%;height:100%;object-fit:cover}
+
+    /* the joy lives here — every hue is from the approved set */
+    #bkhome .sticker{display:inline-block;margin:0 0 .45rem;padding:.3rem .62rem;border:2px solid var(--ink);border-radius:999px;font-size:.72rem;font-weight:800;letter-spacing:.02em;box-shadow:2px 2px 0 var(--ink);transform:rotate(-1.5deg)}
     #bkhome .s-loved{background:var(--flash)}
-    #bkhome .s-known{background:#bfe3fa}
-    #bkhome .s-new{background:#ffc0b8}
-    #bkhome .s-now{background:#b8ecd4}
-    #bkhome .s-you{background:#e2ccfa}
-    #bkhome .why{display:inline-block;margin-top:.35rem;font-size:.83rem;font-weight:600;line-height:1.45;color:#3a332a}
-    #bkhome .prov{margin:.4rem 0 0;font-size:.78rem;line-height:1.5;color:#5c5344}
-    #bkhome .prov b{font-weight:800;color:#2a2118}
-    #bkhome .honest{margin:.5rem 0 0;padding:.55rem .7rem;border:2px solid var(--line-strong);border-radius:.6rem;background:#fffdf5;font-size:.79rem;line-height:1.45;color:#4d463c}
-    #bkhome .acts{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.55rem}
-    #bkhome .acts button{padding:.42rem .65rem;border:2px solid var(--ink);border-radius:.6rem;background:#fff;font-size:.78rem;font-weight:700;min-height:38px}
-    #bkhome .acts button:hover{background:var(--flash-soft)}
+    #bkhome .s-known{background:var(--cyan-soft)}
+    #bkhome .s-new{background:var(--rose-soft)}
+    #bkhome .s-now{background:var(--blue-soft)}
+    #bkhome .s-you{background:var(--ink);color:var(--paper)}
+    #bkhome .why{display:inline-block;margin-top:.35rem;font-size:.85rem;font-weight:600;line-height:1.45;color:#333a41}
+    #bkhome .prov{margin:.4rem 0 0;font-size:.79rem;line-height:1.5;color:#555d65}
+    #bkhome .prov b{font-weight:800;color:#20262c}
+    #bkhome .acts{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem}
+    #bkhome .acts button{padding:.5rem .7rem;min-height:48px;border:1.5px solid var(--line-strong);border-radius:10px;background:#fff;font-size:.8rem;font-weight:700}
+    #bkhome .acts button:hover{border-color:var(--ink);background:var(--flash-soft)}
 
     /* ---------- 1 · The Mix ---------- */
-    #bkhome .mix{display:grid;gap:.65rem;margin-top:.5rem}
-    #bkhome .mrow{display:grid;grid-template-columns:62px minmax(0,1fr);gap:.85rem;align-items:start;padding:.8rem;border:2px solid var(--ink);border-radius:.9rem;background:var(--paper);box-shadow:3px 3px 0 rgb(21 23 25/.12)}
-    #bkhome .mrow .cover{width:62px}
-    #bkhome .mrow strong{display:block;font-size:.95rem;line-height:1.2}
-    #bkhome .mrow small{display:block;margin-top:.12rem;color:var(--muted);font-size:.78rem}
-    #bkhome .mixfoot{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:2px dashed var(--line-strong)}
+    #bkhome .mix{display:grid;gap:.7rem;margin-top:.5rem}
+    #bkhome .mrow{display:grid;grid-template-columns:64px minmax(0,1fr);gap:.9rem;align-items:start;padding:.85rem;border:1px solid var(--line);border-radius:20px;background:var(--paper);box-shadow:0 12px 28px rgb(22 33 44/.08)}
+    #bkhome .mrow .cover{width:64px}
+    #bkhome .mrow strong{display:block;font-size:.96rem;line-height:1.2}
+    #bkhome .mrow small{display:block;margin-top:.12rem;color:var(--muted);font-size:.79rem}
+    #bkhome .foot{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center;margin-top:1.1rem;padding-top:.95rem;border-top:1px solid var(--line)}
 
     /* ---------- 2 · The Trip ---------- */
-    #bkhome .pending{padding:.85rem .95rem;border:2px solid var(--ink);border-radius:1rem;background:var(--flash-soft);box-shadow:3px 3px 0 rgb(21 23 25/.12)}
-    #bkhome .pending>p{margin:0 0 .6rem;font-size:.88rem;font-weight:800}
-    #bkhome .prow{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center;padding:.55rem 0}
-    #bkhome .prow+.prow{border-top:2px dotted var(--line-strong)}
+    #bkhome .pending{padding:.9rem 1rem;border:2px solid var(--ink);border-radius:20px;background:var(--flash-soft)}
+    #bkhome .pending>p{margin:0 0 .65rem;font-size:.9rem;font-weight:800}
+    #bkhome .prow{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;padding:.6rem 0}
+    #bkhome .prow+.prow{border-top:1px solid var(--line-strong)}
     #bkhome .prow .cover{width:34px;flex:0 0 34px;font-size:0;padding:0}
-    #bkhome .prow b{flex:1 1 9rem;font-size:.86rem;font-weight:800;line-height:1.25}
-    #bkhome .prow b em{display:block;color:var(--muted);font-size:.74rem;font-style:normal;font-weight:600}
-    #bkhome .tap{display:flex;flex-wrap:wrap;gap:.25rem}
-    #bkhome .tap button{padding:.36rem .58rem;border:2px solid var(--ink);border-radius:.55rem;background:#fff;font-size:.75rem;font-weight:700;min-height:38px}
-    #bkhome .tap button.on{background:var(--flash);box-shadow:2px 2px 0 var(--ink)}
-    #bkhome .triphead{display:flex;flex-wrap:wrap;gap:.5rem;align-items:baseline;margin:1.15rem 0 .2rem}
-    #bkhome .triphead h2{margin:0;font-family:Georgia,serif;font-size:1.3rem;letter-spacing:-.02em}
-    #bkhome .triphead span{color:var(--muted);font-size:.8rem;font-weight:700}
-    #bkhome .triplist{display:grid;gap:.55rem;margin-top:.7rem}
-    #bkhome .trow{display:grid;grid-template-columns:40px 48px minmax(0,1fr);gap:.7rem;align-items:start;padding:.75rem;border:2px solid var(--ink);border-radius:.9rem;background:var(--paper);box-shadow:3px 3px 0 rgb(21 23 25/.12)}
-    #bkhome .trow .cover{width:48px}
-    #bkhome .box{display:grid;place-items:center;width:40px;height:40px;border:2px solid var(--ink);border-radius:.55rem;background:#fff;font-size:1.05rem;font-weight:800;padding:0}
-    #bkhome .box[aria-pressed="true"]{background:var(--mint);color:#fff}
-    #bkhome .trow strong{display:block;font-size:.9rem;line-height:1.2}
-    #bkhome .trow small{display:block;margin-top:.1rem;color:var(--muted);font-size:.76rem}
-    #bkhome .tripfoot{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:1rem;padding-top:.9rem;border-top:2px dashed var(--line-strong)}
+    #bkhome .prow b{flex:1 1 9rem;font-size:.87rem;font-weight:800;line-height:1.25}
+    #bkhome .prow b em{display:block;color:var(--muted);font-size:.75rem;font-style:normal;font-weight:600}
+    #bkhome .tap{display:flex;flex-wrap:wrap;gap:.3rem}
+    #bkhome .tap button{padding:.45rem .65rem;min-height:48px;border:1.5px solid var(--line-strong);border-radius:10px;background:#fff;font-size:.78rem;font-weight:700}
+    #bkhome .tap button[aria-pressed="true"]{border:2px solid var(--ink);background:var(--flash)}
+    #bkhome .triphead{display:flex;flex-wrap:wrap;gap:.5rem;align-items:baseline;margin:1.2rem 0 .2rem}
+    #bkhome .triphead h2{margin:0;font-family:Fraunces,Georgia,serif;font-size:1.35rem;letter-spacing:-.03em}
+    #bkhome .triphead span{color:var(--muted);font-size:.81rem;font-weight:700}
+    #bkhome .triplist{display:grid;gap:.6rem;margin-top:.75rem}
+    #bkhome .trow{display:grid;grid-template-columns:44px 48px minmax(0,1fr);gap:.75rem;align-items:start;padding:.8rem;border:1px solid var(--line);border-radius:20px;background:var(--paper);box-shadow:0 12px 28px rgb(22 33 44/.08)}
+    #bkhome .trow .cover{width:48px;font-size:.56rem;padding:.25rem}
+    #bkhome .box{display:grid;place-items:center;width:44px;height:44px;min-height:44px;border:1.5px solid var(--line-strong);border-radius:10px;background:#fff;font-size:1.05rem;font-weight:800;padding:0}
+    #bkhome .box[aria-pressed="true"]{border:2px solid var(--ink);background:var(--flash)}
+    #bkhome .trow strong{display:block;font-size:.91rem;line-height:1.2}
+    #bkhome .trow small{display:block;margin-top:.1rem;color:var(--muted);font-size:.77rem}
 
     /* ---------- 3 · Because You Loved ---------- */
-    #bkhome .anchor{display:grid;grid-template-columns:84px minmax(0,1fr);gap:.9rem;align-items:center;padding:.9rem;border:2px solid var(--ink);border-radius:1rem;background:var(--flash);box-shadow:4px 4px 0 var(--ink)}
-    #bkhome .anchor .cover{width:84px}
-    #bkhome .reread{display:inline-block;margin-top:.3rem;padding:.2rem .5rem;border:2px solid var(--ink);border-radius:999px;background:#fff;font-size:.72rem;font-weight:800}
-    #bkhome .thread{display:grid;gap:.7rem;margin-top:.9rem;padding-left:1.15rem;border-left:4px dotted var(--coral)}
-    #bkhome .leaf{display:grid;grid-template-columns:66px minmax(0,1fr);gap:.8rem;align-items:start;padding:.8rem;border:2px solid var(--ink);border-radius:.9rem;background:var(--paper);box-shadow:3px 3px 0 rgb(21 23 25/.12)}
+    #bkhome .anchor{display:grid;grid-template-columns:84px minmax(0,1fr);gap:.9rem;align-items:center;padding:.95rem;border:2px solid var(--ink);border-radius:20px;background:var(--flash)}
+    #bkhome .anchor .cover{width:84px;border-color:var(--ink)}
+    #bkhome .reread{display:inline-block;margin-top:.35rem;padding:.24rem .55rem;border:2px solid var(--ink);border-radius:999px;background:#fff;font-size:.74rem;font-weight:800}
+    #bkhome .thread{display:grid;gap:.7rem;margin-top:.95rem;padding-left:1.15rem;border-left:4px dotted var(--cyan)}
+    #bkhome .leaf{display:grid;grid-template-columns:66px minmax(0,1fr);gap:.85rem;align-items:start;padding:.85rem;border:1px solid var(--line);border-radius:20px;background:var(--paper);box-shadow:0 12px 28px rgb(22 33 44/.08)}
     #bkhome .leaf .cover{width:66px}
-    #bkhome .leaf strong{display:block;font-size:.94rem;line-height:1.2}
-    #bkhome .leaf small{display:block;margin-top:.1rem;color:var(--muted);font-size:.78rem}
+    #bkhome .leaf strong{display:block;font-size:.95rem;line-height:1.2}
+    #bkhome .leaf small{display:block;margin-top:.1rem;color:var(--muted);font-size:.79rem}
+
+    /* ===== Original Bright Snap — the second required track ===== */
+    #bkhome[data-direction="snap"] .app{--canvas:#ededeb;--cyan:#31d8e6;--rose:#ff5a7a;border-width:3px;border-radius:0}
+    #bkhome[data-direction="snap"] .brand,#bkhome[data-direction="snap"] h1,#bkhome[data-direction="snap"] .triphead h2{font-family:"Arial Black",Arial,sans-serif;letter-spacing:-.04em}
+    #bkhome[data-direction="snap"] .mrow,#bkhome[data-direction="snap"] .trow,#bkhome[data-direction="snap"] .leaf{border:3px solid var(--ink);border-radius:0;box-shadow:3px 3px 0 var(--cyan)}
+    #bkhome[data-direction="snap"] .anchor,#bkhome[data-direction="snap"] .pending{border-width:3px;border-radius:0;box-shadow:6px 6px 0 var(--ink)}
+    #bkhome[data-direction="snap"] .primary,#bkhome[data-direction="snap"] .ghost,#bkhome[data-direction="snap"] .acts button,#bkhome[data-direction="snap"] .tap button,#bkhome[data-direction="snap"] .box{border-width:2px;border-radius:0}
+    #bkhome[data-direction="snap"] .cover{border:2px solid var(--ink);border-radius:0;box-shadow:3px 3px 0 var(--flash)}
+    #bkhome[data-direction="snap"] .hdr{background:var(--flash)}
+    #bkhome[data-direction="snap"] .sticker{border-radius:0;transform:none}
+    #bkhome[data-direction="snap"] .thread{border-left-style:solid}
 
     /* ---------- review notes ---------- */
     #bkhome .notes{display:grid;gap:.7rem}
@@ -106,15 +113,24 @@
     #bkhome .note ul{margin:.3rem 0 0;padding-left:1.05rem}
     #bkhome .tag{display:inline-block;padding:.15rem .45rem;border-radius:999px;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
     #bkhome .tag.plus{background:#dff5e6;color:#1c5f34}#bkhome .tag.minus{background:#ffe9ec;color:#8d2338}
-    #bkhome .tag.cold{background:#e6ecff;color:#2c3d8d}#bkhome .tag.pick{background:#ffd91f;color:#3d2f0d}
+    #bkhome .tag.cold{background:#e6ecff;color:#2c3d8d}
 
     @media(max-width:900px){#bkhome .layout{grid-template-columns:1fr}}
+    @media(prefers-reduced-motion:reduce){#bkhome *{transition:none!important;animation:none!important}#bkhome .device{transition:none}}
     #bkhome .device.phone .body{padding:1rem;padding-bottom:4rem}
+    #bkhome .device.phone .hdr{flex-wrap:wrap;padding:.35rem .55rem}
+    #bkhome .device.phone .brand{font-size:1.05rem}
+    #bkhome .device.phone .nav{order:3;width:100%;gap:0}#bkhome .device.phone .nav button{flex:1;padding:.4rem;font-size:.8rem}
+    #bkhome .device.phone .who{max-width:112px;font-size:.8rem}
   </style>
 
   <div class="tools" aria-label="Home surface review controls">
     <strong>Home surface — three directions</strong>
-    <div class="grp"><span>Direction</span>
+    <div class="grp"><span>Visual direction</span>
+      <button type="button" data-direction="refined" aria-pressed="true">Refined Brighter</button>
+      <button type="button" data-direction="snap" aria-pressed="false">Original Bright Snap</button>
+    </div>
+    <div class="grp"><span>Layout</span>
       <button type="button" data-opt="mix" aria-pressed="true">1 · The Mix</button>
       <button type="button" data-opt="trip" aria-pressed="false">2 · The Trip</button>
       <button type="button" data-opt="thread" aria-pressed="false">3 · Because You Loved</button>
@@ -125,6 +141,7 @@
     </div>
     <div class="grp"><span>Width</span>
       <button type="button" data-w="desktop" aria-pressed="true">Desktop</button>
+      <button type="button" data-w="tablet" aria-pressed="false">Tablet</button>
       <button type="button" data-w="phone" aria-pressed="false">Phone</button>
     </div>
   </div>
@@ -142,121 +159,116 @@
           <select class="who" aria-label="Active reader"><option>Maya</option><option>Theo</option></select>
         </header>
 
+        <div aria-live="polite" class="sr-only" id="bk-live"></div>
+
         <!-- ============ 1 · THE MIX — established ============ -->
         <main class="body" data-view="mix" data-ev="rich">
-          <p class="eyebrow">Five books, five different reasons</p>
+          <p class="eyebrow">Five picks, five different reasons</p>
           <h1>A little of everything.</h1>
-          <p class="lede">No two of these are here for the same reason. That's on purpose — a bag that's all one thing gets boring fast.</p>
+          <p class="lede">No two of these are here for the same reason.</p>
 
           <div class="mix">
             <article class="mrow">
-              <div class="cover c1">Do-Nothing<br>Day</div>
+              <div class="cover">On a Magical Do-Nothing Day</div>
               <div>
                 <span class="sticker s-loved">Because she loved Monkey Puzzle</span>
                 <strong>On a Magical Do-Nothing Day</strong>
                 <small>Beatrice Alemagna</small>
                 <span class="why">Same wandering-child shape, same slow pages before the turn.</span>
-                <p class="prov"><b>Also:</b> won a Batchelder Honor, and librarians across the area chose it widely.</p>
                 <div class="acts"><button type="button">Find at library</button><button type="button">Save for later</button><button type="button">Already read it</button><button type="button">Not interested</button></div>
               </div>
             </article>
 
             <article class="mrow">
-              <div class="cover c2">Stick Man</div>
+              <div class="cover">Stick Man</div>
               <div>
                 <span class="sticker s-known">More Julia Donaldson</span>
                 <strong>Stick Man</strong>
                 <small>Julia Donaldson · you've read 6 of hers</small>
-                <span class="why">You already know she works here — this is one of hers you haven't got to.</span>
+                <span class="why">One of hers you haven't got to yet.</span>
                 <div class="acts"><button type="button">Find at library</button><button type="button">Save for later</button><button type="button">Already read it</button><button type="button">Not interested</button></div>
               </div>
             </article>
 
             <article class="mrow">
-              <div class="cover c3">Life on<br>Mars</div>
+              <div class="cover">Life on Mars</div>
               <div>
                 <span class="sticker s-new">Someone new to you</span>
                 <strong>Life on Mars</strong>
-                <small>Jon Agee · no record of him in your house</small>
-                <span class="why">The joke sits with the reader, not the character — the thing that made her ask for Monkey Puzzle again.</span>
-                <p class="prov"><b>Also:</b> a starred trade review, and a longtime favourite of librarians.</p>
+                <small>Jon Agee</small>
+                <span class="why">The joke sits with the reader, not the character.</span>
                 <div class="acts"><button type="button">Find at library</button><button type="button">Save for later</button><button type="button">Already read it</button><button type="button">Not interested</button></div>
               </div>
             </article>
 
             <article class="mrow">
-              <div class="cover c4">Tyrannosaurus<br>Drip</div>
+              <div class="cover">Tyrannosaurus Drip</div>
               <div>
                 <span class="sticker s-now">She's into dinosaurs right now</span>
                 <strong>Tyrannosaurus Drip</strong>
                 <small>Julia Donaldson &amp; David Roberts</small>
-                <span class="why">You told Bookkin about the dinosaur phase in June. Still going?</span>
+                <span class="why">You mentioned dinosaurs in June. Still going?</span>
                 <div class="acts"><button type="button">Find at library</button><button type="button">Save for later</button><button type="button">Already read it</button><button type="button">Not interested</button></div>
               </div>
             </article>
 
             <article class="mrow">
-              <div class="cover c5">Small in<br>the City</div>
+              <div class="cover">Small in the City</div>
               <div>
                 <span class="sticker s-you">For you, reading it aloud</span>
                 <strong>Small in the City</strong>
-                <small>Sydney Smith · no record of him in your house</small>
-                <span class="why">Short, no rhyme, and genuinely beautiful to read out loud on the fortieth go.</span>
-                <p class="prov"><b>Also:</b> a Greenaway Medal — an award for the pictures, judged by librarians.</p>
+                <small>Sydney Smith</small>
+                <span class="why">Short, no rhyme, and lovely to read out loud on the fortieth go.</span>
                 <div class="acts"><button type="button">Find at library</button><button type="button">Save for later</button><button type="button">Already read it</button><button type="button">Not interested</button></div>
               </div>
             </article>
           </div>
 
-          <div class="mixfoot">
+          <div class="foot">
             <button class="primary" type="button">Start a trip list</button>
             <button class="ghost" type="button">Show me five more</button>
-            <button class="link" type="button">Less of a certain kind?</button>
           </div>
         </main>
 
         <!-- ============ 1 · THE MIX — day one ============ -->
         <main class="body" data-view="mix" data-ev="cold" hidden>
-          <p class="eyebrow">Three books, three different reasons</p>
+          <p class="eyebrow">Three picks, three different reasons</p>
           <h1>A place to start.</h1>
-          <p class="lede">Bookkin doesn't know Maya yet, so two of the five reasons aren't available. It's showing the three it can honestly fill.</p>
+          <p class="lede">A place to start while Bookkin gets to know Maya.</p>
 
           <div class="mix">
             <article class="mrow">
-              <div class="cover c1">Where the<br>Wild Things<br>Are</div>
+              <div class="cover"><img src="wild-things-cover.jpg" alt="Where the Wild Things Are"></div>
               <div>
                 <span class="sticker s-known">A classic, in case you've missed it</span>
                 <strong>Where the Wild Things Are</strong>
                 <small>Maurice Sendak</small>
-                <span class="why">If you already know it, tap "Already read it" — that's the fastest way to teach Bookkin what's on your shelf.</span>
+                <span class="why">Know it already? "Already read it" tells Bookkin what's on your shelf.</span>
                 <div class="acts"><button type="button">Find at library</button><button type="button">Already read it</button><button type="button">Not interested</button></div>
               </div>
             </article>
             <article class="mrow">
-              <div class="cover c3">Life on<br>Mars</div>
+              <div class="cover">Life on Mars</div>
               <div>
                 <span class="sticker s-new">Someone new to you</span>
                 <strong>Life on Mars</strong>
                 <small>Jon Agee</small>
-                <p class="prov"><b>Why this one:</b> a starred trade review, and a longtime favourite of librarians.</p>
                 <div class="acts"><button type="button">Find at library</button><button type="button">Already read it</button><button type="button">Not interested</button></div>
               </div>
             </article>
             <article class="mrow">
-              <div class="cover c5">Small in<br>the City</div>
+              <div class="cover">Small in the City</div>
               <div>
                 <span class="sticker s-you">For you, reading it aloud</span>
                 <strong>Small in the City</strong>
                 <small>Sydney Smith</small>
-                <span class="why">Short and no rhyme — worth knowing whether that suits you before Bookkin guesses.</span>
+                <span class="why">Short and no rhyme — worth knowing if that suits you.</span>
                 <div class="acts"><button type="button">Find at library</button><button type="button">Already read it</button><button type="button">Not interested</button></div>
               </div>
             </article>
           </div>
 
-          <p class="honest" style="margin-top:.9rem"><b>Two reasons are missing on purpose.</b> "Because she loved…" needs a book she loved, and "she's into this right now" needs you to say what she's into. Bookkin won't fake either one.</p>
-
-          <div class="mixfoot">
+          <div class="foot">
             <button class="primary" type="button">Add books she already loves</button>
             <button class="ghost" type="button">Tell Bookkin what she's into</button>
           </div>
@@ -270,23 +282,23 @@
           <div class="pending">
             <p>Still out from last trip — how did these go?</p>
             <div class="prow">
-              <div class="cover c6">Too Much<br>Noise</div>
+              <div class="cover">Too Much Noise</div>
               <b>Too Much Noise<em>Ann McGovern · home 9 days</em></b>
               <div class="tap">
-                <button class="on" type="button">Loved it</button>
-                <button type="button">She liked it</button>
-                <button type="button">Not for us</button>
-                <button type="button">We stopped</button>
+                <button type="button" aria-pressed="false">Loved it</button>
+                <button type="button" aria-pressed="false">She liked it</button>
+                <button type="button" aria-pressed="false">Not for us</button>
+                <button type="button" aria-pressed="false">We stopped</button>
               </div>
             </div>
             <div class="prow">
-              <div class="cover c7">Tawny<br>Scrawny</div>
+              <div class="cover">Tawny Scrawny Lion</div>
               <b>Tawny Scrawny Lion<em>Kathryn Jackson · home 9 days</em></b>
               <div class="tap">
-                <button type="button">Loved it</button>
-                <button type="button">She liked it</button>
-                <button type="button">Not for us</button>
-                <button type="button">We stopped</button>
+                <button type="button" aria-pressed="false">Loved it</button>
+                <button type="button" aria-pressed="false">She liked it</button>
+                <button type="button" aria-pressed="false">Not for us</button>
+                <button type="button" aria-pressed="false">We stopped</button>
               </div>
             </div>
           </div>
@@ -295,65 +307,64 @@
             <h2>To find this trip</h2>
             <span>2 in the bag · 4 on the list</span>
           </div>
-          <p class="lede" style="margin:.15rem 0 0;font-size:.85rem">Tick them as you decide. It's the same list as Tuesday — it doesn't reshuffle itself.</p>
+          <p class="lede" style="margin:.15rem 0 0;font-size:.86rem">Tick them off as you decide.</p>
 
           <div class="triplist">
             <article class="trow">
-              <button class="box" type="button" aria-pressed="true" aria-label="In the bag">✓</button>
-              <div class="cover c1">Do-Nothing<br>Day</div>
+              <button class="box" type="button" aria-pressed="true" aria-label="In the bag: On a Magical Do-Nothing Day">✓</button>
+              <div class="cover">Do-Nothing Day</div>
               <div>
                 <span class="sticker s-loved">Because she loved Monkey Puzzle</span>
                 <strong>On a Magical Do-Nothing Day</strong>
-                <small>Beatrice Alemagna · no record of her in your house</small>
+                <small>Beatrice Alemagna</small>
                 <span class="why">Wordless stretches, same slow build.</span>
               </div>
             </article>
             <article class="trow">
-              <button class="box" type="button" aria-pressed="true" aria-label="In the bag">✓</button>
-              <div class="cover c2">Rooster /<br>World</div>
+              <button class="box" type="button" aria-pressed="true" aria-label="In the bag: The Rooster Who Set Out to See the World">✓</button>
+              <div class="cover">Rooster / World</div>
               <div>
                 <span class="sticker s-known">More Eric Carle</span>
                 <strong>The Rooster Who Set Out to See the World</strong>
                 <small>Eric Carle · you've read 3 of his</small>
-                <span class="why">Counting and repetition, one you haven't got to.</span>
+                <span class="why">Counting and repetition.</span>
               </div>
             </article>
             <article class="trow">
-              <button class="box" type="button" aria-pressed="false" aria-label="In the bag">＋</button>
-              <div class="cover c3">Life on<br>Mars</div>
+              <button class="box" type="button" aria-pressed="false" aria-label="In the bag: Life on Mars">＋</button>
+              <div class="cover">Life on Mars</div>
               <div>
                 <span class="sticker s-new">Someone new to you</span>
                 <strong>Life on Mars</strong>
-                <small>Jon Agee · no record of him in your house</small>
-                <span class="why">Deadpan joke the reader gets before the child does.</span>
+                <small>Jon Agee</small>
+                <span class="why">Deadpan joke the reader gets first.</span>
               </div>
             </article>
             <article class="trow">
-              <button class="box" type="button" aria-pressed="false" aria-label="In the bag">＋</button>
-              <div class="cover c5">Small in<br>the City</div>
+              <button class="box" type="button" aria-pressed="false" aria-label="In the bag: Small in the City">＋</button>
+              <div class="cover">Small in the City</div>
               <div>
                 <span class="sticker s-you">For you, reading it aloud</span>
                 <strong>Small in the City</strong>
-                <small>Sydney Smith · no record of him in your house</small>
+                <small>Sydney Smith</small>
                 <span class="why">Quiet city walk, feelings left unsaid.</span>
               </div>
             </article>
           </div>
 
-          <div class="tripfoot">
+          <div class="foot">
             <button class="primary" type="button">I'm at the library</button>
             <button class="ghost" type="button">＋ Add a book I picked up</button>
             <button class="ghost" type="button">＋ More recommendations</button>
             <button class="link" type="button">Close out this trip</button>
           </div>
-          <p class="honest" style="margin-top:.7rem"><b>Add a book I picked up</b> is for the ones you find on the shelf yourself — they belong in the trip too, and what you grab unprompted is some of the best evidence Bookkin can get. <b>More recommendations</b> extends the list without throwing away what's on it.</p>
         </main>
 
         <!-- ============ 2 · THE TRIP — day one ============ -->
         <main class="body" data-view="trip" data-ev="cold" hidden>
           <p class="eyebrow">Your first trip</p>
           <h1>Your next library trip.</h1>
-          <p class="lede">Nothing is out yet, so there's nothing to report back on. Four to start with, chosen on published quality alone.</p>
+          <p class="lede">Four to start with.</p>
 
           <div class="triphead">
             <h2>To find this trip</h2>
@@ -362,96 +373,90 @@
 
           <div class="triplist">
             <article class="trow">
-              <button class="box" type="button" aria-pressed="false" aria-label="In the bag">＋</button>
-              <div class="cover c1">Where the<br>Wild Things<br>Are</div>
+              <button class="box" type="button" aria-pressed="false" aria-label="In the bag: Where the Wild Things Are">＋</button>
+              <div class="cover"><img src="wild-things-cover-small.jpg" alt="Where the Wild Things Are"></div>
               <div>
                 <span class="sticker s-known">A classic, in case you've missed it</span>
                 <strong>Where the Wild Things Are</strong>
                 <small>Maurice Sendak</small>
-                <span class="why">Know it already? "Already read it" teaches Bookkin your shelf.</span>
+                <span class="why">Know it already? "Already read it" tells Bookkin your shelf.</span>
               </div>
             </article>
             <article class="trow">
-              <button class="box" type="button" aria-pressed="false" aria-label="In the bag">＋</button>
-              <div class="cover c3">Life on<br>Mars</div>
+              <button class="box" type="button" aria-pressed="false" aria-label="In the bag: Life on Mars">＋</button>
+              <div class="cover">Life on Mars</div>
               <div>
                 <span class="sticker s-new">Someone new to you</span>
                 <strong>Life on Mars</strong>
                 <small>Jon Agee</small>
-                <p class="prov">Starred trade review · a longtime favourite of librarians.</p>
               </div>
             </article>
             <article class="trow">
-              <button class="box" type="button" aria-pressed="false" aria-label="In the bag">＋</button>
-              <div class="cover c5">Small in<br>the City</div>
+              <button class="box" type="button" aria-pressed="false" aria-label="In the bag: Small in the City">＋</button>
+              <div class="cover">Small in the City</div>
               <div>
                 <span class="sticker s-you">For you, reading it aloud</span>
                 <strong>Small in the City</strong>
                 <small>Sydney Smith</small>
-                <p class="prov">Greenaway Medal — an award for the pictures, judged by librarians.</p>
               </div>
             </article>
             <article class="trow">
-              <button class="box" type="button" aria-pressed="false" aria-label="In the bag">＋</button>
-              <div class="cover c4">Do-Nothing<br>Day</div>
+              <button class="box" type="button" aria-pressed="false" aria-label="In the bag: On a Magical Do-Nothing Day">＋</button>
+              <div class="cover">Do-Nothing Day</div>
               <div>
                 <span class="sticker s-new">Someone new to you</span>
                 <strong>On a Magical Do-Nothing Day</strong>
                 <small>Beatrice Alemagna</small>
-                <p class="prov">Batchelder Honor · widely chosen by librarians across the area.</p>
               </div>
             </article>
           </div>
 
-          <div class="tripfoot">
+          <div class="foot">
             <button class="primary" type="button">I'm at the library</button>
             <button class="ghost" type="button">＋ Add a book I picked up</button>
             <button class="link" type="button">Tell Bookkin what she already loves</button>
           </div>
-          <p class="honest" style="margin-top:.7rem"><b>None of this is personalised yet.</b> Bookkin has no reactions from Maya, so these are ranked on published quality and an age band only. Marking what you already own is the fastest way to change that.</p>
         </main>
 
         <!-- ============ 3 · BECAUSE YOU LOVED — established ============ -->
         <main class="body" data-view="thread" data-ev="rich" hidden>
           <p class="eyebrow">Following a book that worked</p>
           <h1>Because Maya loved this one.</h1>
-          <p class="lede">Bookkin follows what actually landed, and shows the evidence behind each step.</p>
+          <p class="lede">Books that follow one Maya already loved.</p>
 
           <div class="anchor">
-            <div class="cover c8">Monkey<br>Puzzle</div>
+            <div class="cover">Monkey Puzzle</div>
             <div>
-              <strong style="display:block;font-family:Georgia,serif;font-size:1.2rem">Monkey Puzzle</strong>
-              <small style="display:block;margin-top:.15rem;font-size:.84rem;font-weight:700">Julia Donaldson</small>
+              <strong style="display:block;font-family:Fraunces,Georgia,serif;font-size:1.25rem">Monkey Puzzle</strong>
+              <small style="display:block;margin-top:.15rem;font-size:.85rem;font-weight:700">Julia Donaldson</small>
               <span class="reread">★ Read 4 times</span>
-              <button class="link" type="button" style="display:block;margin-top:.35rem">Follow a different book</button>
+              <button class="link" type="button" style="display:block;margin-top:.4rem">Follow a different book</button>
             </div>
           </div>
 
           <div class="thread">
             <article class="leaf">
-              <div class="cover c1">Do-Nothing<br>Day</div>
+              <div class="cover">On a Magical Do-Nothing Day</div>
               <div>
                 <span class="sticker s-new">Someone new to you</span>
                 <strong>On a Magical Do-Nothing Day</strong>
                 <small>Beatrice Alemagna</small>
                 <span class="why">Same wandering-child structure, same slow pages before the turn.</span>
-                <p class="prov"><b>Independently:</b> won a Batchelder Honor, and librarians across the area chose it widely.</p>
                 <div class="acts"><button type="button">Find at library</button><button type="button">Save for later</button><button type="button">Already read it</button><button type="button">Not interested</button></div>
               </div>
             </article>
             <article class="leaf">
-              <div class="cover c3">Life on<br>Mars</div>
+              <div class="cover">Life on Mars</div>
               <div>
                 <span class="sticker s-new">Someone new to you</span>
                 <strong>Life on Mars</strong>
                 <small>Jon Agee</small>
                 <span class="why">The joke sits with the reader, not the character — the thing that made her ask for Monkey Puzzle again.</span>
-                <p class="prov"><b>Independently:</b> a starred trade review, and a longtime favourite of librarians.</p>
                 <div class="acts"><button type="button">Find at library</button><button type="button">Save for later</button><button type="button">Already read it</button><button type="button">Not interested</button></div>
               </div>
             </article>
             <article class="leaf">
-              <div class="cover c2">Rooster /<br>World</div>
+              <div class="cover">Rooster / World</div>
               <div>
                 <span class="sticker s-known">More Eric Carle</span>
                 <strong>The Rooster Who Set Out to See the World</strong>
@@ -461,28 +466,24 @@
               </div>
             </article>
           </div>
-          <p class="honest" style="margin-top:.85rem">Two of these three are by people with no record in your house — that's deliberate, not an accident of the search. The third is a creator you already like, which is also deliberate.</p>
         </main>
 
         <!-- ============ 3 · BECAUSE YOU LOVED — day one ============ -->
         <main class="body" data-view="thread" data-ev="cold" hidden>
           <p class="eyebrow">Following a book that worked</p>
           <h1>Which one worked?</h1>
-          <p class="lede">This view follows a book Maya genuinely loved. Bookkin doesn't have one yet — so there's nothing honest to build from.</p>
+          <p class="lede">Add a book Maya asks for again, and this page will follow it.</p>
 
-          <div class="anchor" style="background:#fffdf5;border-style:dashed;box-shadow:none">
-            <div class="cover" style="background:repeating-linear-gradient(45deg,#f3ece0,#f3ece0 6px,#e9e0d0 6px,#e9e0d0 12px);color:#6b6152">No anchor<br>book yet</div>
+          <div class="anchor" style="background:#fff;border-style:dashed">
+            <div class="cover" style="background:repeating-linear-gradient(45deg,#eef2f4,#eef2f4 6px,#e2e8ec 6px,#e2e8ec 12px)"></div>
             <div>
-              <strong style="display:block;font-family:Georgia,serif;font-size:1.1rem">Name one she asks for again</strong>
-              <small style="display:block;margin-top:.2rem;color:#6b6152;font-size:.83rem">One clear favourite is enough to start. A reread counts double.</small>
-              <button class="primary" type="button" style="margin-top:.6rem">Add a book she loves</button>
+              <strong style="display:block;font-family:Fraunces,Georgia,serif;font-size:1.15rem">Name one she asks for again</strong>
+              <small style="display:block;margin-top:.2rem;color:#555d65;font-size:.84rem">One clear favorite is enough to start.</small>
+              <button class="primary" type="button" style="margin-top:.65rem">Add a book she loves</button>
             </div>
           </div>
 
-          <p class="honest" style="margin-top:.9rem"><b>This page can't be filled in with guesses.</b> Bookkin could show popular 4-year-old books here, but it would be pretending the recommendation came from Maya when it came from a bestseller list. Until there's a real anchor, the other two views are the honest ones.</p>
-
-          <div class="mixfoot">
-            <button class="ghost" type="button">Show me the mix instead</button>
+          <div class="foot">
             <button class="ghost" type="button">Start a trip list</button>
           </div>
         </main>
@@ -492,64 +493,69 @@
     <aside class="notes">
       <div class="note">
         <h3>What is being decided</h3>
-        <p>All three open on the recommendation. None opens on the shelf. Bright Snap is unchanged — this is information architecture only.</p>
-        <p>Each has a different <em>subject</em>: a spread of reasons, a trip, a book. Use <strong>Day one</strong> to see each with no household evidence, which is where they differ most.</p>
+        <p><strong>Two things independently.</strong> <em>Visual direction</em> switches between Refined Brighter and Original Bright Snap, which stays an open owner decision until Checkpoint 7P. <em>Layout</em> switches the three home-surface proposals.</p>
+        <p>Each layout has a different subject: a spread of reasons, a trip, a book. Use <strong>Day one</strong> to see each with no household history.</p>
       </div>
 
       <div class="note" data-note="mix">
-        <h3>1 · The Mix <em>(replaces Someone New)</em></h3>
-        <p>Every book is here for a <strong>visibly different kind of reason</strong>, and the variety of reasons is the structure. Five stickers, five colours, no two alike.</p>
-        <p><span class="tag plus">for</span> Fixes the complaint that a single-creator page cuts off authors you already like. "More Julia Donaldson" is a first-class reason here, sitting next to "someone new to you" rather than being crowded out by it.</p>
-        <p><span class="tag plus">for</span> Not the old Bag: every book carries a legible, checkable warrant, and the warrants are of <em>different types</em>. The old Bag showed three books with one kind of reason and no account of itself.</p>
-        <p><span class="tag plus">for</span> The sticker colours make the composition rules visible at a glance. If new-creator picks quietly vanished over time, you would see it — the page would go monochrome.</p>
-        <p><span class="tag minus">against</span> Five books is more to take in than three, and the reason types have to stay genuinely distinct or the stickers become decoration.</p>
-        <p><span class="tag cold">day one</span> Honest and still useful: it shows the three reason types it can fill and says plainly which two it can't, rather than faking them.</p>
+        <h3>1 · The Mix</h3>
+        <p>Every book is here for a <strong>visibly different kind of reason</strong>, and the variety of reasons is the structure.</p>
+        <p><span class="tag plus">for</span> Keeps creators you already like as a first-class reason, sitting beside "someone new to you" rather than being crowded out by it.</p>
+        <p><span class="tag plus">for</span> Unlike the rejected Bag, every book carries a checkable warrant, and the warrants differ in kind.</p>
+        <p><span class="tag plus">for</span> The sticker colors make composition visible. If new-creator picks quietly drained away over time, the page would go monochrome.</p>
+        <p><span class="tag minus">against</span> Five books is more to take in than three, and the reason types must stay genuinely distinct or the stickers become decoration.</p>
+        <p><span class="tag cold">day one</span> Shows the three reason types it can fill honestly and drops the two it cannot.</p>
       </div>
 
       <div class="note" data-note="trip" hidden>
         <h3>2 · The Trip</h3>
-        <p>The unit is a <strong>library trip</strong>, not a recommendation. Opens at the kitchen table, travels into the aisle, closes out at bedtime.</p>
-        <p><span class="tag plus">for</span> The only direction present at the moment delight rate's denominator is actually set — when you decide what to physically carry home.</p>
-        <p><span class="tag plus">for</span> Last trip's books sit at the top asking how they went. At one trip a fortnight, a page that reliably closes out the previous trip may be worth more than any ranking change.</p>
-        <p><span class="tag plus">for</span> <strong>Added this round:</strong> "Add a book I picked up" captures the ones you find yourself — genuinely valuable evidence that no data source carries — and "More recommendations" extends the list without discarding it.</p>
-        <p><span class="tag plus">for</span> The list is stable. "Same list as Tuesday" is a trust-building sentence, and it fixes the staleness problem the old Bag couldn't answer.</p>
-        <p><span class="tag minus">against</span> Risks drifting into logistics software — a packing list with covers — where quality quietly stops being the subject.</p>
-        <p><span class="tag minus">against</span> Close-out may never happen; it has to be inferred from the next open, not depend on a button you remember to press.</p>
+        <p>The unit is a <strong>library trip</strong>, not a recommendation.</p>
+        <p><span class="tag plus">for</span> The only direction present at the moment delight rate's denominator is set — when the caregiver decides what to physically carry home.</p>
+        <p><span class="tag plus">for</span> Last trip's books sit at the top. At one trip a fortnight, reliably closing out the previous trip may be worth more than any ranking change.</p>
+        <p><span class="tag plus">for</span> "Add a book I picked up" captures unprompted shelf finds — a signal no data source carries, and the one the plan now requires to be recorded rather than inferred.</p>
+        <p><span class="tag plus">for</span> The list is stable between visits, which fixes the staleness problem the rejected Bag could not answer.</p>
+        <p><span class="tag minus">against</span> Risks drifting into logistics software, where quality stops being the subject.</p>
+        <p><span class="tag minus">against</span> Close-out may never happen; it has to be inferred from the next open.</p>
+        <p><strong>Note:</strong> the two ticked boxes represent caregiver action already taken, not a preselected default. No reaction is ever preselected.</p>
       </div>
 
       <div class="note" data-note="thread" hidden>
-        <h3>3 · Because You Loved <em>(kept)</em></h3>
-        <p>Anchored on a book that actually worked, with recommendations hanging off it and the reasoning as the organizing structure.</p>
-        <p><span class="tag plus">for</span> Leads with the strongest signal available — a comp title from your own house beats any topic. It converts an unknown book into a known quantity, which is the core trust problem.</p>
-        <p><span class="tag plus">for</span> Each pick now carries its independent judgement underneath the similarity reason. Similarity says <em>like this</em>; the second line says <em>and good</em>.</p>
-        <p><span class="tag cold">day one</span> Weakest, and deliberately shown refusing to fake it. It needs one genuinely loved book and won't fill itself with popular titles.</p>
-        <p><span class="tag minus">against</span> Narrow if the anchor is stale or taste has moved. One anchor per page.</p>
+        <h3>3 · Because You Loved</h3>
+        <p>Anchored on a book that actually worked, with recommendations hanging off it.</p>
+        <p><span class="tag plus">for</span> Leads with the strongest signal available — a comp title from the household's own history beats any topic, and converts an unknown book into a known quantity.</p>
+        <p><span class="tag cold">day one</span> Weakest, and deliberately shown refusing to fill itself with popular titles it cannot attribute to this child.</p>
+        <p><span class="tag minus">against</span> Narrow if the anchor is stale or taste has moved.</p>
       </div>
 
       <div class="note">
-        <h3>Changed this round</h3>
+        <h3>Corrections after design audit</h3>
+        <p>The previous revision of this file had real defects, now fixed:</p>
         <ul>
-          <li><strong>"Held by 19 of 29 systems" is gone.</strong> It exposed the mechanism. Replaced with the human fact underneath it — <em>librarians across the area chose it widely</em>. Not "popular": see the note below.</li>
-          <li><strong>Joy restored.</strong> Coloured covers, sticker badges with hard shadows, warmer paper, a reread star. The palette and type are still Bright Snap.</li>
-          <li><strong>Known-liked creators are a first-class reason</strong> in all three, not a leak. The plan caps creator adjacency at one seat per bag; it never meant excluding them.</li>
+          <li><strong>It showed only one visual direction.</strong> Section 3 requires both tracks in parallel until 7P. The toggle is restored, matching Checkpoint 7A.</li>
+          <li><strong>It regressed to beige.</strong> Canvas had moved to <code>#fdf7ec</code> with brown lines and text — the exact regression section 3 and <code>docs/design/principles.md</code> forbid. Tokens now match 7A: canvas <code>#f4f7f8</code>, ink <code>#111316</code>, yellow <code>#ffe500</code>.</li>
+          <li><strong>Cyan had been deleted</strong> and replaced with two invented hues that were never used. The joy now comes from the approved set: yellow, cyan, rose, blue, ink.</li>
+          <li><strong>A reaction was preselected</strong> — "Loved it" shipped pressed, violating the invariant that reactions are never preselected.</li>
+          <li><strong>Reaction controls were 38px</strong>, below the 44px floor and the 48px preference for reaction controls.</li>
+          <li><strong>Two contrast failures</strong> on the joy elements: coral eyebrow at 2.53:1 and white-on-mint at 2.46:1.</li>
+          <li><strong>Copy narrated the system's own reasoning</strong> and used internal vocabulary. Rationale moved here, where it belongs.</li>
+          <li>Focus-visible, reduced-motion, tablet width, and a live region were all missing.</li>
         </ul>
       </div>
 
       <div class="note">
         <h3>One deliberate disagreement</h3>
-        <p>You suggested "Popular". I'd avoid that specific word, because it is the one thing this signal is <em>not</em>, and saying it would undercut the product.</p>
-        <p>Holdings measure how many librarians spent budget on a book — professional selection, not sales. The engine deliberately targets the <em>widely-chosen-but-not-famous</em> band and drops the top of it. Labelling that "popular" would describe the opposite of what was done, and it's the one claim a caregiver could catch out.</p>
-        <p>"Librarians across the area chose it" is the same fact in human terms, hides the mechanism just as well, and is the actual differentiator against a bestseller list.</p>
+        <p>"Popular" was suggested for the library-selection signal. I would avoid that specific word: holdings measure professional selection under budget, and the engine deliberately targets the widely-chosen-but-not-famous band. Calling that "popular" would describe the opposite of what was done.</p>
+        <p>Award and selection claims have been removed from the cards entirely for now, rather than shown as unverified placeholders. They return once there is a verified source to cite.</p>
       </div>
 
       <div class="note">
         <h3>Not represented here</h3>
         <ul>
           <li>The aisle view behind "I'm at the library".</li>
-          <li>Single-candidate results, which are the <em>expected</em> case when retrieval is working and need a confident presentation, not a grid with holes.</li>
+          <li>Single-candidate results, which are the expected case when retrieval is working.</li>
           <li>Multi-child and second-caregiver states.</li>
         </ul>
-        <p>Books shown are real titles. Awards and library-selection claims are plausible placeholders — none is verified yet.</p>
+        <p>Covers are placeholders except <em>Where the Wild Things Are</em>. Real jackets will replace them.</p>
       </div>
     </aside>
   </div>
@@ -558,22 +564,30 @@
     (function(){
       const root=document.getElementById('bkhome');
       const device=document.getElementById('bk-device');
+      const live=document.getElementById('bk-live');
       let opt='mix', ev='rich';
       function press(sel,btn){root.querySelectorAll(sel).forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));}
-      function sync(){
+      function sync(announce){
         root.querySelectorAll('[data-view]').forEach(m=>{m.hidden=!(m.dataset.view===opt&&m.dataset.ev===ev);});
         root.querySelectorAll('[data-note]').forEach(n=>{n.hidden=n.dataset.note!==opt;});
+        if(announce&&live)live.textContent=announce;
       }
-      root.querySelectorAll('[data-opt]').forEach(b=>b.addEventListener('click',()=>{press('[data-opt]',b);opt=b.dataset.opt;sync();}));
-      root.querySelectorAll('[data-ev]').forEach(b=>b.addEventListener('click',()=>{press('[data-ev]',b);ev=b.dataset.ev;sync();}));
-      root.querySelectorAll('[data-w]').forEach(b=>b.addEventListener('click',()=>{press('[data-w]',b);device.className='device '+(b.dataset.w==='phone'?'phone':'');}));
+      root.querySelectorAll('[data-direction]').forEach(b=>b.addEventListener('click',()=>{
+        press('[data-direction]',b);root.setAttribute('data-direction',b.dataset.direction);
+        if(live)live.textContent=b.textContent+' direction shown';
+      }));
+      root.querySelectorAll('[data-opt]').forEach(b=>b.addEventListener('click',()=>{press('[data-opt]',b);opt=b.dataset.opt;sync(b.textContent+' shown');}));
+      root.querySelectorAll('[data-ev]').forEach(b=>b.addEventListener('click',()=>{press('[data-ev]',b);ev=b.dataset.ev;sync(b.textContent+' state shown');}));
+      root.querySelectorAll('[data-w]').forEach(b=>b.addEventListener('click',()=>{
+        press('[data-w]',b);const w=b.dataset.w;device.className='device '+(w==='desktop'?'':w);
+      }));
       root.querySelectorAll('.box').forEach(b=>b.addEventListener('click',()=>{
         const on=b.getAttribute('aria-pressed')==='true';
         b.setAttribute('aria-pressed',String(!on));b.textContent=on?'＋':'✓';
       }));
       root.querySelectorAll('.tap button').forEach(b=>b.addEventListener('click',()=>{
-        b.closest('.tap').querySelectorAll('button').forEach(x=>x.classList.remove('on'));
-        b.classList.add('on');
+        b.closest('.tap').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));
+        b.setAttribute('aria-pressed','true');
       }));
       sync();
     })();
