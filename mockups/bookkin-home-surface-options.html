@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<div id="bkhome" data-direction="refined">
+<div id="bkhome" data-direction="refined" data-energy="bright">
   <style>
     #bkhome{--rv-bg:light-dark(#f5f6f8,#151719);--rv-fg:light-dark(#17191c,#f5f5f1);--rv-line:light-dark(#cfd3d8,#4a4d50);width:100%;color:var(--rv-fg);font-family:Manrope,ui-sans-serif,system-ui,sans-serif;color-scheme:light dark}
     #bkhome *{box-sizing:border-box}#bkhome button,#bkhome select{font:inherit}#bkhome button{cursor:pointer}#bkhome [hidden]{display:none!important}
@@ -16,7 +16,7 @@
     /* ===== Refined Brighter — default review direction. Tokens match Checkpoint 7A. ===== */
     #bkhome .app{--flash:#ffe500;--flash-soft:#fff8b8;--ink:#111316;--paper:#fff;--canvas:#f4f7f8;
       --line:#cbd2d7;--line-strong:#adb6bd;--muted:#555d65;
-      --cyan:#2dd7df;--cyan-soft:#bdeef1;--rose:#ff6b86;--rose-soft:#ffdfe5;--rose-ink:#c5264c;--blue:#3578f6;--blue-soft:#dce8ff;
+      --cyan:#2dd7df;--cyan-soft:#bdeef1;--rose:#ff6b86;--rose-soft:#ffdfe5;--rose-ink:#b81f45;--blue:#3578f6;--blue-soft:#dce8ff;
       position:relative;overflow:hidden;min-height:780px;border:2px solid var(--ink);border-radius:20px;background:var(--canvas);color:var(--ink)}
     #bkhome .app button,#bkhome .app select{min-height:44px;color:inherit}
     #bkhome .app button:focus-visible,#bkhome .app select:focus-visible{outline:3px solid var(--ink);outline-offset:3px;box-shadow:0 0 0 6px var(--cyan)}
@@ -27,7 +27,19 @@
     #bkhome .nav{display:flex;gap:.2rem}#bkhome .nav button{min-width:44px;padding:.55rem .7rem;border:0;border-radius:999px;background:transparent;font-size:.85rem}
     #bkhome .nav button[aria-current="page"]{background:var(--flash);font-weight:700}
     #bkhome .who{min-height:44px;max-width:132px;padding:.45rem .55rem;border:1.5px solid var(--ink);border-radius:999px;background:#fff;font-weight:700;font-size:.82rem}
-    #bkhome .body{padding:clamp(1rem,3.5vw,1.6rem);padding-bottom:4.5rem}
+    #bkhome .body{position:relative;padding:clamp(1rem,3.5vw,1.6rem);padding-bottom:4.5rem}
+    /* energetic background — hard-edged colour discs, carried over from the 5A "bright" energy setting.
+       Crisp stops rather than blurs, so it stays graphic rather than becoming a soft wash. */
+    #bkhome[data-energy="bright"] .body{background-repeat:no-repeat;background-image:
+      radial-gradient(circle at 93% 3%, var(--flash-soft) 0 124px, transparent 126px),
+      radial-gradient(circle at 2% 34%, var(--rose-soft) 0 66px, transparent 68px),
+      radial-gradient(circle at 99% 58%, var(--cyan-soft) 0 88px, transparent 90px),
+      radial-gradient(circle at 8% 88%, var(--blue-soft) 0 54px, transparent 56px)}
+    #bkhome[data-direction="snap"][data-energy="bright"] .body{background-image:
+      radial-gradient(circle at 93% 3%, var(--flash) 0 124px, transparent 126px),
+      radial-gradient(circle at 2% 34%, var(--rose-soft) 0 66px, transparent 68px),
+      radial-gradient(circle at 99% 58%, var(--cyan-soft) 0 92px, transparent 94px),
+      radial-gradient(circle at 8% 88%, var(--blue-soft) 0 56px, transparent 58px)}
     #bkhome .eyebrow{margin:0 0 .35rem;font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--rose-ink)}
     #bkhome h1{margin:0 0 .5rem;font-family:Fraunces,Georgia,serif;font-size:clamp(2rem,5vw,3.4rem);line-height:1;letter-spacing:-.035em}
     #bkhome .lede{margin:0 0 1.1rem;max-width:36rem;color:#454b52;font-size:.95rem}
@@ -134,6 +146,10 @@
       <button type="button" data-opt="mix" aria-pressed="true">1 · The Mix</button>
       <button type="button" data-opt="trip" aria-pressed="false">2 · The Trip</button>
       <button type="button" data-opt="thread" aria-pressed="false">3 · Because You Loved</button>
+    </div>
+    <div class="grp"><span>Energy</span>
+      <button type="button" data-energy="bright" aria-pressed="true">Bright</button>
+      <button type="button" data-energy="plain" aria-pressed="false">Plain</button>
     </div>
     <div class="grp"><span>Evidence</span>
       <button type="button" data-ev="rich" aria-pressed="true">Established</button>
@@ -493,7 +509,8 @@
     <aside class="notes">
       <div class="note">
         <h3>What is being decided</h3>
-        <p><strong>Two things independently.</strong> <em>Visual direction</em> switches between Refined Brighter and Original Bright Snap, which stays an open owner decision until Checkpoint 7P. <em>Layout</em> switches the three home-surface proposals.</p>
+        <p><strong>Three things independently.</strong> <em>Visual direction</em> switches between Refined Brighter and Original Bright Snap, which stays an open owner decision until Checkpoint 7P. <em>Layout</em> switches the three home-surface proposals. <em>Energy</em> toggles the background colour discs.</p>
+        <p>The discs carry over the "bright" energy setting from the Checkpoint 5A preview, which used the same hard-edged treatment — crisp stops rather than blurs, so the colour stays graphic instead of becoming a soft wash. They are drawn only from the approved accents, and every text colour clears WCAG AA over all four of them (worst case 5.0:1).</p>
         <p>Each layout has a different subject: a spread of reasons, a trip, a book. Use <strong>Day one</strong> to see each with no household history.</p>
       </div>
 
@@ -575,6 +592,10 @@
       root.querySelectorAll('[data-direction]').forEach(b=>b.addEventListener('click',()=>{
         press('[data-direction]',b);root.setAttribute('data-direction',b.dataset.direction);
         if(live)live.textContent=b.textContent+' direction shown';
+      }));
+      root.querySelectorAll('[data-energy]').forEach(b=>b.addEventListener('click',()=>{
+        press('[data-energy]',b);root.setAttribute('data-energy',b.dataset.energy);
+        if(live)live.textContent=b.textContent+' background shown';
       }));
       root.querySelectorAll('[data-opt]').forEach(b=>b.addEventListener('click',()=>{press('[data-opt]',b);opt=b.dataset.opt;sync(b.textContent+' shown');}));
       root.querySelectorAll('[data-ev]').forEach(b=>b.addEventListener('click',()=>{press('[data-ev]',b);ev=b.dataset.ev;sync(b.textContent+' state shown');}));
