@@ -100,7 +100,7 @@ Accessibility: all error paths announce via `role="alert"`; the disabled save bu
 4. **N+1 queries** in candidate hydration. Not yet wired to a live route; should be addressed before it is.
 5. **No page-scoped offline guard** on Reading profile; the global banner's copy is shelf-specific.
 
-Items 2 through 5 were accepted by the owner as deferred rather than blocking, and are recorded as required carry-forward work in the Checkpoint 7B section of `CODEX_BUILD_PLAN.md` so they cannot be lost.
+Items 2 through 5 were accepted by the owner as deferred rather than blocking, and are recorded as required carry-forward work in the Checkpoint 7D section of `CODEX_BUILD_PLAN.md` so they cannot be lost.
 6. **Only 13 topic codes.** Real caregiver phrasing will frequently miss the dictionary and fall back to the generic corpus. This is the known limitation section 6.3 predicts and Checkpoint 11A is designed to measure.
 7. **`ChildProfile` creation is not retry-idempotent** — it has no `clientMutationId` column, which the approved schema addition did not include.
 

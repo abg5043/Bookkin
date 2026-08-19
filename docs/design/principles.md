@@ -41,3 +41,17 @@ Every design gate provides an interactive, marked-up HTML prototype before appli
 After implementation, update or recreate the interactive review from the working workflow and realistic states. Re-present it after requested refinements. Static screenshots may supplement but do not replace the interactive artifact unless the human owner approves another format.
 
 Owner corrections are recorded in the canonical SDD or this design-principles file during the same review cycle. Chat history alone is never the decision record.
+
+## Recorded owner decisions — home surface review, 2026-08-18
+
+**Joy comes from the approved hue set, never from warming the ground.** The owner wants the product to feel joyful and likes the design language. When that was acted on by warming the paper to `#fdf7ec` with brown lines and brown body text, it reproduced the exact regression this file already forbids, and had to be reverted. The energy is available inside the sanctioned palette: yellow, cyan, rose, blue and ink against a luminous cool neutral is a *higher*-energy composition than warm cream, which feels warmer while lowering contrast and energy together. Any future request for more joy is satisfied with saturation, colour discs, sticker treatments and hard offset shadows drawn from the approved set — never by moving the canvas warm.
+
+**Small amounts of background colour are wanted, in both visual directions.** The Checkpoint 5A `data-energy="bright"` treatment — hard-edged radial discs with crisp stops rather than blurs, so colour stays graphic instead of becoming a soft wash — is the approved reference. Adding colour behind text changes every contrast calculation, so text colours are re-measured against every disc colour, not only against the canvas.
+
+**Variety of reason-type is a home-surface requirement.** A home surface organized around a single creator was rejected: it cuts off creators the household already likes, and the owner explicitly values variety. Recommendations are presented so that different *kinds* of reason are visibly distinct from one another.
+
+**Creators the household already likes stay first-class on the home surface.** The composition rule caps creator adjacency at one seat per bag, and that cap exists because the owner already scans those creators by hand — not because their books are worse. Design must never present "someone new" as the only legitimate reason a book is shown.
+
+**Never expose the holdings ratio, and never call it "popular."** Counts like "held by 19 of 29 systems" expose the mechanism and do not belong in product copy. The replacement is the human fact underneath — that librarians across the area chose the book — not the word "popular," which describes the opposite of what the signal measures: holdings record professional selection under budget, and the engine deliberately targets the widely-chosen-but-not-famous band rather than the top of it. This is a product-truth position, not a stylistic preference.
+
+**Unverified award and review claims do not appear on cards, even as placeholders.** Where a citable source does not yet exist, the claim is omitted rather than shown with a footnote admitting it is invented. A caregiver must never have to ask whether a string is real.

@@ -4,7 +4,7 @@ Prompted by real feedback during the Checkpoint 7P preview: a first-time viewer 
 
 ## Why the comparison is correct today
 
-Every feature shipped so far — a shelf, a search-and-add flow, a reading log — is a **tracking** surface. The differentiator, recommendations, arrives at Checkpoints 7B and 8. A fresh viewer can only judge what exists, and what exists today is a catalog with a log attached.
+Every feature shipped so far — a shelf, a search-and-add flow, a reading log — is a **tracking** surface. The differentiator, recommendations, arrives across Checkpoints 7B through 8. A fresh viewer can only judge what exists, and what exists today is a catalog with a log attached.
 
 This is a sequencing artifact, not a design failure. But it becomes a real problem if it survives Checkpoint 8, and it is a useful deadline: **when the first bag ships, the Goodreads read must stop being accurate.**
 
@@ -68,17 +68,17 @@ Treat this as the north star it was chosen to be, and treat any surface that lea
 
 The app currently opens on the Shelf. A shelf-first product reads as a tracker no matter what the marketing says, because the first screen is the product claim.
 
-**Open question for Checkpoint 8:** should the home surface be the recommendation rather than the shelf? That is a design-gate decision, not something to settle here, but it should be asked explicitly at that gate rather than inherited by default. The current arrangement was correct while there was nothing else to show, and stops being correct the moment there is.
+**Decided on 2026-08-18, no longer open:** the home surface is the recommendation, not the shelf. The shelf-first arrangement was correct while there was nothing else to show and stopped being correct the moment there was. What remains open is layout and approach within that decision, which the Checkpoint 7D minimum-surface gate and Checkpoint 8 settle from at least three distinct options. `src/app/page.tsx` still renders the shelf, which is correct until Checkpoint 8 ships.
 
 ## The strategic risk, stated honestly
 
 All of this differentiation rests on one thing: **the recommendations being good.** If the bags are mediocre, Bookkin is not a differentiated product — it is a worse Goodreads with fewer books and no reviews. Nothing in the privacy posture, the library handoff, or the copy discipline compensates for picks a parent does not trust.
 
-That is why Checkpoint 7B, the recommender-systems reviewer, and the Checkpoint 11A quality gate carry the weight they do. The owner's own instinct that "the recs were always the takeaway" is the correct read of where this product lives or dies.
+That is why Checkpoints 7B through 7D, the recommender-systems reviewer, and the Checkpoint 11A quality gate carry the weight they do. The owner's own instinct that "the recs were always the takeaway" is the correct read of where this product lives or dies.
 
 ## What this means for the checkpoints ahead
 
-- **7B:** the deterministic weights are set here, and the recommender-systems reviewer judges whether picks are good, not merely repeatable.
+- **7B-7D:** 7B builds the corpus and tone vocabulary, 7C runs the retrieval bake-off, and 7D sets the deterministic weights and scores the first real bags. The recommender-systems reviewer judges whether picks are good, not merely repeatable.
 - **8:** the first bag ships, and the "looks like Goodreads" reaction should be retested on a fresh viewer. Ask the home-surface question at the design gate.
 - **11A:** measures whether the recommendations actually earned the differentiation, with honest attribution when they have not.
 - **12B and 13:** any public claim or pricing rests on this positioning, and the venture reviewer should pressure-test whether a caregiver would pay for it over free alternatives.

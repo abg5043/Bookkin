@@ -108,4 +108,12 @@ V0.1 is protected responsive web over HTTPS. Do not add a service worker, offlin
 
 ## Current authorization state
 
-The revised SDD was approved on 2026-08-14, and Checkpoints 4R and 5A were approved and delivered. The Checkpoint 5B phase-one proposal was approved on 2026-08-15, and bounded phase-two implementation is authorized. Follow its single-writer and exclusion rules. Stop at the separate Quick Log interactive design gate before UI implementation. Do not stage, commit, push, deploy, provision hosted resources, begin Checkpoint 6, or add later-checkpoint scope before final Checkpoint 5B approval.
+The revised SDD was approved on 2026-08-14. Checkpoints 4R, 5A, 5B and 6 are approved and delivered. **Checkpoint 7A is delivered and awaiting final owner review.** Nothing beyond 7A is authorized.
+
+Specifically, as of 2026-08-18:
+
+- **Do not begin Checkpoint 7B.** It is blocked for a second, independent reason beyond authorization: it builds the candidate corpus from the library catalog, and section 2.3 of the SDD scopes that catalog to availability only. The owner must amend that invariant before the checkpoint can start, and approving the checkpoint does not amend it. A drafted replacement line sits at the end of the 7B section. Gate G1 cannot be scored until this clears.
+- **Do not treat the standing catalog field tests as authorized work.** Reading the catalog's facet list off its interface and verifying the picture-book filter are catalog-as-corpus tasks and wait on the same amendment.
+- The home-surface pivot is decided in principle — Bookkin opens on the recommendation, not the shelf — but the three-option design work is exploratory and belongs to Checkpoint 7D's minimum-surface gate and Checkpoint 8. It is not implementation permission, and the final visual direction is not locked until Checkpoint 7P.
+
+Do not stage, commit, push, deploy, provision hosted resources, or add later-checkpoint scope before the owner's explicit approval of the checkpoint in front of you.

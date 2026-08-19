@@ -1,8 +1,8 @@
 # Bookkin Software Development Document and Agentic Build Plan
 
-Status: canonical planning document; Checkpoint 6 delivered; Checkpoint 7A in progress
+Status: canonical planning document; Checkpoint 6 delivered; Checkpoint 7A delivered and awaiting final owner review; Checkpoint 7B BLOCKED pending a section 2.3 amendment
 
-Last revised: 2026-08-16
+Last revised: 2026-08-18
 
 The human product owner approved this SDD on 2026-08-14 and approved and delivered Checkpoints 4R, 5A, 5B, and 6. On 2026-08-15, the owner explicitly authorized Checkpoint 7 to begin; under the approved split sequence, this authorizes Checkpoint 7A only. On 2026-08-16, the owner approved adding a separately gated protected-preview foundation after 7A so real-phone review can begin earlier, approved the Checkpoint 7A phase-one proposal and interactive design gate (see `docs/architecture/checkpoint-7a-phase-one-proposal.md`), and approved the token-frugality, design-direction-lock, copy-discipline, recommendation-intelligence-review, and cost-structure additions recorded throughout this document. Phase-one approval authorizes bounded Checkpoint 7A implementation only. It does not authorize deployment, accounts, hosted resources, Checkpoint 7P, Checkpoint 7B, later-checkpoint implementation, or public actions. Final Checkpoint 7A approval for commit/push still requires completed implementation, independent review, and a separate explicit approval.
 
@@ -385,9 +385,9 @@ Measured over a rolling window of the last twenty books brought home. Nothing el
 | **Coverage** | Share of known-loved books present in the corpus | Ceiling on everything downstream |
 | **Log Cost** | Median seconds to record one reaction, stopwatch-measured | Named risk; previously unmeasured |
 | **New-Creator Borrow Rate** | Share of new-creator books in a bag that are actually borrowed | Delight rate is filtered through the caregiver's own selection, so the engine is graded only on books he already believed in. A genuinely great unfamiliar book he declines to carry home never enters any denominator. Without this, G5 can pass while the discovery premise is failing — if the unfamiliar picks are systematically skipped, the new-creator books that survive to be measured are the least adventurous ones, and they will score well. |
-| **Found Rate** | Share of catalog handoffs where the caregiver reports finding the book, split by candidate provenance | Long-tail picks are systematically less likely to be held than canon picks, so unobtainability pushes the product back toward the canon by pure attrition, invisibly, while every gate reads PASS. Building the corpus from the library catalog largely closes this for corpus-sourced candidates but **not** for owner-supplied curated lists, which section 6.4.7 ranks highest — those are the ones most likely to be unheld. Measure before the curated tier scales. |
+| **Found Rate** | Share of catalog handoffs where the caregiver reports finding the book, split by candidate provenance | Long-tail picks are systematically less likely to be held than canon picks, so unobtainability pushes the product back toward the canon by pure attrition, invisibly, while every gate reads PASS. Building the corpus from the library catalog largely closes this for corpus-sourced candidates but **not** for owner-supplied curated lists, which section 6.4.7 ranks highest — those are the ones most likely to be unheld. Measure before the curated tier scales. Implemented by Checkpoint 7D's trip and outcome capture. |
 
-**Skips must be recorded, not inferred.** The composition of what the caregiver declines to borrow is the most informative discovery signal in the system, and nothing currently captures it. A bag closes with the unborrowed books explicitly marked and, where the caregiver offers one, a reason. "Picked it up and put it back" is a stronger negative than any screen dismiss, and no external data source carries it.
+**Skips must be recorded, not inferred.** The composition of what the caregiver declines to borrow is the most informative discovery signal in the system, and nothing currently captures it. A bag closes with the unborrowed books explicitly marked and, where the caregiver offers one, a reason. "Picked it up and put it back" is a stronger negative than any screen dismiss, and no external data source carries it. Implemented by Checkpoint 7D's trip and outcome capture.
 
 #### 6.4.2 G0 — the baseline that does not yet exist
 
@@ -526,7 +526,9 @@ Normal Bag Rate, Limited Pool Rate, and No Candidate Rate use the same denominat
 
 Core activation is a household generating a normal bag and opening at least one official catalog result. Limited activation is reported separately.
 
-The provisional north-star hypothesis is the share of verified recommendations that are pursued, explicitly obtained, read, and positively received. Checkpoint 10A must approve the exact outcome conditions, maturity window, reaction subject, and denominator before implementation. Caregiver reaction quality remains separate.
+**DELIGHT RATE, defined in section 6.4.1, is the primary metric and the authoritative answer to the north-star question every checkpoint report must address.** It is active from G0 onward rather than waiting for Checkpoint 10A, and it supersedes the provisional hypothesis below as the operating measure. The metrics in this section and in `docs/product/success-metrics.md` remain valid and are reported alongside it: they describe product health, where delight rate describes whether the recommendations are any good. Section 6.4.1's supporting metrics — Bag→Borrow Rate, New-Creator Delight Rate, New-Creator Borrow Rate, Found Rate, Reread Rate, Bag Yield, Coverage, and Log Cost — are part of that scorecard and are not duplicated here.
+
+The earlier provisional north-star hypothesis, retained for continuity, was the share of verified recommendations that are pursued, explicitly obtained, read, and positively received. Checkpoint 10A must approve the exact outcome conditions, maturity window, reaction subject, and denominator for both. Caregiver reaction quality remains separate.
 
 Growth remains free through controlled beta, and is described to families as free during beta rather than permanently free; see section 9.2. Bookkin has no ads, affiliates, sponsored placement, commercial ranking influence, or child-data monetization. Monetization begins only as research at Checkpoint 13 after traction, privacy, reliability, support, and cost evidence.
 
@@ -678,6 +680,8 @@ Settled questions, recorded so they are not relitigated. Each carries the condit
 - **Creator adjacency as the primary discovery generator.** Closed: the owner already scans authors and illustrators by hand, so this retrieves books he would have found anyway and fails the north star's first clause. Demoted to a correctness check plus at most one safe-bet seat, with the new-creator quota as the hard constraint. *Reopen if:* the owner stops scanning manually, or new-creator hit rate proves lower than creator-adjacency hit rate over at least twenty real outcomes.
 - **Building an adapter for an untested signal.** Closed: every source passes a ten-book hand check before code is written. *Reopen if:* never.
 - **Conflating "already read" with "not interested."** Closed: familiarity and rejection are different facts, and one control for both would inject false negatives from books never experienced. *Reopen if:* never.
+- **A home surface organized around a single creator.** Closed: introducing one new author or illustrator per visit is well aimed at the north star, but it cuts off creators the household already likes and the owner explicitly values variety. Replaced by a surface where different *kinds* of reason are visibly distinct, with known-liked creators as a first-class reason beside new ones. *Reopen if:* measured new-creator delight rate is high while overall bag yield is low, suggesting the variety is diluting rather than helping.
+- **Showing the library-holdings ratio, or calling that signal "popular."** Closed on two separate grounds. The ratio exposes the mechanism and is not something a caregiver asked for. "Popular" is worse than vague — it is inaccurate, because holdings record professional selection under budget and the engine deliberately targets the widely-chosen-but-not-famous band rather than the top of it. Product copy states the human fact: librarians across the area chose the book. *Reopen if:* field testing shows caregivers actively distrust the human phrasing and want the number.
 - **Treating a catalog's juvenile or picture-book facet as content suitability.** Closed: the facet encodes format and reading level. Picture books are published for readers up to roughly fourteen and include titles on death, war, and deportation that pass every facet test. Suitability requires published age bands. *Reopen if:* a catalog facet exposing a true developmental band is found.
 - **Reading a book's subject headings from a catalog feed record.** Closed: verified that headings are not returned per item; only format code and language appear. Membership requires a heading-to-identifier inverted index built by per-heading enumeration. *Reopen if:* the catalog adds headings to its feed.
 - **Subjective ratings as project status.** Closed: self-assessed scores survived six drafts while containing three material errors. Replaced by measured metrics against a manual baseline. *Reopen if:* never.
@@ -1009,7 +1013,9 @@ stateDiagram-v2
 
 Mandatory human stop: phase one stops before every external or billable action until the owner authorizes the exact action. Successful deployment does not approve the checkpoint. The lead presents the protected preview and operational evidence, resolves owner guidance, and requires final explicit approval before commit/push and Checkpoint 7B.
 
-### Checkpoint 7B - Corpus and vocabulary
+### Checkpoint 7B - Corpus and vocabulary — STATUS: BLOCKED, requires a section 2.3 amendment
+
+> **This checkpoint cannot start.** It builds the candidate corpus from the library catalog, and section 2.3 currently scopes that catalog to availability only. Approving this checkpoint is not sufficient; the owner must amend the invariant itself. The exact replacement text is drafted at the end of this section so approving it is one action. Gate G1 is defined entirely over catalog subject headings and cannot be scored until this clears.
 
 Adopted from recommendation-engine plan v3.4 Phase A. Goal: build the retrieval universe and measure whether a usable tone vocabulary exists, before any scoring is written.
 
@@ -1043,7 +1049,17 @@ Specialists: corpus implementer. Reviewers: recommender-systems researcher, and 
 
 Owner decisions: whether the tone vocabulary is rich enough to proceed, or whether G1 routes to P3.
 
-Mandatory human stop: the lead presents both gate results and stops. A failed G2 means the corpus is the wrong universe and is re-scoped before anything is built on it.
+Mandatory human stop: **this checkpoint is blocked before it starts.** Section 2.3 scopes the official library catalog to availability only, and this checkpoint reads it as the candidate corpus. No corpus enumeration, heading index, or holdings pull begins until the owner amends that invariant. Approving the checkpoint does not amend it.
+
+**Drafted amendment, for one-action approval.** Replace section 2.3's line "The official library catalog is the only V0.1 source for availability." with:
+
+> - The official library catalog is the only V0.1 source for availability, and — from Checkpoint 7B — the source of the candidate corpus and its subject-heading vocabulary. Availability is never inferred from corpus membership: presence in the corpus says a system catalogs the book, never that a copy is on a shelf today.
+
+The second sentence is the load-bearing half. Once one system supplies both the corpus and the availability handoff, the tempting shortcut is to treat "it is in our index" as "you can get it," which would manufacture exactly the availability claim section 2.3 exists to forbid.
+
+Then, at the same time: Gate G1 becomes scoreable; section 6.4.1's Found Rate note stops describing an unapproved architecture as present fact; and the two catalog-as-corpus entries in section 11A become live rather than provisional.
+
+After the amendment, the second stop applies as normal: the lead presents both gate results and stops. A failed G2 means the corpus is the wrong universe and is re-scoped before anything is built on it.
 
 ### Checkpoint 7C - Bake-off
 
@@ -1099,11 +1115,16 @@ Included, in this order:
 - Keep the first three bags conservative but informative: retain the new-creator quota, require strong external quality evidence, allow at most one high-uncertainty exploration pick, and do not let a weak early taste centroid suppress otherwise excellent candidates. Where a taste hypothesis is genuinely uncertain, test it across successive bags rather than deciding from one book. This is bounded exploration, not experimentation on the child: every book must already be a credible, age-appropriate recommendation.
 - Keep child and caregiver reactions separate, never averaged. A book can legitimately be loved by the child and disliked by the adult reading it, and that combination is useful information for composition rather than a contradiction to resolve.
 - Composition with the new-creator quota: at least two books per bag by creators with no household history, at most one from creator adjacency, and a smaller bag rather than backfilling with known creators.
+- **A second, orthogonal constraint, because the quota alone does not enforce the north star.** "Creator with no household history" is satisfied by any Caldecott winner the household happens not to have logged. Combined with an unlogged physical shelf and incomplete familiarity backfill, the quota is fully satisfiable by famous creators — so a bag can pass composition while doing nothing the product exists to do. Creator novelty and title obscurity are different properties and neither implies the other. Require, in addition to the quota, **at least one book per bag drawn from outside the top holdings band or sourced from something other than the headline awards** — a state list, a translated imprint, a small press, an owner-supplied curated list. Report the two constraints separately; a bag satisfying only the creator quota is a weaker bag and must be visible as one.
+- **Preserving known-liked creators is a requirement, not a leak.** The quota caps creator adjacency at one seat per bag; it does not forbid it, and a bag that never returns to a creator the household loves is failing a different way. The cap exists because the owner already scans those creators by hand, not because their books are worse.
+- Versioned deterministic scoring with separate child, caregiver, family-reference, current-interest, historical-interest, reread, stopped-reading, reading-decision, recommendation-action, and request-context signals.
+- Neutral missing-metadata behavior, explicit suppression and exclusion rules, target-five composition, and a deterministic explanation payload.
+- **Trip and outcome capture, which is what makes two section 6.4 metrics scoreable.** Skips must be recorded rather than inferred (section 6.4.1), and Found Rate requires knowing whether a handoff actually produced a book. Neither has an implementation anywhere else in this plan. This checkpoint owns: a durable trip grouping the books taken from one or more bags; found versus not-found recorded at the catalog handoff, carrying candidate provenance so the long-tail-availability confound is visible; and a close-out marking unborrowed books with a reason where the caregiver offers one. **Found-at-handoff and left-behind-at-close-out are different events at different moments and must not share one control.** Any new `ReadingEvent` or `RecommendationAction` values this requires go through a schema gate, not in as UI — section 5.4's taxonomy is frozen and contains none of them.
 - Generate the first bag, then **physically pull the books at the library and judge them in hand**, then read them with the child and log real outcomes.
 - **Gate G4 — first real bags against the manual baseline.**
 - **Gate G5 — new-creator delight rate at twenty outcomes.**
 
-Excluded: tone vectors and curated similarity tiers unless G1 came back weak or G4 shows a measured tone gap.
+Excluded: tone vectors and curated similarity tiers unless G1 came back weak or G4 shows a measured tone gap; LLM implementation; library availability claims; and endless-feed behavior. A "show me more" affordance, if one appears in design, is bounded and stated — it is not an infinite feed.
 
 **Relationship to Checkpoint 8, stated because these two overlap and would otherwise collide.** This checkpoint produces real bags, read by a real child, logged through a real one-tap control, because G4 and G5 cannot be scored any other way. It is therefore not a fixture-only checkpoint, and Checkpoint 8 is not the first time a bag reaches a caregiver. The division is:
 
@@ -1116,34 +1137,13 @@ Excluded: tone vectors and curated similarity tiers unless G1 came back weak or 
 
 **Limited pools are the expected case here, not an edge case.** Narrow retrieval is the mechanism: adding one subject qualifier collapsed a measured Open Library query from 97,630 results to 805. A one-book bag is frequently what success looks like. Design and review the single-candidate presentation first and the three-candidate case second, or the product will look broken at exactly the moment the engine is working correctly. A one-book result is presented with confidence, never as a three-slot grid with two apologies in it.
 
-Acceptance evidence: log cost stopwatch-measured under the ceiling; every write producing separate inspectable event and reaction records; a dismissed book never reappearing; the new-creator quota holding or the bag shrinking; G4 and G5 scored against the manual baseline.
+Acceptance evidence: fixed inputs are repeatable; weights and source signals are inspectable; no unverified work or padded result can enter a bag; limited-pool and no-candidate cases are tested; explanations cite only verified or declared evidence; **log cost measured with a stopwatch, not estimated**, and above eight seconds sustained routes immediately to P2; every write producing separate inspectable event and reaction records; a dismissed book never reappearing; both composition constraints holding or the bag shrinking; skips and found-at-handoff recorded with provenance; G4 and G5 scored against the manual baseline.
 
-Specialists: engine and logging implementers. Reviewers: recommender-systems researcher, product designer for the one-tap flow, and a parent-of-a-young-child review of whether the flow survives a library aisle.
+Specialists: engine and logging implementers. Reviewers: recommender-systems researcher (signal design, weighting, cold-start behavior, and whether the fixtures evaluate ranking quality rather than only determinism), product designer for the one-tap flow, independent scoring/test and product-truth reviewers, and a parent-of-a-young-child review of whether the flow survives a library aisle. This is the first checkpoint where "the code is correct" and "the picks are good" are different questions, and the deterministic weights are set here — a reviewer who has tuned real ranking systems is the lens that catches a scorer that is repeatable but poorly calibrated.
 
 Owner decisions: whether delight rate justifies continuing, and which pivot applies if not.
 
 Mandatory human stop: gate results are evidence, not approval. If log cost exceeds eight seconds, everything stops until it is fixed.
-
-
-- One-tap rate-and-dismiss on the recommendation card itself. Rating and dismissing are the same gesture; no separate logging screen. A single tap writes a reading event and a reaction as separate records with distinct provenance, never collapsed into one field. Five-second ceiling, one-handed on a phone, works offline by queuing, and undoable for ten seconds.
-- Distinct dismiss states, with **"already read it" and "not interested" kept separate.** The first is familiarity, the second is rejection; conflating them injects false negatives from books never experienced.
-- Reread capture — the highest-yield lever, and implicit signal at zero marginal logging cost.
-- Explicit negative capture from truthful outcomes only. **Absence of a reread is neutral, not negative**, because loan duration, caregiver choice, and competing books confound it.
-- Illustrator indexed and weighted separately from author, since for picture books the illustrator often carries more taste signal.
-- Inverse-frequency heading weights.
-- Confidence-ramped personalization: early household evidence is a weak tie-breaker only, becoming a major ranking component only as truthful outcomes accumulate. No single book defines a topic or tone preference, and explicit negative evidence stays local to supported traits rather than poisoning every subject attached to the book.
-- Versioned deterministic scoring with separate child, caregiver, family-reference, current-interest, historical-interest, reread, stopped-reading, reading-decision, recommendation-action, and request-context signals.
-- **New-creator quota in composition:** at least two books in every bag by creators with no household history, at most one from creator adjacency, and a smaller bag rather than backfilling with known creators when the quota cannot be met.
-
-- **A second, orthogonal constraint, because the quota alone does not enforce the north star.** "Creator with no household history" is satisfied by any Caldecott winner the household happens not to have logged. Combined with an unlogged physical shelf and incomplete familiarity backfill, the quota is fully satisfiable by famous creators — so a bag can pass composition while doing nothing the product exists to do. Creator novelty and title obscurity are different properties and neither implies the other. Require, in addition to the quota, **at least one book per bag drawn from outside the top holdings band or sourced from something other than the headline awards** — a state list, a translated imprint, a small press, an owner-supplied curated list. Report the two constraints separately; a bag satisfying only the creator quota is a weaker bag and must be visible as one.
-
-- **Preserving known-liked creators is a requirement, not a leak.** The quota caps creator adjacency at one seat per bag; it does not forbid it, and a bag that never returns to a creator the household loves is failing a different way. The cap exists because the owner already scans those creators by hand, not because their books are worse.
-- Neutral missing-metadata behavior, explicit suppression and exclusion rules, target-five composition, and a deterministic explanation payload.
-- **Field test:** generate the first bag, then go to the library and physically hold the books.
-- **Field test:** read them with the child and log outcomes before tuning any weight.
-- **Gates G4 and G5.**
-
-Excluded: user-facing bag as a product workflow, LLM implementation, library availability claims, and endless-feed behavior.
 
 Carried forward from Checkpoint 7A, accepted by the owner as deferred rather than blocking, and required here because this checkpoint is the first consumer that depends on candidate pools being trustworthy:
 
@@ -1153,14 +1153,6 @@ Carried forward from Checkpoint 7A, accepted by the owner as deferred rather tha
 - **Page-scoped offline guard for Reading profile.** The global offline banner exists but its copy is shelf and quick-log specific. A caregiver editing a child's profile on unreliable connectivity must be warned before beginning a private-data input workflow, as `docs/design/accessibility.md` requires.
 
 Candidate future addition, not approved or scoped yet: a closed-vocabulary interest classifier that maps free-text child interests to the existing closed `TopicCodeV1` set only (never to open text, a rank, a score, or an unverified fact) so more real phrasing reaches a topical candidate source than the exact-alias match alone. This is a classification task into a fixed small vocabulary, not open generation, so it carries none of the fabrication risk of an LLM writing prose or picking books. It would require its own phase-one proposal, privacy review, and owner approval before implementation and would not change the deterministic scoring, ranking, composition, or eligibility rules above.
-
-Acceptance evidence: fixed inputs are repeatable; weights and source signals are inspectable; no unverified work or padded result can enter a bag; limited-pool and no-candidate cases are tested; explanations cite only verified or declared evidence; the new-creator quota holds or the bag is smaller; **log cost measured with a stopwatch, not estimated**, and above eight seconds sustained routes immediately to P2.
-
-Specialists: recommendation and logging implementers. Reviewers: recommender-systems researcher (signal design, weighting, cold-start behavior, and whether the fixtures evaluate ranking quality rather than only determinism), plus independent scoring/test and product-truth reviewers. This is the first checkpoint where "the code is correct" and "the picks are good" are different questions, and the deterministic weights are set here — a reviewer who has tuned real ranking systems is the lens that catches a scorer that is repeatable but poorly calibrated.
-
-Owner decisions: scoring weights, suppression policy, composition behavior, and fixture plausibility.
-
-Mandatory human stop: recommendation-test PASS does not approve product behavior. Both field tests are owner actions. The lead presents fixtures, rankings, explanations, edge cases, and G4/G5 results, applies owner guidance, and requires explicit approval before commit/push and Checkpoint 8.
 
 ### Checkpoint 8 - First useful bag and catalog handoff
 
